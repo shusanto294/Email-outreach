@@ -41,7 +41,7 @@ class EmailController extends Controller
         $lead->opened = 1;
         $lead->save();
 
-        $trackingPixel = file_get_contents(public_path('images/tracking_pixel.png'));
+        $trackingPixel = file_get_contents(public_path('images/mypixel.png'));
         return response($trackingPixel)->header('Content-Type', 'image/png');
     }
 }

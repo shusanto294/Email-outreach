@@ -39,11 +39,16 @@
                 </td>
                 <td>
                   @php
-                  $sentCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('sent', 1)->count();
-                  echo $sentCount;
-                @endphp
+                    $sentCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('sent', 1)->count();
+                    echo $sentCount;
+                  @endphp
                 </td>
-                <td>0</td>
+                <td>
+                  @php
+                    $openedCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('opened', 1)->count();
+                    echo $openedCount;
+                  @endphp
+                </td>
                 <td>0</td>
             </tr>
         @endforeach

@@ -43,12 +43,6 @@ Route::get('/campaign/{id}', [CampaignController::class, 'show'])->middleware(['
 Route::post('/update-campaign/{id}', [CampaignController::class, 'update'])->middleware(['auth', 'verified'])->name('update-campaign.post');
 
 
-// Route::get('/send-email', function () {
-//     $data = 'Data';
-//     $email = Mail::to('shusanto294@gmail.com')->send(new MyTestEmail($data));
-//     var_dump($email);
-// });
-
 Route::get('/send-email', [EmailController::class, 'send']);
 Route::get('/track-email/{id}', [EmailController::class, 'trackEmail'])->name('track.email');
 
