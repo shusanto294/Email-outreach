@@ -25,7 +25,7 @@ class EmailController extends Controller
         $dynamicSubject = str_replace(["[firstname]", "[company]"], [$firstName, $lead->company], $subject);
         $dynamicBody = str_replace(["[firstname]", "[company]"], [$lead->name, $lead->company], $body);
 
-        $dynamicBody .= '<img src="'.route('track.email',$lead->id).'">';
+        $dynamicBody .= '<img src="'.route('track.email',$lead->id).'?id='.$lead->id.'">';
 
         Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
             $message->to($lead->email)->subject($dynamicSubject);
