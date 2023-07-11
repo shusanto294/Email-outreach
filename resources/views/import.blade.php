@@ -19,7 +19,7 @@ $leadCount = $leads->count();
 
     <select type="select" class="form-control mb-3" name="campaign_id">
         @foreach($campaigns as $campaign)
-            <option value="{{ $campaign->id }}">{{ $campaign->subject }}</option>
+            <option value="{{ $campaign->id }}">{{ $campaign->name }}</option>
         @endforeach
     </select>
 

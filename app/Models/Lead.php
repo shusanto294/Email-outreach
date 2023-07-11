@@ -10,7 +10,6 @@ class Lead extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'apollo_url',
         'linkedin_profile',
         'title',
         'company',

@@ -30,6 +30,7 @@ class CampaignController extends Controller
     public function create(Request $request)
     {
         $campaign = Campaign::create([
+            'name' => $request['campaignName'],
             'subject' => $request['subject'],
             'body' => $request['body']
         ]);
@@ -65,6 +66,34 @@ class CampaignController extends Controller
         $campaign->save();
         return redirect()->back();
     }
+
+    //Show leads on this campaign
+    public function showLeads($id){
+        $campaign = Campaign::find($id);
+        $leads = $campaign->leads()->paginate(10);;
+        return view('leads', [
+            'leads' => $leads
+        ]);
+    }
+
+    //Show sent leads on this campaign
+    public function showSent($id){
+        $campaign = Campaign::find($id);
+        $leads = $campaign->leads()->where('sent', 1)->paginate(10);;
+        return view('leads', [
+            'leads' => $leads
+        ]);
+    }
+
+    //Show email opened leads on this campaign
+    public function showOpened($id){
+        $campaign = Campaign::find($id);
+        $leads = $campaign->leads()->where('opened', 1)->paginate(10);;
+        return view('leads', [
+            'leads' => $leads
+        ]);
+    }
+
 
 
 }

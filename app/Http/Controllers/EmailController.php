@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Mail;
 class EmailController extends Controller
 {
     public function send(){
-        $lead = Lead::where('sent', 0)->first();
+        $lead = Lead::where('sent', 0)->where('subscribe', 1)->first();
         $campaign = Campaign::find($lead->campaign_id);
 
         $subject = $campaign->subject;

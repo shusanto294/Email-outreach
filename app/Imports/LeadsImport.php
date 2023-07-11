@@ -33,7 +33,6 @@ class LeadsImport implements ToModel, WithHeadingRow
         if ($lead === null) {
             return new Lead([
                 'name'     => $row['name'],
-                'apollo_url'    => $row['apollo_url'], 
                 'linkedin_profile' => $row['linkedin_profile'],
                 'title' => $row['title'],
                 'company' => $row['company'],

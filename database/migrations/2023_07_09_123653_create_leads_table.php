@@ -16,7 +16,6 @@ return new class extends Migration
         Schema::create('leads', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('apollo_url')->nullable();
             $table->string('linkedin_profile')->nullable();
             $table->string('title')->nullable();
             $table->string('company');
@@ -26,7 +25,9 @@ return new class extends Migration
             $table->boolean('campaign_id')->default(0);
             $table->boolean('sent')->default(0);
             $table->boolean('opened')->default(0);
-            $table->boolean('unsubscribe')->default(0);
+            $table->string('technology')->nullable();
+            $table->text('personalized_line')->nullable();
+            $table->boolean('subscribe')->default(1);
             $table->timestamps();
         });
     }

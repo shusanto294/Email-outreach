@@ -23,33 +23,31 @@
         <th scope="col">Leads</th>
         <th scope="col">Sent</th>
         <th scope="col">Opened</th>
-        <th scope="col">Replied</th>
       </tr>
     </thead>
     <tbody>
         @foreach ($campaigns as $campaign)
             <tr>
                 <td>{{ $campaign->id }}</td>
-                <td><a href="{{ route('campaign.single', $campaign->id) }}">{{ $campaign->subject }}</a></td>
+                <td><a href="{{ route('campaign.single', $campaign->id) }}">{{ $campaign->name }}</a></td>
                 <td>
                   @php
                     $leadsCount = App\Models\Lead::where('campaign_id', $campaign->id)->count();
-                    echo $leadsCount;
                   @endphp
+                  <a href="{{ route('campaign.leads', $campaign->id) }}">{{ $leadsCount }}</a>
                 </td>
                 <td>
                   @php
                     $sentCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('sent', 1)->count();
-                    echo $sentCount;
                   @endphp
+                  <a href="{{ route('campaign.sent', $campaign->id) }}">{{ $sentCount }}</a>
                 </td>
                 <td>
                   @php
                     $openedCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('opened', 1)->count();
-                    echo $openedCount;
                   @endphp
+                  <a href="{{ route('campaign.opened', $campaign->id) }}">{{ $openedCount }}</a>
                 </td>
-                <td>0</td>
             </tr>
         @endforeach
     </tbody>
@@ -62,12 +60,13 @@
     <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;">
       <div class="modal-content">
         <div class="modal-body">
-          <p>Dynamic variables: [firstname] [company]</p>
           <form action="{{ route('add-campaign.post') }}" method="POST">
             @csrf
+            <input type="text" name="campaignName" placeholder="Campaign Name" class="form-control mb-3" required>
+            <p>Dynamic variables: [firstname] [company]</p>
             <input type="text" name="subject" placeholder="Subject" class="form-control mb-3" required>
             <textarea name="body" id="" cols="30" rows="10" class="form-control mb-3"></textarea>
-            <button type="submit" class="btn btn-secondary mt-3">Create tempalte</button>
+            <button type="submit" class="btn btn-secondary mt-3">Create Campaign</button>
         </form>
         </div>
       </div>

@@ -34,4 +34,19 @@ class LeadController extends Controller
             'leads' => DB::table('leads')->paginate(10)
         ]);
     }
+
+    public function show($id){
+        $lead = Lead::find($id);
+        return view('lead-single', [
+            'lead' => $lead
+        ]);
+    }
+
+    public function update(Request $request, $id){
+        $lead = Lead::find($id);
+        $lead->subscribe = $request->subscribe;
+        $lead->personalized_line = $request->personalizedLine;
+        $lead->save();
+        return redirect()->back();
+    }
 }
