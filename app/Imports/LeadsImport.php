@@ -28,7 +28,8 @@ class LeadsImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        $lead = Lead::where('email', $row['email'])->where('campaign_id', '=', $this->campaignID)->first();
+        //$lead = Lead::where('email', $row['email'])->where('campaign_id', '=', $this->campaignID)->first();
+        $lead = Lead::where('email', $row['email'])->first();
 
         if ($lead === null) {
             return new Lead([

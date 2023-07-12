@@ -28,6 +28,14 @@
 
     <form action="{{ route('lead.update', $lead->id) }}" method="POST">
         @csrf
+        <select name="campaignId" class="form-control mb-3">
+            @php
+                $campaigns = App\Models\Campaign::get();
+            @endphp
+            @foreach ($campaigns as $campaign)
+                <option value="{{ $campaign->id }}" {{ $lead->campaign_id == $campaign->id ? 'selected' : '' }}>{{ $campaign->name }}</option>
+            @endforeach
+        </select>
         <select name="subscribe" class="form-control mb-3">
             <option value="1" {{ $lead->subscribe == 1 ? 'selected' : '' }}>Subscribe</option>
             <option value="0" {{ $lead->subscribe == 0 ? 'selected' : '' }}>Un Subscribe</option>
