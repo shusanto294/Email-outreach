@@ -50,4 +50,22 @@ class LeadController extends Controller
         $lead->save();
         return redirect()->back();
     }
+
+    public function search(Request $request) {
+        $leads = Lead::where(function($query) use ($request) {
+            $query->where('name', 'like', '%' . $request->searchText . '%')
+            ->orWhere('linkedin_profile', 'like', '%' . $request->searchText . '%')
+            ->orWhere('title', 'like', '%' . $request->searchText . '%')
+            ->orWhere('company', 'like', '%' . $request->searchText . '%')
+            ->orWhere('company', 'like', '%' . $request->searchText . '%')
+            ->orWhere('company_website', 'like', '%' . $request->searchText . '%')
+            ->orWhere('location', 'like', '%' . $request->searchText . '%')
+            ->orWhere('email', 'like', '%' . $request->searchText . '%')
+            ->orWhere('technology', 'like', '%' . $request->searchText . '%');
+        })->paginate(10);
+    
+        return view('leads', [
+            'leads' => $leads
+        ]);
+    }
 }
