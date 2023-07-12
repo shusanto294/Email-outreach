@@ -23,7 +23,7 @@ class EmailController extends Controller
         $firstName = $nameParts[0];
 
         $dynamicSubject = str_replace(["[firstname]", "[company]"], [$firstName, $lead->company], $subject);
-        $dynamicBody = str_replace(["[firstname]", "[company]"], [$lead->name, $lead->company], $body);
+        $dynamicBody = str_replace(["[firstname]", "[company]"], [$firstName, $lead->company], $body);
 
         $dynamicBody .= '<img src="'.route('track.email',$lead->id).'?id='.$lead->id.'">';
 
