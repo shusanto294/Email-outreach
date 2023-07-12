@@ -21,14 +21,8 @@ use App\Http\Controllers\ListCampaignRelationshipController;
 |
 */
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('home.index');
+Route::get('/dashboard', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.index');
 
 Route::get('/import', function () {
     return view('import');
