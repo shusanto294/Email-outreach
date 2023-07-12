@@ -23,7 +23,7 @@
 
     <p class="mt-3"><b>Title : </b>{{ $lead->title }}</p>
     <p><b>Company : </b>{{ $lead->company }}</p>
-    <p><b>Location :</b> {{ $lead->company }}</p>
+    <p><b>Location :</b> {{ $lead->location }}</p>
     <p><b>Email :</b> {{ $lead->email }}</p>
 
     <form action="{{ route('lead.update', $lead->id) }}" method="POST">
