@@ -7,7 +7,7 @@
 @section('content')
     <form action="{{ route('update-campaign.post', $campaign->id) }}" method="POST">
         @csrf
-        <input type="text" name="campaignName" placeholder="Campaign Name" class="form-control mb-3" required>
+        <input type="text" name="campaignName" placeholder="Campaign Name" class="form-control mb-3" value="{{ $campaign->name }}" required>
         <p>Dynamic variables: [firstname] [company]</p>
         <input type="text" name="emailSubject" placeholder="Subject" class="form-control mb-3" value="{{ $campaign->subject }}" required>
         <textarea name="emailBody" id="" cols="30" rows="10" class="form-control mb-3">{!! $campaign->body !!}</textarea>
