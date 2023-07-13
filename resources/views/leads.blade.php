@@ -84,7 +84,9 @@
             <tr>
                 <td>{{ $lead->id }}</td>
                 <td>
+                  @if ($lead->linkedin_profile != 'n/a')
                   <a class="icon-link" href="{{ $lead->linkedin_profile }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                  @endif
                   <a href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a>
                 </td>
                 <td>{{ $lead->title }}</td>
