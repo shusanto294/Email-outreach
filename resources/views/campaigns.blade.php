@@ -23,6 +23,7 @@
         <th scope="col">Leads</th>
         <th scope="col">Sent</th>
         <th scope="col">Opened</th>
+        <th scope="col">Opene Rate</th>
       </tr>
     </thead>
     <tbody>
@@ -47,6 +48,12 @@
                     $openedCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('opened', 1)->count();
                   @endphp
                   <a href="{{ route('campaign.opened', $campaign->id) }}">{{ $openedCount }}</a>
+                </td>
+                <td>
+                  @php  
+                    $openRate = ($openedCount / $sentCount) * 100;
+                    echo number_format($openRate, 2).' %';
+                  @endphp
                 </td>
             </tr>
         @endforeach

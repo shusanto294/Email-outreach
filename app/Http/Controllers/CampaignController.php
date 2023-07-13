@@ -61,6 +61,7 @@ class CampaignController extends Controller
     public function update(Request $request, $id)
     {
         $campaign = Campaign::find($id);
+        $campaign->name = $request->campaignName;
         $campaign->subject = $request->emailSubject;
         $campaign->body =  $request->emailBody;
         $campaign->save();
