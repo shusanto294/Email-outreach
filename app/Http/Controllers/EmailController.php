@@ -15,6 +15,9 @@ class EmailController extends Controller
         $lead = Lead::where('sent', 0)->where('subscribe', 1)->first();
         $campaign = Campaign::find($lead->campaign_id);
 
+        $lead->sent = 1;
+        $lead->save();
+
         $subject = $campaign->subject;
         $body = $campaign->body;
 
@@ -31,8 +34,6 @@ class EmailController extends Controller
             $message->to($lead->email)->subject($dynamicSubject);
         });
 
-        $lead->sent = 1;
-        $lead->save();
         echo 'Email sent to - '. $lead->id.' - '.$lead->email; 
 
     }
