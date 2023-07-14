@@ -18,7 +18,7 @@ class CampaignController extends Controller
     public function index()
     {
         return view('campaigns', [
-            'campaigns' => DB::table('campaigns')->paginate(10)
+            'campaigns' => DB::table('campaigns')->orderBy('id', 'desc')->paginate(10)
         ]);
     }
 
@@ -71,16 +71,16 @@ class CampaignController extends Controller
     //Show leads on this campaign
     public function showLeads($id){
         $campaign = Campaign::find($id);
-        $leads = $campaign->leads()->orderBy('created_at', 'desc')->paginate(10);;
+        $leads = $campaign->leads()->orderBy('id', 'desc')->paginate(10);
         return view('leads', [
-            'leads' => $leads
+          'leads' => $leads
         ]);
     }
 
     //Show sent leads on this campaign
     public function showSent($id){
         $campaign = Campaign::find($id);
-        $leads = $campaign->leads()->where('sent', 1)->paginate(10);;
+        $leads = $campaign->leads()->where('sent', 1)->orderBy('id', 'desc')->paginate(10);
         return view('leads', [
             'leads' => $leads
         ]);
@@ -89,7 +89,7 @@ class CampaignController extends Controller
     //Show email opened leads on this campaign
     public function showOpened($id){
         $campaign = Campaign::find($id);
-        $leads = $campaign->leads()->where('opened', 1)->paginate(10);;
+        $leads = $campaign->leads()->where('opened', 1)->orderBy('id', 'desc')->paginate(10);
         return view('leads', [
             'leads' => $leads
         ]);

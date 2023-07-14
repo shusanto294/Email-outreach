@@ -31,7 +31,7 @@ class LeadController extends Controller
 
     public function index(){
         return view('leads', [
-            'leads' => DB::table('leads')->orderBy('created_at', 'desc')->paginate(10)
+            'leads' => DB::table('leads')->orderBy('id', 'desc')->paginate(10)
         ]);
     }
 
