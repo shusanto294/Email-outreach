@@ -51,8 +51,13 @@
                 </td>
                 <td>
                   @php  
-                    $openRate = ($openedCount / $sentCount) * 100;
-                    echo number_format($openRate, 2).' %';
+                    if($openedCount && $sentCount){
+                      $openRate = ($openedCount / $sentCount) * 100;
+                      echo number_format($openRate, 2).' %';
+                    }else{
+                      echo 'n/a';
+                    }
+
                   @endphp
                 </td>
             </tr>
