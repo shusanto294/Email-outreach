@@ -31,7 +31,7 @@ class LeadController extends Controller
 
     public function index(){
         return view('leads', [
-            'leads' => DB::table('leads')->paginate(10)
+            'leads' => DB::table('leads')->orderBy('created_at', 'desc')->paginate(10)
         ]);
     }
 
@@ -62,7 +62,7 @@ class LeadController extends Controller
             ->orWhere('location', 'like', '%' . $request->searchText . '%')
             ->orWhere('email', 'like', '%' . $request->searchText . '%')
             ->orWhere('technology', 'like', '%' . $request->searchText . '%');
-        })->paginate(10);
+        })->orderBy('created_at', 'desc')->paginate(10);
     
         return view('leads', [
             'leads' => $leads

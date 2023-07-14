@@ -71,7 +71,7 @@ class CampaignController extends Controller
     //Show leads on this campaign
     public function showLeads($id){
         $campaign = Campaign::find($id);
-        $leads = $campaign->leads()->paginate(10);;
+        $leads = $campaign->leads()->orderBy('created_at', 'desc')->paginate(10);;
         return view('leads', [
             'leads' => $leads
         ]);
