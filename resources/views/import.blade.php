@@ -11,7 +11,7 @@ $leadCount = $leads->count();
 <p>Total Leads: {{ $leadCount }}</p>
 
 @php
-    $campaigns = App\Models\Campaign::get();
+    $campaigns = App\Models\Campaign::orderBy('id', 'desc')->get();
 @endphp
 
 <form action="/import" method="post" enctype="multipart/form-data">
