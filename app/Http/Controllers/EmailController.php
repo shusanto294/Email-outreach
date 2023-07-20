@@ -13,28 +13,32 @@ class EmailController extends Controller
 {
     public function send(){
         $lead = Lead::where('sent', 0)->where('subscribe', 1)->orderBy('id', 'desc')->first();
-        $campaign = Campaign::find($lead->campaign_id);
+        if($lead){
+            $campaign = Campaign::find($lead->campaign_id);
 
-        $lead->sent = 1;
-        $lead->save();
+            $lead->sent = 1;
+            $lead->save(); 
 
-        $subject = $campaign->subject;
-        $body = $campaign->body;
+            $subject = $campaign->subject;
+            $body = $campaign->body;
 
-        $fullName = $lead->name;
-        $nameParts = explode(" ", $fullName);
-        $firstName = $nameParts[0];
+            $fullName = $lead->name;
+            $nameParts = explode(" ", $fullName);
+            $firstName = $nameParts[0];
 
-        $dynamicSubject = str_replace(["[firstname]", "[company]"], [$firstName, $lead->company], $subject);
-        $dynamicBody = str_replace(["[firstname]", "[company]"], [$firstName, $lead->company], $body);
+            $dynamicSubject = str_replace(["[firstname]", "[company]"], [$firstName, $lead->company], $subject);
+            $dynamicBody = str_replace(["[firstname]", "[company]"], [$firstName, $lead->company], $body);
 
-        $dynamicBody .= '<img src="'.route('track.email',$lead->id).'?id='.$lead->id.'">';
+            $dynamicBody .= '<img src="'.route('track.email',$lead->id).'?id='.$lead->id.'">';
 
-        Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
-            $message->to($lead->email)->subject($dynamicSubject);
-        });
+            Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
+                $message->to($lead->email)->subject($dynamicSubject);
+            });
 
-        echo 'Email sent to - '. $lead->id.' - '.$lead->email; 
+            echo 'Email sent to - '. $lead->id.' - '.$lead->email; 
+        }else{
+            echo 'No lead found'; 
+        }
 
     }
     public function trackEmail($id){

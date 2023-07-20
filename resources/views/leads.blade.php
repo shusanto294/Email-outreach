@@ -93,7 +93,7 @@
                 <td>{{ $lead->company }}</td>
                 <td>{{ $lead->email }}</td>
                 <td>
-                  <a class="icon-link website" href="{{ $lead->company_website }}" target="_black"><i class="fa-solid fa-up-right-from-square"></i></a>
+                  <a class="icon-link website" href="{{ $lead->company_website }}" target="_blank"><i class="fa-solid fa-up-right-from-square"></i></a>
                 </td>
             </tr>
         @endforeach
