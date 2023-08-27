@@ -97,12 +97,23 @@ class EmailController extends Controller
 
     public function trackEmail($id){
         $email = Email::find($id);
-        $email->opened = 1;
-        $email->save();
-
-        $trackingPixel = file_get_contents(public_path('images/mypixel.png'));
-        return response($trackingPixel)->header('Content-Type', 'image/png');
+        if ($email) {
+            $email->opened = 1;
+            $email->save();
+    
+            $trackingPixelPath = public_path('images/mypixel.png');
+            $trackingPixelContents = file_get_contents($trackingPixelPath);
+    
+            return response($trackingPixelContents)
+                ->header('Content-Type', 'image/png')
+                ->header('Cache-Control', 'no-cache, no-store, must-revalidate')
+                ->header('Pragma', 'no-cache')
+                ->header('Expires', '0');
+        }
+        // Return something in case the email ID is not found
+        abort(404);
     }
+    
 
 
 }
