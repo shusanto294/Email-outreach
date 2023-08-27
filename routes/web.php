@@ -48,7 +48,8 @@ Route::get('/campaign/{id}/opened', [EmailController::class, 'showOpened'])->mid
 
 
 Route::get('/send-email', [EmailController::class, 'send']);
-Route::get('/track-email/{id}', [EmailController::class, 'trackEmail'])->name('track.email');
+//Route::get('/track-email/{id}', [EmailController::class, 'trackEmail'])->name('track.email');
+Route::get('/track-email', [EmailController::class, 'trackEmail'])->name('track.email');
 
 Route::get('/emails', [EmailController::class, 'index'])->middleware(['auth', 'verified'])->name('emails.index');
 Route::get('/email/{id}', [EmailController::class, 'show'])->middleware(['auth', 'verified'])->name('email.single');

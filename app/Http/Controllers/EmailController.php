@@ -67,8 +67,8 @@ class EmailController extends Controller
             //echo $finalUniqueId;
             //$dynamicBody .= '<img src="'.route('track.email',$email->id).'?uid='.$finalUniqueId.'">';
             */
-            
-            $dynamicBody .= '<img src="'.route('track.email',$email->id).'">';
+
+            $dynamicBody .= '<img src="'.route('track.email').'?id='.$email->id.'">';
 
             Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
                 $message->to($lead->email)->subject($dynamicSubject);
@@ -95,12 +95,28 @@ class EmailController extends Controller
         ]);
     }
 
-    public function trackEmail($id){
-        $email = Email::find($id);
-        $email->opened = 1;
-        $email->save();
+    // public function trackEmail($id){
+    //     $email = Email::find($id);
+    //     $email->opened = 1;
+    //     $email->save();
 
-        $trackingPixel = file_get_contents(public_path('images/mypixel.png'));
-        return response($trackingPixel)->header('Content-Type', 'image/png');
+    //     $trackingPixel = file_get_contents(public_path('images/mypixel.png'));
+    //     return response($trackingPixel)->header('Content-Type', 'image/png');
+    // }
+
+    public function trackEmail() {
+        $id = $_GET['id'] ?? null;
+    
+        if ($uid === null) {
+            // 'uid' parameter not provided, do not trigger the tracking function
+            return response()->json(['error' => 'UID parameter missing'], 400);
+        }else{
+            $email = Email::find($id);
+            $email->opened = 1;
+            $email->save();
+        
+            $trackingPixel = file_get_contents(public_path('images/mypixel.png'));
+            return response($trackingPixel)->header('Content-Type', 'image/png');
+        }
     }
 }
