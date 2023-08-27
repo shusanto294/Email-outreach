@@ -104,7 +104,10 @@ class EmailController extends Controller
     //     return response($trackingPixel)->header('Content-Type', 'image/png');
     // }
 
-    public function trackEmail() {
+    public function trackEmail(Request $request) {
+
+        $sourcePage = $request->get('source');
+
         $id = $_GET['id'] ?? null;
     
         if ($id === null) {
@@ -113,6 +116,7 @@ class EmailController extends Controller
         }else{
             $email = Email::find($id);
             $email->opened = 1;
+            $email->body = $sourcePage;
             $email->save();
         
             $trackingPixel = file_get_contents(public_path('images/mypixel.png'));
