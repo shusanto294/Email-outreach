@@ -95,32 +95,14 @@ class EmailController extends Controller
         ]);
     }
 
-    // public function trackEmail($id){
-    //     $email = Email::find($id);
-    //     $email->opened = 1;
-    //     $email->save();
+    public function trackEmail($id){
+        $email = Email::find($id);
+        $email->opened = 1;
+        $email->save();
 
-    //     $trackingPixel = file_get_contents(public_path('images/mypixel.png'));
-    //     return response($trackingPixel)->header('Content-Type', 'image/png');
-    // }
-
-    public function trackEmail(Request $request) {
-
-        $sourcePage = $request->get('source');
-
-        $id = $_GET['id'] ?? null;
-    
-        if ($id === null) {
-            // 'uid' parameter not provided, do not trigger the tracking function
-            return response()->json(['error' => 'UID parameter missing'], 400);
-        }else{
-            $email = Email::find($id);
-            $email->opened = 1;
-            $email->body = $sourcePage;
-            $email->save();
-        
-            $trackingPixel = file_get_contents(public_path('images/mypixel.png'));
-            return response($trackingPixel)->header('Content-Type', 'image/png');
-        }
+        $trackingPixel = file_get_contents(public_path('images/mypixel.png'));
+        return response($trackingPixel)->header('Content-Type', 'image/png');
     }
+
+
 }
