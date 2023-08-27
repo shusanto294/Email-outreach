@@ -3,3 +3,6 @@ INSERT INTO `leads` (`id`, `name`, `linkedin_profile`, `title`, `company`, `comp
 
 -- Flush all existing leads
 UPDATE `leads` SET `email`='shusanto294@gmail.com', `sent`='0', `opened`='0'
+
+-- Make all sent emails un opened
+UPDATE `emails` SET `opened`='0'

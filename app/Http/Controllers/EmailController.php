@@ -68,12 +68,11 @@ class EmailController extends Controller
             //$dynamicBody .= '<img src="'.route('track.email',$email->id).'?uid='.$finalUniqueId.'">';
             $dynamicBody .= '<img src="'.route('track.email',$email->id).'">';
 
-            Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
-                $message->to($lead->email)->subject($dynamicSubject);
-            });
+            // Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
+            //     $message->to($lead->email)->subject($dynamicSubject);
+            // });
 
-            //return $email;
-            echo 'Email sent to : '. $lead->email;
+            return $email;
         }else{
             echo 'No lead found'; 
         }
