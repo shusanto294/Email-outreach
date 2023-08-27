@@ -107,7 +107,7 @@ class EmailController extends Controller
     public function trackEmail() {
         $id = $_GET['id'] ?? null;
     
-        if ($uid === null) {
+        if ($id === null) {
             // 'uid' parameter not provided, do not trigger the tracking function
             return response()->json(['error' => 'UID parameter missing'], 400);
         }else{
