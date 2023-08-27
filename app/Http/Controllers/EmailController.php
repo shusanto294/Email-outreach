@@ -57,7 +57,7 @@ class EmailController extends Controller
                 'lead_id' => $lead->id
             ]);
 
-            /*
+            
             // Generate a unique ID based on the current time and a more random value
             $uniqueId = uniqid(rand(), true);
             // Generate a random prefix to add to the ID for further uniqueness
@@ -65,10 +65,8 @@ class EmailController extends Controller
             // Combine the prefix and unique ID to create the final unique random ID
             $finalUniqueId = $prefix . $uniqueId;
             //echo $finalUniqueId;
-            //$dynamicBody .= '<img src="'.route('track.email',$email->id).'?uid='.$finalUniqueId.'">';
-            */
-
-            $dynamicBody .= '<img src="'.route('track.email').'?id='.$email->id.'">';
+            $dynamicBody .= '<img src="'.route('track.email',$email->id).'?uid='.$finalUniqueId.'">';
+            
 
             Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
                 $message->to($lead->email)->subject($dynamicSubject);
