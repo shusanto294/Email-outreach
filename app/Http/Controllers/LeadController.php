@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lead;
+use App\Models\Email;
 use App\Models\Leadlist;
 use App\Imports\LeadsImport;
 use Illuminate\Http\Request;
@@ -36,9 +37,22 @@ class LeadController extends Controller
     }
 
     public function show($id){
+        // Find the lead by its ID
         $lead = Lead::find($id);
+    
+        if (!$lead) {
+            abort(404, 'Lead not found');
+        }
+    
+        // Retrieve emails related to the lead's campaign and lead ID
+        $emails = Email::where('campaign_id', $lead->campaign_id)
+                       ->where('lead_id', $lead->id)
+                       ->latest()
+                       ->get();
+    
         return view('lead-single', [
-            'lead' => $lead
+            'lead' => $lead,
+            'emails' => $emails
         ]);
     }
 

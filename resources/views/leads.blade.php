@@ -48,6 +48,16 @@
           display: flex;
           justify-content: flex-end;
       }
+      table a{
+        text-decoration: none;
+        color: #000;
+      }
+      table a:hover{
+        text-decoration: underline !Important;
+      }
+      table a:visited{
+        color: green;
+      }
     </style>
 @endsection
 
@@ -71,30 +81,41 @@
 <table class="table table-striped">
     <thead>
       <tr>
-        <th scope="col">#id</th>
+        <th scope="col">#ID</i></th>
+        <th scope="col">PL</i></th>
         <th scope="col">Name</th>
-        <th scope="col">Title</th>
         <th scope="col">Company</th>
+        <th scope="col"><i class="fa-brands fa-linkedin" style="font-size: 20px;"></i></th>
+        <th scope="col">Title</th>
         <th scope="col">Email</th>
-        <th scope="col"><i class="fa-solid fa-link"></i></th>
+        {{-- <th scope="col">#id</th> --}}
       </tr>
     </thead>
     <tbody>
         @foreach ($leads as $lead)
             <tr>
-                <td>{{ $lead->id }}</td>
-                <td>
-                  @if ($lead->linkedin_profile != 'n/a')
-                  <a class="icon-link" href="{{ $lead->linkedin_profile }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
-                  @endif
-                  <a href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a>
-                </td>
-                <td>{{ $lead->title }}</td>
-                <td>{{ $lead->company }}</td>
-                <td>{{ $lead->email }}</td>
-                <td>
-                  <a class="icon-link website" href="{{ $lead->company_website }}" target="_blank"><i class="fa-solid fa-up-right-from-square"></i></a>
-                </td>
+              <td>{{ $lead->id }}</td>
+              <td>
+                {!! $lead->personalized_line ? '<i class="fa-regular fa-circle-check" style="color: green;"></i>' : '<i class="fa-regular fa-circle-xmark" style="color: #333;opacity: .2;"></i>' !!}
+              </td>
+              <td>
+                <a target="_blank" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a>
+              </td>
+              
+              <td><a class="icon-link website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company }}</a></td>
+
+
+
+              <td>
+                @if ($lead->linkedin_profile != 'n/a')
+                <a class="icon-link" href="{{ $lead->linkedin_profile }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
+                @endif
+              </td>
+              
+              <td>{{ $lead->title }}</td>
+              <td>{{ $lead->email }}</td>
+              {{-- <td>{{ $lead->id }}</td> --}}
+
             </tr>
         @endforeach
     </tbody>

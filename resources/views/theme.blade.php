@@ -6,8 +6,30 @@
     <title>Outreach</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+      .active>.page-link, .page-link.active {
+          z-index: 3;
+          color: #fff;
+          background-color: #333;
+          border-color: #333;
+      }
+      .page-link {
+        color: #333;
+        text-decoration: none;
+        background-color: #fff;
+        border-color: #333;
+      }
+      .page-link:hover{
+          z-index: 3;
+          color: #fff;
+          background-color: #333;
+          border-color: #333;
+      }
+      .disabled>.page-link, .page-link.disabled {
+        border-color: #333;
+      }
+    </style>
     @yield('head')
-
   </head>
   <body>
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -24,6 +46,9 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/leads">Leads</a>
               </li>
+              {{-- <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/emails">Emails</a>
+              </li> --}}
             </ul>
           </div>
         </div>
