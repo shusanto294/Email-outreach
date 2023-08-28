@@ -102,7 +102,7 @@ class EmailController extends Controller
             $email = Email::create([
                 'subject' => $dynamicSubject,
                 'body' => $dynamicBody,
-                'campaign_id' => $campaign->id,
+                'campaign_id' => 0,
                 'lead_id' => 0
             ]);
 
