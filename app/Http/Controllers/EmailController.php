@@ -89,7 +89,7 @@ class EmailController extends Controller
     }
 
     public function showOpened($id){
-        $emails = Email::where('campaign_id', $id)->where('opened', 1)->latest()->paginate(10);
+        $emails = Email::where('campaign_id', $id)->where('opened','>', 0)->latest()->paginate(10);
         return view('emails', [
             'emails' => $emails
         ]);
