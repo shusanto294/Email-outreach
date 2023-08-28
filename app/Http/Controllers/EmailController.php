@@ -103,7 +103,7 @@ class EmailController extends Controller
                 'subject' => $dynamicSubject,
                 'body' => $dynamicBody,
                 'campaign_id' => $campaign->id,
-                'lead_id' => $lead->id
+                'lead_id' => 0
             ]);
 
             
@@ -120,9 +120,9 @@ class EmailController extends Controller
             $dynamicBody .= $trackingPixel;
 
 
-            // Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
-            //     $message->to('shusanto294@gmail.com')->subject($dynamicSubject);
-            // });
+            Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
+                $message->to('shusanto294@gmail.com')->subject($dynamicSubject);
+            });
 
             return $email;
         }else{
