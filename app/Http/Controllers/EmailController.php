@@ -82,7 +82,7 @@ class EmailController extends Controller
     }
 
     public function testEmail($campaignID){
-        $lead = Lead::where('sent', 0)->where('subscribe', 1)->where('campaign_id', $campaignID)->inRandomOrder()->first();
+        $lead = Lead::where('campaign_id', $campaignID)->inRandomOrder()->first();
         if($lead){
             $campaign = Campaign::find($campaignID);
 
