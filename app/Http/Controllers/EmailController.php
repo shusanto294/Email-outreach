@@ -98,7 +98,7 @@ class EmailController extends Controller
     public function trackEmail($id){
         $email = Email::find($id);
         if ($email) {
-            $email->opened = 1;
+            $email->opened += 1;
             $email->save();
     
             $trackingPixelPath = public_path('images/mypixel.png');
