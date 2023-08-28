@@ -81,6 +81,56 @@ class EmailController extends Controller
 
     }
 
+    public function testEmail($campaignID){
+        $lead = Lead::where('sent', 0)->where('subscribe', 1)->where('campaign_id', $campaignID)->inRandomOrder()->first();
+        if($lead){
+            $campaign = Campaign::find($campaignID);
+
+            $subject = $campaign->subject;
+            $body = $campaign->body;
+
+            $fullName = $lead->name;
+            $nameParts = explode(" ", $fullName);
+
+            $firstName = $nameParts[0] ? $nameParts[0] : '';
+            $company = $lead->company ? $lead->company : '';
+            $personalizedLine = $lead->personalized_line ? $lead->personalized_line : '';
+
+            $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $subject);
+            $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $body);
+
+            $email = Email::create([
+                'subject' => $dynamicSubject,
+                'body' => $dynamicBody,
+                'campaign_id' => $campaign->id,
+                'lead_id' => $lead->id
+            ]);
+
+            
+            // Generate a unique ID based on the current time and a more random value
+            $uniqueId = uniqid(rand(), true);
+            // Generate a random prefix to add to the ID for further uniqueness
+            $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
+            // Combine the prefix and unique ID to create the final unique random ID
+            $finalUniqueId = $prefix . $uniqueId;
+
+            $trackingUrl = route('track.email', ['id' => $email->id, 'uid' => $finalUniqueId]);
+            $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
+
+            $dynamicBody .= $trackingPixel;
+
+
+            // Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
+            //     $message->to('shusanto294@gmail.com')->subject($dynamicSubject);
+            // });
+
+            return $email;
+        }else{
+            echo 'No lead found'; 
+        }
+
+    }
+
     public function showSent($id){
         $emails = Email::where('campaign_id', $id)->latest()->paginate(10);
         return view('emails', [

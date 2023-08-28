@@ -45,8 +45,7 @@ class LeadController extends Controller
         }
     
         // Retrieve emails related to the lead's campaign and lead ID
-        $emails = Email::where('campaign_id', $lead->campaign_id)
-                       ->where('lead_id', $lead->id)
+        $emails = Email::where('lead_id', $lead->id)
                        ->latest()
                        ->get();
     
