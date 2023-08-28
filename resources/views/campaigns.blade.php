@@ -60,7 +60,7 @@ table a:hover{
                 </td>
                 <td>
                   @php
-                    $openedCount = App\Models\Email::where('campaign_id', $campaign->id)->where('opened', 1)->count();
+                    $openedCount = App\Models\Email::where('campaign_id', $campaign->id)->where('opened','>', 0)->count();
                   @endphp
                   <a href="{{ route('campaign.opened', $campaign->id) }}">{{ $openedCount }}</a>
                 </td>
