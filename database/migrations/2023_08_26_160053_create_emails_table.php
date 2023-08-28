@@ -19,7 +19,7 @@ return new class extends Migration
             $table->text('body');
             $table->integer('campaign_id');
             $table->integer('lead_id');
-            $table->boolean('opened')->default(0);
+            $table->integer('opened')->default(0);
             $table->timestamps();
         });
     }
