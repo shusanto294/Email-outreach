@@ -22,9 +22,7 @@ return new class extends Migration
             $table->string('company_website')->nullable();
             $table->string('location')->nullable();
             $table->string('email');
-            $table->boolean('campaign_id')->default(0);
-            $table->boolean('sent')->default(0);
-            $table->boolean('opened')->default(0);
+            $table->boolean('leadlist_id')->default(0);
             $table->string('technology')->nullable();
             $table->text('personalized_line')->nullable();
             $table->boolean('subscribe')->default(1);

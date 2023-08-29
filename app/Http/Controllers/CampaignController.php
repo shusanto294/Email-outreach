@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Email;
 use App\Models\Campaign;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreCampaignRequest;
 use App\Http\Requests\UpdateCampaignRequest;
 
@@ -69,29 +70,26 @@ class CampaignController extends Controller
     }
 
     //Show leads on this campaign
-    public function showLeads($id){
-        $campaign = Campaign::find($id);
-        $leads = $campaign->leads()->orderBy('id', 'desc')->paginate(10);
-        return view('leads', [
-          'leads' => $leads
+    public function showEmails($id){
+        $emails = Email::where('campaign_id', $id)->orderBy('id', 'desc')->paginate(10);
+        return view('emails', [
+          'emails' => $emails
         ]);
     }
 
     //Show sent leads on this campaign
     public function showSent($id){
-        $campaign = Campaign::find($id);
-        $leads = $campaign->leads()->where('sent', 1)->orderBy('id', 'desc')->paginate(10);
-        return view('leads', [
-            'leads' => $leads
+        $emails = Email::where('campaign_id', $id)->where('sent', '>', 0)->orderBy('id', 'desc')->paginate(10);
+        return view('emails', [
+          'emails' => $emails
         ]);
     }
 
     //Show email opened leads on this campaign
     public function showOpened($id){
-        $campaign = Campaign::find($id);
-        $leads = $campaign->leads()->where('opened', 1)->orderBy('id', 'desc')->paginate(10);
-        return view('leads', [
-            'leads' => $leads
+        $emails = Email::where('campaign_id', $id)->where('opened', '>', 0)->orderBy('id', 'desc')->paginate(10);
+        return view('emails', [
+          'emails' => $emails
         ]);
     }
 

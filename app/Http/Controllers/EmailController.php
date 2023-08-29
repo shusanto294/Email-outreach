@@ -27,106 +27,52 @@ class EmailController extends Controller
     }
 
     public function send(){
-        $lead = Lead::where('sent', 0)->where('subscribe', 1)->orderBy('id', 'desc')->first();
-        if($lead){
-            $campaign = Campaign::find($lead->campaign_id);
+        $email = Email::where('sent', 0)->orderBy('id', 'desc')->first();
+        if($email){
+            $campaign = Campaign::find($email->campaign_id);
+            $lead = Lead::find($email->lead_id);
 
-            $lead->sent = 1;
-            $lead->save(); 
+            $email->sent += 1;
+            $email->save(); 
 
-            $subject = $campaign->subject;
-            $body = $campaign->body;
-
-            $fullName = $lead->name;
-            $nameParts = explode(" ", $fullName);
-
-            $firstName = $nameParts[0] ? $nameParts[0] : '';
-            $company = $lead->company ? $lead->company : '';
-            $personalizedLine = $lead->personalized_line ? $lead->personalized_line : '';
-
-            $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $subject);
-            $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $body);
-
-            //echo '<b>Subject : </b><br>'. $dynamicSubject. '<br><br>';
-            //echo '<b>Email : </b>' . $dynamicBody;
-
-            $email = Email::create([
-                'subject' => $dynamicSubject,
-                'body' => $dynamicBody,
-                'campaign_id' => $campaign->id,
-                'lead_id' => $lead->id
-            ]);
-
+            $subject = $email->subject;
+            $body = $email->body;
             
-            // Generate a unique ID based on the current time and a more random value
             $uniqueId = uniqid(rand(), true);
-            // Generate a random prefix to add to the ID for further uniqueness
             $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
-            // Combine the prefix and unique ID to create the final unique random ID
             $finalUniqueId = $prefix . $uniqueId;
-
             $trackingUrl = route('track.email', ['id' => $email->id, 'uid' => $finalUniqueId]);
             $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
 
-            $dynamicBody .= $trackingPixel;
+            $body .= $trackingPixel;
 
-            Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
-                $message->to($lead->email)->subject($dynamicSubject);
+            Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
+                $message->to($lead->email)->subject($subject);
             });
 
             return $email;
         }else{
-            echo 'No lead found'; 
+            echo 'No Email to send'; 
         }
 
     }
 
     public function testEmail($campaignID){
-        $lead = Lead::where('campaign_id', $campaignID)->inRandomOrder()->first();
-        if($lead){
-            $campaign = Campaign::find($campaignID);
+        $email = Email::where('campaign_id', $campaignID)->inRandomOrder()->first();
+        if($email){
+            $campaign = Campaign::find($email->campaign_id);
+            $lead = Lead::find($email->lead_id);
 
-            $subject = $campaign->subject;
-            $body = $campaign->body;
-
-            $fullName = $lead->name;
-            $nameParts = explode(" ", $fullName);
-
-            $firstName = $nameParts[0] ? $nameParts[0] : '';
-            $company = $lead->company ? $lead->company : '';
-            $personalizedLine = $lead->personalized_line ? $lead->personalized_line : '';
-
-            $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $subject);
-            $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $body);
-
-            $email = Email::create([
-                'subject' => $dynamicSubject,
-                'body' => $dynamicBody,
-                'campaign_id' => 0,
-                'lead_id' => 0
-            ]);
-
+            $subject = $email->subject;
+            $body = $email->body;
             
-            // Generate a unique ID based on the current time and a more random value
-            $uniqueId = uniqid(rand(), true);
-            // Generate a random prefix to add to the ID for further uniqueness
-            $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
-            // Combine the prefix and unique ID to create the final unique random ID
-            $finalUniqueId = $prefix . $uniqueId;
-
-            $trackingUrl = route('track.email', ['id' => $email->id, 'uid' => $finalUniqueId]);
-            $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
-
-            $dynamicBody .= $trackingPixel;
-
-
-            Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
-                $message->to('shusanto294@gmail.com')->subject($dynamicSubject);
+            Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
+                $message->to('shusanto294@gmail.com')->subject($subject);
             });
 
             return $email;
         }else{
-            echo 'No lead found'; 
+            echo 'No Email to send'; 
         }
 
     }

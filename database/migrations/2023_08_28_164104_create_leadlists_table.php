@@ -13,14 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('emails', function (Blueprint $table) {
+        Schema::create('leadlists', function (Blueprint $table) {
             $table->id();
-            $table->string('subject');
-            $table->text('body');
-            $table->integer('campaign_id');
-            $table->integer('lead_id');
-            $table->integer('sent')->default(0);
-            $table->integer('opened')->default(0);
+            $table->string('name');
             $table->timestamps();
         });
     }
@@ -32,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('emails');
+        Schema::dropIfExists('leadlists');
     }
 };

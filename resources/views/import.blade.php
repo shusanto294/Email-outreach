@@ -11,15 +11,15 @@ $leadCount = $leads->count();
 <p>Total Leads: {{ $leadCount }}</p>
 
 @php
-    $campaigns = App\Models\Campaign::orderBy('id', 'desc')->get();
+    $lists = App\Models\Leadlist::orderBy('id', 'desc')->get();
 @endphp
 
 <form action="/import" method="post" enctype="multipart/form-data">
     @csrf
 
-    <select type="select" class="form-control mb-3" name="campaign_id">
-        @foreach($campaigns as $campaign)
-            <option value="{{ $campaign->id }}">{{ $campaign->name }}</option>
+    <select type="select" class="form-control mb-3" name="list_id">
+        @foreach($lists as $list)
+            <option value="{{ $list->id }}">{{ $list->name }}</option>
         @endforeach
     </select>
 

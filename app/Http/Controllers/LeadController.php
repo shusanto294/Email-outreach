@@ -22,10 +22,10 @@ class LeadController extends Controller
 
     public function import(Request $request){
         
-        $campaignID = $request->campaign_id;
+        $listID = $request->list_id;
         $file = $request->file('file');
         
-        Excel::import(new LeadsImport($campaignID), $file);
+        Excel::import(new LeadsImport($listID), $file);
         return redirect()->back()->with('success', 'yes');
 
     }

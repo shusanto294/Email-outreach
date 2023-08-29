@@ -7,6 +7,7 @@ use App\Http\Controllers\LeadController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\LeadlistController;
 use App\Http\Controllers\ListCampaignRelationshipController;
 
 
@@ -21,7 +22,7 @@ use App\Http\Controllers\ListCampaignRelationshipController;
 |
 */
 
-Route::get('/', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('home.index');
+Route::get('/', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('home.index');
 Route::get('/dashboard', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.index');
 
 Route::get('/import', function () {
@@ -34,17 +35,26 @@ Route::get('/lead/{id}', [LeadController::class, 'show'])->middleware(['auth', '
 Route::post('/lead/{id}/update', [LeadController::class, 'update'])->middleware(['auth', 'verified'])->name('lead.update');
 Route::post('/lead/search', [LeadController::class, 'search'])->middleware(['auth', 'verified'])->name('lead.search');
 
+Route::get('/lists', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('lists.index');
+Route::post('/add-list', [LeadlistController::class, 'create'])->middleware(['auth', 'verified'])->name('add-list.post');
+Route::get('/list/{id}', [LeadlistController::class, 'show'])->middleware(['auth', 'verified'])->name('show.list');
+Route::get('/list/{id}/add-to-campaign', [LeadlistController::class, 'add_to_campaign'])->middleware(['auth', 'verified'])->name('add-to-campaign.list');
+Route::post('/add-to-campaign/{id}', [LeadlistController::class, 'create_emails'])->middleware(['auth', 'verified'])->name('add-to-campaign.post');
+
 Route::get('/campaigns', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('campaigns.index');
 Route::post('/add-campaign', [CampaignController::class, 'create'])->middleware(['auth', 'verified'])->name('add-campaign.post');
 Route::get('/campaign/{id}', [CampaignController::class, 'show'])->middleware(['auth', 'verified'])->name('campaign.single');
 Route::post('/update-campaign/{id}', [CampaignController::class, 'update'])->middleware(['auth', 'verified'])->name('update-campaign.post');
 
-Route::get('/campaign/{id}/leads', [CampaignController::class, 'showLeads'])->middleware(['auth', 'verified'])->name('campaign.leads');
-// Route::get('/campaign/{id}/sent', [CampaignController::class, 'showSent'])->middleware(['auth', 'verified'])->name('campaign.sent');
-// Route::get('/campaign/{id}/opened', [CampaignController::class, 'showOpened'])->middleware(['auth', 'verified'])->name('campaign.opened');
+//Route::get('/campaign/{id}/leads', [CampaignController::class, 'showLeads'])->middleware(['auth', 'verified'])->name('campaign.leads');
+Route::get('/campaign/{id}/emails', [CampaignController::class, 'showEmails'])->middleware(['auth', 'verified'])->name('campaign.show.emails');
+Route::get('/campaign/{id}/sent', [CampaignController::class, 'showSent'])->middleware(['auth', 'verified'])->name('campaign.sent');
+Route::get('/campaign/{id}/opened', [CampaignController::class, 'showOpened'])->middleware(['auth', 'verified'])->name('campaign.opened');
 
-Route::get('/campaign/{id}/sent', [EmailController::class, 'showSent'])->middleware(['auth', 'verified'])->name('campaign.sent');
-Route::get('/campaign/{id}/opened', [EmailController::class, 'showOpened'])->middleware(['auth', 'verified'])->name('campaign.opened');
+
+
+// Route::get('/campaign/{id}/sent', [EmailController::class, 'showSent'])->middleware(['auth', 'verified'])->name('campaign.sent');
+// Route::get('/campaign/{id}/opened', [EmailController::class, 'showOpened'])->middleware(['auth', 'verified'])->name('campaign.opened');
 
 
 Route::get('/send-email', [EmailController::class, 'send']);
@@ -54,6 +64,8 @@ Route::get('/track-email/{id}', [EmailController::class, 'trackEmail'])->name('t
 
 Route::get('/emails', [EmailController::class, 'index'])->middleware(['auth', 'verified'])->name('emails.index');
 Route::get('/email/{id}', [EmailController::class, 'show'])->middleware(['auth', 'verified'])->name('email.single');
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

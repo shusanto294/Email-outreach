@@ -19,16 +19,15 @@ class LeadsImport implements ToModel, WithHeadingRow
     * @return \Illuminate\Database\Eloquent\Model|null
     */
 
-    protected $campaignID;
+    protected $listID;
 
-    public function __construct($campaignID)
+    public function __construct($listID)
     {
-         $this->campaignID = $campaignID;
+         $this->listID = $listID;
     }
 
     public function model(array $row)
     {
-        //$lead = Lead::where('email', $row['email'])->where('campaign_id', '=', $this->campaignID)->first();
         $lead = Lead::where('email', $row['email'])->first();
 
         if ($lead === null) {
@@ -40,7 +39,7 @@ class LeadsImport implements ToModel, WithHeadingRow
                 'company_website' => $row['company_website'],
                 'location' => $row['location'],
                 'email' => $row['email'],
-                'campaign_id' => $this->campaignID
+                'leadlist_id' => $this->listID
             ]);
         }else{
             return null;

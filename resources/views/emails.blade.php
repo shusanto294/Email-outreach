@@ -58,6 +58,19 @@
       table a:visited{
         color: green;
       }
+      .opened {
+          background: green;
+          width: 25px;
+          color: #fff;
+          text-align: center;
+          border-radius: 50%;
+          height: 25px;
+          font-size: 16px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 0 auto;
+      }
     </style>
 @endsection
 
@@ -73,7 +86,8 @@
         <th scope="col">#ID</i></th>
         <th scope="col">To</i></th>
         <th scope="col">Subject</i></th>
-        <th scope="col"><i style="color: #333;" class="fa-solid fa-eye"></i></th>
+        <th scope="col">Sent</i></th>
+        <th scope="col" style="text-align: center;">Opened</i></th>
       </tr>
     </thead>
     <tbody>
@@ -90,7 +104,10 @@
                 <a href="{{ route('email.single', $email->id) }}">{{ $email->subject }}</a>
               </td>
               <td>
-                {!! $email->opened == 0 ? '<i style="color: 333; opacity: .2;" class="fa-solid fa-eye-slash"></i>' : '<i style="color: green;" class="fa-solid fa-eye"></i>' !!}
+                {!! $email->sent == 0 ? '' : '<i class="fa-solid fa-check"></i>' !!}
+              </td>
+              <td>
+                {!! $email->opened == 0 ? '' : '<div class="opened">'.$email->opened.'</div>' !!}
               </td>
 
             </tr>

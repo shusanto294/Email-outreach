@@ -34,8 +34,8 @@ table a:hover{
     <thead>
       <tr>
         <th scope="col">#id</th>
-        <th scope="col">Subject</th>
-        <th scope="col">Leads</th>
+        <th scope="col">Name</th>
+        <th scope="col">Emails</th>
         <th scope="col">Sent</th>
         <th scope="col">Opened</th>
         <th scope="col">Opene Rate</th>
@@ -48,13 +48,13 @@ table a:hover{
                 <td><a href="{{ route('campaign.single', $campaign->id) }}">{{ $campaign->name }}</a></td>
                 <td>
                   @php
-                    $leadsCount = App\Models\Lead::where('campaign_id', $campaign->id)->count();
+                    $emailCount = App\Models\Email::where('campaign_id', $campaign->id)->count();
                   @endphp
-                  <a href="{{ route('campaign.leads', $campaign->id) }}">{{ $leadsCount }}</a>
+                  <a href="{{ route('campaign.show.emails', $campaign->id) }}">{{ $emailCount }}</a>
                 </td>
                 <td>
                   @php
-                    $sentCount = App\Models\Email::where('campaign_id', $campaign->id)->count();
+                    $sentCount = App\Models\Email::where('campaign_id', $campaign->id)->where('sent', '>' , 0)->count();
                   @endphp
                   <a href="{{ route('campaign.sent', $campaign->id) }}">{{ $sentCount }}</a>
                 </td>
@@ -66,13 +66,14 @@ table a:hover{
                 </td>
                 <td>
                   @php  
+                  
                     if($openedCount && $sentCount){
                       $openRate = ($openedCount / $sentCount) * 100;
                       echo number_format($openRate, 2).' %';
                     }else{
                       echo 'n/a';
                     }
-
+                    
                   @endphp
                 </td>
             </tr>
