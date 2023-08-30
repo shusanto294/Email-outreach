@@ -58,23 +58,32 @@ class EmailController extends Controller
     }
 
     public function testEmail($campaignID){
-        $email = Email::where('campaign_id', $campaignID)->inRandomOrder()->first();
-        if($email){
-            $campaign = Campaign::find($email->campaign_id);
-            $lead = Lead::find($email->lead_id);
+        $lead = Lead::inRandomOrder()->first();
+        $campaign = Campaign::find($campaignID);
+        if($lead){
 
-            $subject = $email->subject;
-            $body = $email->body;
+            $subject = $campaign->subject;
+            $body = $campaign->body;
+
+            $fullName = $lead->name;
+            $nameParts = explode(" ", $fullName);
+
+            $firstName = $nameParts[0] ? $nameParts[0] : '';
+            $company = $lead->company ? $lead->company : '';
+            $personalizedLine = $lead->personalized_line ? $lead->personalized_line : '';
+
+            $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $subject);
+            $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $body);
+
             
-            Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
-                $message->to('shusanto294@gmail.com')->subject($subject);
+            Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
+                $message->to('shusanto294@gmail.com')->subject($dynamicSubject);
             });
 
-            return $email;
+            return redirect()->back()->with('success', 'Test email sent successfully');
         }else{
-            echo 'No Email to send'; 
+            echo 'No lead found'; 
         }
-
     }
 
     public function showSent($id){

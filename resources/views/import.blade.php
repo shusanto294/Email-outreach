@@ -28,7 +28,7 @@ $leadCount = $leads->count();
 </form>
 
 @if(session()->has('success'))
-    <p class="mt-5">Import successfull</p>
+<p class="mt-5" style="color: green;">{{ session('success') }}l</p>
 @endif
 
 @endsection

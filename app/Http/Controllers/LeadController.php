@@ -26,7 +26,7 @@ class LeadController extends Controller
         $file = $request->file('file');
         
         Excel::import(new LeadsImport($listID), $file);
-        return redirect()->back()->with('success', 'yes');
+        return redirect()->back()->with('success', 'Leads imported successfully !');
 
     }
 

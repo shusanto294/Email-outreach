@@ -13,6 +13,11 @@
 @endsection
 
 @section('content')
+
+    @if(session()->has('success'))
+      <p class="mt-5" style="color: green;">{{ session('success') }}l</p>
+    @endif
+
     <form action="{{ route('update-campaign.post', $campaign->id) }}" method="POST">
         @csrf
         <input type="text" name="campaignName" placeholder="Campaign Name" class="form-control mb-3" value="{{ $campaign->name }}" required>
@@ -22,6 +27,7 @@
         <button type="submit" class="btn btn-secondary mt-3">Update campaign</button>
         <a href="{{ route('test.email', $campaign->id) }}" class="btn btn-secondary mt-3">Send test email</a>
     </form>
+
 @endsection
 
 @section('footer')
