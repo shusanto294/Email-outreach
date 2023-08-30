@@ -39,7 +39,7 @@
         @csrf
         <select name="leadListID" class="form-control mb-3">
             @php
-                $lists = App\Models\Leadlist::get();
+                $lists = App\Models\Leadlist::orderBy('created_at', 'desc')->get();
             @endphp
             @foreach ($lists as $list)
                 <option value="{{ $list->id }}" {{ $lead->leadlist_id == $list->id ? 'selected' : '' }}>{{ $list->name }}</option>
