@@ -58,6 +58,7 @@ class LeadController extends Controller
     public function update(Request $request, $id){
         $lead = Lead::find($id);
         $lead->subscribe = $request->subscribe;
+        $lead->leadlist_id = $request->leadListID;
         $lead->personalized_line = $request->personalizedLine;
         $lead->save();
         return redirect()->back();

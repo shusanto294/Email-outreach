@@ -37,12 +37,12 @@
 
     <form action="{{ route('lead.update', $lead->id) }}" method="POST">
         @csrf
-        <select name="campaignId" class="form-control mb-3">
+        <select name="leadListID" class="form-control mb-3">
             @php
-                $campaigns = App\Models\Campaign::get();
+                $lists = App\Models\Leadlist::get();
             @endphp
-            @foreach ($campaigns as $campaign)
-                <option value="{{ $campaign->id }}" {{ $lead->campaign_id == $campaign->id ? 'selected' : '' }}>{{ $campaign->name }}</option>
+            @foreach ($lists as $list)
+                <option value="{{ $list->id }}" {{ $lead->leadlist_id == $list->id ? 'selected' : '' }}>{{ $list->name }}</option>
             @endforeach
         </select>
         <select name="subscribe" class="form-control mb-3">
