@@ -33,6 +33,11 @@
 @endsection
 
 @section('content')
+    @php
+        $lead = App\Models\Lead::find($email->lead_id);
+    @endphp
+    <h4>To</h4>
+    <p> <a style="color: #212529;" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a></p>
     <h4>Subject:</h4>
     <p class="email-subject">{!! $email->opened == 0 ? '<i style="opacity: .5;" class="fa-regular fa-eye-slash"></i>' : '<span class="opened">'.$email->opened.'</span>' !!} {{ $email->subject }}</p>
 
