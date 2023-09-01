@@ -106,8 +106,8 @@
               <td>
                 {!! $email->sent == 0 ? '' : '<i class="fa-solid fa-check"></i>' !!}
               </td>
-              <td>
-                {!! $email->opened == 0 ? '' : '<div class="opened">'.$email->opened.'</div>' !!}
+              <td style="text-align: center;">
+                {!! $email->opened == 0 ? '<i style="opacity: .5;" class="fa-regular fa-eye-slash"></i>' : '<div class="opened">'.$email->opened.'</div>' !!}
               </td>
 
             </tr>

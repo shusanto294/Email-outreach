@@ -49,7 +49,7 @@
             <option value="1" {{ $lead->subscribe == 1 ? 'selected' : '' }}>Subscribe</option>
             <option value="0" {{ $lead->subscribe == 0 ? 'selected' : '' }}>Un Subscribe</option>
         </select>
-        <textarea id="summernote" name="personalizedLine" class="form-control mb-3" placeholder="Personalized Line">{{ $lead->personalized_line }}</textarea>
+        <textarea style="min-height: 150px;" id="summernote" name="personalizedLine" class="form-control mb-3" placeholder="Personalized Line">{{ $lead->personalized_line }}</textarea>
 
         <button type="submit" class="btn btn-secondary mt-3">Update Lead</button>
     </form>
@@ -67,13 +67,13 @@
     @endforeach
 
 @section('footer')
-<script>
+{{-- <script>
     $(document).ready(function() {
     $('#summernote').summernote({
         minHeight: 200
     });
     });
-</script>
+</script> --}}
 @endsection
 
 @endsection
