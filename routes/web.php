@@ -38,6 +38,7 @@ Route::post('/lead/search', [LeadController::class, 'search'])->middleware(['aut
 Route::get('/lists', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('lists.index');
 Route::post('/add-list', [LeadlistController::class, 'create'])->middleware(['auth', 'verified'])->name('add-list.post');
 Route::get('/list/{id}', [LeadlistController::class, 'show'])->middleware(['auth', 'verified'])->name('show.list');
+Route::get('/list/{id}/no-ps', [LeadlistController::class, 'show_no_ps'])->middleware(['auth', 'verified'])->name('show.no_ps.list');
 Route::get('/list/{id}/add-to-campaign', [LeadlistController::class, 'add_to_campaign'])->middleware(['auth', 'verified'])->name('add-to-campaign.list');
 Route::post('/add-to-campaign/{id}', [LeadlistController::class, 'create_emails'])->middleware(['auth', 'verified'])->name('add-to-campaign.post');
 

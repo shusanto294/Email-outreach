@@ -63,6 +63,14 @@ class LeadlistController extends Controller
         ]);
     }
 
+    public function show_no_ps($listId)
+    {
+        $leads = Lead::where('leadlist_id', $listId)->where('personalized_line', null)->orderBy('id', 'desc')->paginate(10);
+        return view('leads', [
+          'leads' => $leads
+        ]);
+    }
+
     /**
      * Show the form for editing the specified resource.
      *
