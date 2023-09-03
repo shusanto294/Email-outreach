@@ -67,13 +67,13 @@
     @endforeach
 
 @section('footer')
-{{-- <script>
+<script>
     $(document).ready(function() {
     $('#summernote').summernote({
         minHeight: 200
     });
     });
-</script> --}}
+</script>
 @endsection
 
 @endsection
