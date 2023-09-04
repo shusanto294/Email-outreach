@@ -25,7 +25,6 @@
         <input type="text" name="emailSubject" placeholder="Subject" class="form-control mb-3" value="{{ $campaign->subject }}" required>
         <textarea id="summernote" name="emailBody" id="" cols="30" rows="10" class="form-control mb-3">{!! $campaign->body !!}</textarea>
         <button type="submit" class="btn btn-secondary mt-3">Update campaign</button>
-        <a href="{{ route('test.email', $campaign->id) }}" class="btn btn-secondary mt-3">Send test email</a>
     </form>
 
 @endsection

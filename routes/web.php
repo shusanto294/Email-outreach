@@ -59,7 +59,7 @@ Route::get('/campaign/{id}/opened', [CampaignController::class, 'showOpened'])->
 
 
 Route::get('/send-email', [EmailController::class, 'send']);
-Route::get('/test-email/{campaignID}', [EmailController::class, 'testEmail'])->name('test.email');
+Route::get('/test-email', [EmailController::class, 'testEmail'])->name('test.email');
 Route::get('/track-email/{id}', [EmailController::class, 'trackEmail'])->name('track.email');
 
 

@@ -21,7 +21,7 @@ class LeadlistController extends Controller
     public function index()
     {
         return view('lists', [
-            'lists' => DB::table('leadlists')->orderBy('id', 'desc')->paginate(10)
+            'lists' => DB::table('leadlists')->orderBy('id', 'desc')->paginate(100)
         ]);
     }
 
@@ -57,7 +57,7 @@ class LeadlistController extends Controller
      */
     public function show($listId)
     {
-        $leads = Lead::where('leadlist_id', $listId)->orderBy('id', 'desc')->paginate(10);
+        $leads = Lead::where('leadlist_id', $listId)->orderBy('id', 'desc')->paginate(100);
         return view('leads', [
           'leads' => $leads
         ]);
@@ -65,7 +65,7 @@ class LeadlistController extends Controller
 
     public function show_no_ps($listId)
     {
-        $leads = Lead::where('leadlist_id', $listId)->where('personalized_line', null)->orderBy('id', 'desc')->paginate(10);
+        $leads = Lead::where('leadlist_id', $listId)->where('personalized_line', null)->orderBy('id', 'desc')->paginate(100);
         return view('leads', [
           'leads' => $leads
         ]);

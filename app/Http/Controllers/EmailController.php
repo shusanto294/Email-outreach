@@ -15,7 +15,7 @@ class EmailController extends Controller
 {   
     public function index(){
         return view('emails', [
-            'emails' => DB::table('emails')->orderBy('id', 'desc')->paginate(10)
+            'emails' => DB::table('emails')->orderBy('id', 'desc')->paginate(100)
         ]);
     }
 
@@ -57,44 +57,37 @@ class EmailController extends Controller
 
     }
 
-    public function testEmail($campaignID){
-        $lead = Lead::inRandomOrder()->first();
-        $campaign = Campaign::find($campaignID);
-        if($lead){
+    public function testEmail(){
+        $email = Email::orderBy('id', 'desc')->first();
+        if($email){
+            $campaign = Campaign::find($email->campaign_id);
+            $lead = Lead::find($email->lead_id);
 
-            $subject = $campaign->subject;
-            $body = $campaign->body;
+            $email->sent += 1;
+            $email->save(); 
 
-            $fullName = $lead->name;
-            $nameParts = explode(" ", $fullName);
+            $subject = $email->subject;
+            $body = $email->body;
 
-            $firstName = $nameParts[0] ? $nameParts[0] : '';
-            $company = $lead->company ? $lead->company : '';
-            $personalizedLine = $lead->personalized_line ? $lead->personalized_line : '';
-
-            $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $subject);
-            $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $body);
-
-            
-            Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
-                $message->to('shusanto294@gmail.com')->subject($dynamicSubject);
+            Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
+                $message->to('shusanto294@gmail.com')->subject($subject);
             });
 
-            return redirect()->back()->with('success', 'Test email sent successfully');
+            return $email;
         }else{
-            echo 'No lead found'; 
+            echo 'No Email to send'; 
         }
     }
 
     public function showSent($id){
-        $emails = Email::where('campaign_id', $id)->latest()->paginate(10);
+        $emails = Email::where('campaign_id', $id)->latest()->paginate(100);
         return view('emails', [
             'emails' => $emails
         ]);
     }
 
     public function showOpened($id){
-        $emails = Email::where('campaign_id', $id)->where('opened','>', 0)->latest()->paginate(10);
+        $emails = Email::where('campaign_id', $id)->where('opened','>', 0)->latest()->paginate(100);
         return view('emails', [
             'emails' => $emails
         ]);
