@@ -117,7 +117,7 @@
                     $totalEmailSentCount = App\Models\Email::where('sent', 1)->count();
                 @endphp
                 <div class="number">{{ $totalEmailSentCount }}</div>
-                <div class="text">Email sent</div>
+                <div class="text">Emails sent</div>
             </div>
         </div>
         <div class="col-lg-3">
