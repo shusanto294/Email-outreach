@@ -6,9 +6,8 @@
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <style>
-p.dynamic-variables span {
-    padding: 5px;
-}
+
+
 table a{
   text-decoration: none;
   color: #000;
@@ -16,17 +15,11 @@ table a{
 table a:hover{
   text-decoration: underline;
 }
+
 </style>
 @endsection
 
 @section('content')
-
-<p style="text-align: right">
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Add New Campaign
-    </button>
-</p>
 
 @if(count($campaigns) > 0 )
 

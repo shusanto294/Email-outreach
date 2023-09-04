@@ -84,7 +84,7 @@
 
 @section('content')
 
-    <form action="{{ route('settings.send-emails') }}" method="POST" class="email-switch" id="sendEmailsForm">
+    {{-- <form action="{{ route('settings.send-emails') }}" method="POST" class="email-switch" id="sendEmailsForm">
         @csrf
         <p>Send emails</p>
         <label class="switch">
@@ -98,7 +98,7 @@
         <input type="checkbox" name="send_emails" id="sendEmails" {{ $sendEmails == 'on' ? 'checked' : '' }}>
         <span class="slider round"></span>
         </label>
-    </form>
+    </form> --}}
 
 
     <div class="row mb-5">
