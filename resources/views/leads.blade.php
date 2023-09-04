@@ -58,6 +58,9 @@
       table a:visited{
         color: green;
       }
+      table a:active{
+        text-decoration: underline;
+      }
     </style>
 @endsection
 
