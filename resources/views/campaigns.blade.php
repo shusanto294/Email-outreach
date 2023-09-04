@@ -21,6 +21,13 @@ table a:hover{
 
 @section('content')
 
+<p style="text-align: right">
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Add New Campaign
+  </button>
+</p>
+
 @if(count($campaigns) > 0 )
 
 <table class="table table-striped">

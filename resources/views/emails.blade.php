@@ -157,7 +157,7 @@ form#sendEmailsForm p {
 @section('content')
 
 <div class="row">
-  <div class="col-lg-6 mb-5">
+  <div class="col-lg-6 mb-3">
     <p><b>Email sending on/off</b></p>
   </div>
   <div class="col-lg-6">
