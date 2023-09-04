@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\LeadlistController;
 use App\Http\Controllers\ListCampaignRelationshipController;
@@ -22,8 +23,19 @@ use App\Http\Controllers\ListCampaignRelationshipController;
 |
 */
 
-Route::get('/', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('home.index');
-Route::get('/dashboard', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.index');
+// Route::get('/', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('home.index');
+// Route::get('/dashboard', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.index');
+
+Route::get('/', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified']);
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::post('/update-send-semails-setting', [SettingController::class, 'updateSendEmailsSetting'])->middleware(['auth', 'verified'])->name('settings.send-emails');
+
 
 Route::get('/import', function () {
     return view('import');
@@ -65,6 +77,8 @@ Route::get('/track-email/{id}', [EmailController::class, 'trackEmail'])->name('t
 
 Route::get('/emails', [EmailController::class, 'index'])->middleware(['auth', 'verified'])->name('emails.index');
 Route::get('/email/{id}', [EmailController::class, 'show'])->middleware(['auth', 'verified'])->name('email.single');
+Route::get('/email/{id}/edit', [EmailController::class, 'edit'])->middleware(['auth', 'verified'])->name('email.edit');
+Route::post('/email/{id}/update', [EmailController::class, 'update'])->middleware(['auth', 'verified'])->name('email.update');
 
 
 

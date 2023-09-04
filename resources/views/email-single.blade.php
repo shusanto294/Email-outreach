@@ -43,4 +43,6 @@
 
     <h4>Body:</h4>
     {!! $email->body !!}
+
+    <a class="btn btn-secondary mt-4" href="{{ route('email.edit', $email->id) }}">Edit Email</a>
 @endsection

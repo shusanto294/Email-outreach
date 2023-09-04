@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lead;
 use App\Models\Email;
+use App\Models\Setting;
 use App\Models\Campaign;
 use App\Mail\MyTestEmail;
 use Illuminate\Http\Request;
@@ -25,34 +26,55 @@ class EmailController extends Controller
             'email' => $email
         ]);
     }
+    public function edit($id){
+        $email = Email::find($id);
+        return view('edit-email', [
+            'email' => $email
+        ]);
+    }
+
+    public function update(Request $request, $id){
+        $email = Email::find($id);
+        $email->subject = $request->subject;
+        $email->body = $request->body;
+        $email->save();
+        return redirect()->back();
+    }
 
     public function send(){
-        $email = Email::where('sent', 0)->orderBy('id', 'desc')->first();
-        if($email){
-            $campaign = Campaign::find($email->campaign_id);
-            $lead = Lead::find($email->lead_id);
+        $sendEmailsSetting = Setting::where('key', 'send_emails')->first();
 
-            $email->sent += 1;
-            $email->save(); 
+        if($sendEmailsSetting->value == 'on'){
+            $email = Email::where('sent', 0)->orderBy('id', 'desc')->first();
+            if($email){
+                $campaign = Campaign::find($email->campaign_id);
+                $lead = Lead::find($email->lead_id);
 
-            $subject = $email->subject;
-            $body = $email->body;
-            
-            $uniqueId = uniqid(rand(), true);
-            $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
-            $finalUniqueId = $prefix . $uniqueId;
-            $trackingUrl = route('track.email', ['id' => $email->id, 'uid' => $finalUniqueId]);
-            $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
+                $email->sent += 1;
+                $email->save(); 
 
-            $body .= $trackingPixel;
+                $subject = $email->subject;
+                $body = $email->body;
+                
+                $uniqueId = uniqid(rand(), true);
+                $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
+                $finalUniqueId = $prefix . $uniqueId;
+                $trackingUrl = route('track.email', ['id' => $email->id, 'uid' => $finalUniqueId]);
+                $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
 
-            Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
-                $message->to($lead->email)->subject($subject);
-            });
+                $body .= $trackingPixel;
 
-            return $email;
+                Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
+                    $message->to($lead->email)->subject($subject);
+                });
+
+                return $email;
+            }else{
+                echo 'No Emails to send'; 
+            }
+
         }else{
-            echo 'No Email to send'; 
+            echo 'Emails sendings are off right now';
         }
 
     }
@@ -74,8 +96,17 @@ class EmailController extends Controller
             });
 
             return $email;
+
         }else{
-            echo 'No Email to send'; 
+
+            $subject = 'Test email subject';
+            $body = 'Test email  content from the outreach softwere';
+
+            Mail::html($body, function (Message $message) use ($subject) {
+                $message->to('shusanto294@gmail.com')->subject($subject);
+            });
+
+            echo 'Test email sent';
         }
     }
 
