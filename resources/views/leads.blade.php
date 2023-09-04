@@ -85,10 +85,9 @@
         <th scope="col">PL</i></th>
         <th scope="col">Company</th>
         <th scope="col">Name</th>
-        <th scope="col"><i class="fa-brands fa-linkedin" style="font-size: 20px;"></i></th>
+        <th scope="col">Website</th>
         <th scope="col">Title</th>
-        <th scope="col">Email</th>
-        {{-- <th scope="col">#id</th> --}}
+        <th scope="col"><i class="fa-brands fa-linkedin" style="font-size: 20px;"></i></th>
       </tr>
     </thead>
     <tbody>
@@ -102,23 +101,19 @@
               <td>
                 <a target="_blank" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a>
               </td>
+              <td>{{ $lead->company_website }}</td>
+              <td>{{ $lead->title }}</td>
               <td>
                 @if ($lead->linkedin_profile != 'n/a')
                 <a class="icon-link" href="{{ $lead->linkedin_profile }}" target="_blank"><i class="fa-brands fa-linkedin"></i></a>
                 @endif
               </td>
-              
-              <td>{{ $lead->title }}</td>
-              <td>{{ $lead->email }}</td>
-              {{-- <td>{{ $lead->id }}</td> --}}
-
             </tr>
         @endforeach
     </tbody>
   </table>
 
 @endif
-
 
 <div class="mt-5">
     {{ $leads->links() }}
