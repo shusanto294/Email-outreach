@@ -32,7 +32,7 @@ class LeadController extends Controller
 
     public function index(){
         return view('leads', [
-            'leads' => DB::table('leads')->orderBy('id', 'desc')->paginate(100)
+            'leads' => DB::table('leads')->orderBy('id', 'desc')->paginate(20)
         ]);
     }
 

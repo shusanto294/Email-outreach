@@ -71,7 +71,7 @@ class CampaignController extends Controller
 
     //Show leads on this campaign
     public function showEmails($id){
-        $emails = Email::where('campaign_id', $id)->orderBy('id', 'desc')->paginate(100);
+        $emails = Email::where('campaign_id', $id)->orderBy('id', 'desc')->paginate(20);
         return view('emails', [
           'emails' => $emails
         ]);
@@ -79,7 +79,7 @@ class CampaignController extends Controller
 
     //Show sent leads on this campaign
     public function showSent($id){
-        $emails = Email::where('campaign_id', $id)->where('sent', '>', 0)->orderBy('id', 'desc')->paginate(100);
+        $emails = Email::where('campaign_id', $id)->where('sent', '>', 0)->orderBy('id', 'desc')->paginate(20);
         return view('emails', [
           'emails' => $emails
         ]);
@@ -87,7 +87,7 @@ class CampaignController extends Controller
 
     //Show email opened leads on this campaign
     public function showOpened($id){
-        $emails = Email::where('campaign_id', $id)->where('opened', '>', 0)->orderBy('id', 'desc')->paginate(100);
+        $emails = Email::where('campaign_id', $id)->where('opened', '>', 0)->orderBy('id', 'desc')->paginate(20);
         return view('emails', [
           'emails' => $emails
         ]);

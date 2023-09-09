@@ -16,7 +16,7 @@ class EmailController extends Controller
 {   
     public function index(){
         return view('emails', [
-            'emails' => DB::table('emails')->orderBy('id', 'desc')->paginate(100)
+            'emails' => DB::table('emails')->orderBy('id', 'desc')->paginate(20)
         ]);
     }
 
@@ -111,14 +111,14 @@ class EmailController extends Controller
     }
 
     public function showSent($id){
-        $emails = Email::where('campaign_id', $id)->latest()->paginate(100);
+        $emails = Email::where('campaign_id', $id)->latest()->paginate(20);
         return view('emails', [
             'emails' => $emails
         ]);
     }
 
     public function showOpened($id){
-        $emails = Email::where('campaign_id', $id)->where('opened','>', 0)->latest()->paginate(100);
+        $emails = Email::where('campaign_id', $id)->where('opened','>', 0)->latest()->paginate(20);
         return view('emails', [
             'emails' => $emails
         ]);

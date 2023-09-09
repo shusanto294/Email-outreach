@@ -81,6 +81,7 @@
   </div>
   <div class="import-button">
     <a href="/import" class="btn btn-secondary">Import leads</a>
+    <button class="btn btn-secondary" id="openLinks" style="margin-left: 20px;">Open all sites</button>
   </div>
 </div>
 
@@ -134,6 +135,17 @@
             $('a').mousedown(function(){
               $('a').not($(this)).removeClass('active-link');
               $(this).addClass('active-link');
+            });
+        });
+
+        $("#openLinks").click(function() {
+            // Select all anchor elements within an unordered list
+            $("a.website").each(function() {
+                // Get the href attribute of the anchor
+                var link = $(this).attr("href");
+                
+                // Open the link in a new tab
+                window.open(link, '_blank');
             });
         });
     </script>
