@@ -1,6 +1,7 @@
 @extends('theme')
 
 @section('head')
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <style>
       a.icon-link {
           text-decoration: none;
@@ -58,6 +59,10 @@
       table a:visited{
         color: green;
       }
+      table a.active-link{
+        color: green;
+        text-decoration: underline;
+      }
       table a:active{
         text-decoration: underline;
       }
@@ -101,9 +106,9 @@
               <td>
                 {!! $lead->personalized_line ? '<i class="fa-regular fa-circle-check" style="color: green;"></i>' : '<i class="fa-regular fa-circle-xmark" style="color: #333;opacity: .2;"></i>' !!}
               </td>
-              <td><a class="icon-link website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company }}</a></td>
+              <td><a class="website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company }}</a></td>
               <td>
-                <a target="_blank" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a>
+                <a class="name" target="_blank" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a>
               </td>
               <td>{{ $lead->company_website }}</td>
               <td>{{ $lead->email }}</td>
@@ -121,6 +126,15 @@
 </div>
 
 
-  
+@endsection
 
+@section('footer')
+    <script>
+        $(document).ready(function(){
+            $('a').mousedown(function(){
+              $('a').not($(this)).removeClass('active-link');
+              $(this).addClass('active-link');
+            });
+        });
+    </script>
 @endsection
