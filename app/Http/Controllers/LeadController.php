@@ -57,9 +57,17 @@ class LeadController extends Controller
 
     public function update(Request $request, $id){
         $lead = Lead::find($id);
+
+        $fullName = $lead->name;
+        $nameParts = explode(" ", $fullName);
+        $firstName = $nameParts[0] ? $nameParts[0] : '';
+
         $lead->subscribe = $request->subscribe;
         $lead->leadlist_id = $request->leadListID;
-        $lead->personalized_line = $request->personalizedLine;
+        #$lead->personalized_line = $request->personalizedLine;
+        $lead->personalized_line = str_replace(["[firstname]", "[company]", "[website]"], [$firstName, $lead->company, $lead->company_website], $request->personalizedLine);
+
+
         $lead->save();
         return redirect()->back();
     }

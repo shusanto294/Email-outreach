@@ -91,7 +91,7 @@ table a:hover{
           <form action="{{ route('add-campaign.post') }}" method="POST">
             @csrf
             <input type="text" name="campaignName" placeholder="Campaign Name" class="form-control mb-3" required>
-            <p class="dynamic-variables">Dynamic variables: <span>[firstname]</span> <span>[company]</span>  <span>[personalizedLine]</span> </p>
+            <p class="dynamic-variables">Dynamic variables: <span>[firstname]</span> <span>[company]</span>  <span>[personalizedLine]</span> <span>[website]</span></p>
             <input type="text" name="subject" placeholder="Subject" class="form-control mb-3" required>
             <textarea id="summernote" name="body" id="" cols="50" rows="10" class="form-control mb-3"></textarea>
             <button type="submit" class="btn btn-secondary mt-3">Create Campaign</button>

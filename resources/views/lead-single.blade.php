@@ -23,6 +23,9 @@
         background: #ddd;
         margin-top: 30px;
     }
+    p.dynamic-variables span {
+      padding: 5px;
+    }
     </style>
 @endsection
 
@@ -49,6 +52,7 @@
             <option value="1" {{ $lead->subscribe == 1 ? 'selected' : '' }}>Subscribe</option>
             <option value="0" {{ $lead->subscribe == 0 ? 'selected' : '' }}>Un Subscribe</option>
         </select>
+        <p class="dynamic-variables">Dynamic variables: <span>[firstname]</span> <span>[company]</span> <span>[website]</span></p>
         <textarea style="min-height: 100px;" id="summernote" name="personalizedLine" class="form-control mb-3" placeholder="Personalized Line">{{ $lead->personalized_line }}</textarea>
 
         <button type="submit" class="btn btn-secondary mt-3">Update Lead</button>

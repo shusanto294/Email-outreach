@@ -128,9 +128,10 @@ class LeadlistController extends Controller
                 $firstName = $nameParts[0] ? $nameParts[0] : '';
                 $company = $lead->company ? $lead->company : '';
                 $personalizedLine = $lead->personalized_line ? $lead->personalized_line : '';
+                $website = $lead->company_website;
 
-                $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $subject);
-                $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]"], [$firstName, $company, $personalizedLine], $body);
+                $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $subject);
+                $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $body);
 
                 $email = Email::create([
                     'subject' => $dynamicSubject,
