@@ -45,7 +45,7 @@ class EmailController extends Controller
         $sendEmailsSetting = Setting::where('key', 'send_emails')->first();
 
         if($sendEmailsSetting->value == 'on'){
-            $email = Email::where('sent', 0)->orderBy('id', 'desc')->first();
+            $email = Email::where('sent', 0)->orderBy('id', 'asc')->first();
             if($email){
                 $campaign = Campaign::find($email->campaign_id);
                 $lead = Lead::find($email->lead_id);

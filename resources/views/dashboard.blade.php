@@ -105,10 +105,10 @@
         <div class="col-lg-3">
             <div class="info-box">
                 @php
-                    $totalLeadCount = App\Models\Lead::where('personalized_line', '!=', null)->count();
+                    $totalLeadCount = App\Models\Lead::count();
                 @endphp
                 <div class="number">{{ $totalLeadCount }}</div>
-                <div class="text">Leads with PL</div>
+                <div class="text">Total Leads</div>
             </div>
         </div>
         <div class="col-lg-3">
@@ -132,7 +132,7 @@
         <div class="col-lg-3">
             <div class="info-box">
                 @php
-                    $totalEmailOpenedSentCount = App\Models\Email::where('opened', 1)->count();
+                    $totalEmailOpenedSentCount = App\Models\Email::where('opened', '>', 0)->count();
                 @endphp
                 <div class="number">{{ $totalEmailOpenedSentCount }}</div>
                 <div class="text">Emails opened</div>
