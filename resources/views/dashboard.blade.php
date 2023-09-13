@@ -114,19 +114,19 @@
         <div class="col-lg-3">
             <div class="info-box">
                 @php
-                    $totalEmailSentCount = App\Models\Email::where('sent', 1)->count();
+                    $totalEmailNotSentCount = App\Models\Email::where('sent', 0)->count();
                 @endphp
-                <div class="number">{{ $totalEmailSentCount }}</div>
-                <div class="text">Emails sent</div>
+                <div class="number">{{ $totalEmailNotSentCount }}</div>
+                <div class="text">Emails to be sent</div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="info-box">
                 @php
-                    $totalEmailNotSentCount = App\Models\Email::where('sent', 0)->count();
+                    $totalEmailSentCount = App\Models\Email::where('sent', 1)->count();
                 @endphp
-                <div class="number">{{ $totalEmailNotSentCount }}</div>
-                <div class="text">Emails to be sent</div>
+                <div class="number">{{ $totalEmailSentCount }}</div>
+                <div class="text">Emails sent</div>
             </div>
         </div>
         <div class="col-lg-3">
