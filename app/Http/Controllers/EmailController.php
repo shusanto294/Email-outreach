@@ -42,6 +42,14 @@ class EmailController extends Controller
     }
 
     public function send(){
+        config(['mail.mailers.smtp.host' => Setting::where('key', 'MAIL_HOST')->first()->value ]);
+        config(['mail.mailers.smtp.port' => Setting::where('key', 'MAIL_PORT')->first()->value ]);
+        config(['mail.mailers.smtp.username' => Setting::where('key', 'MAIL_USERNAME')->first()->value ]);
+        config(['mail.mailers.smtp.password' => Setting::where('key', 'MAIL_PASSWORD')->first()->value ]);
+
+        config(['mail.from.address' => Setting::where('key', 'MAIL_USERNAME')->first()->value ]);
+        config(['mail.from.name' => Setting::where('key', 'MAIL_FROM_NAME')->first()->value ]);
+
         $sendEmailsSetting = Setting::where('key', 'send_emails')->first();
 
         if($sendEmailsSetting->value == 'on'){
@@ -80,33 +88,28 @@ class EmailController extends Controller
     }
 
     public function testEmail(){
-        $email = Email::inRandomOrder()->first();
-        if($email){
-            $campaign = Campaign::find($email->campaign_id);
-            $lead = Lead::find($email->lead_id);
+        config(['mail.mailers.smtp.host' => Setting::where('key', 'MAIL_HOST')->first()->value ]);
+        config(['mail.mailers.smtp.port' => Setting::where('key', 'MAIL_PORT')->first()->value ]);
+        config(['mail.mailers.smtp.username' => Setting::where('key', 'MAIL_USERNAME')->first()->value ]);
+        config(['mail.mailers.smtp.password' => Setting::where('key', 'MAIL_PASSWORD')->first()->value ]);
 
-            $email->sent += 1;
-            $email->save(); 
+        config(['mail.from.address' => Setting::where('key', 'MAIL_USERNAME')->first()->value ]);
+        config(['mail.from.name' => Setting::where('key', 'MAIL_FROM_NAME')->first()->value ]);
+        
+        $uniqueId = time() . mt_rand(1000, 9999);
 
-            $subject = $email->subject;
-            $body = $email->body;
+        $subject = 'Test email - '. $uniqueId;
+        $body = 'This is a test email generated from the outreach softwere to check the delivaribility - '. $uniqueId;
 
-            Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
-                $message->to('shusanto294@gmail.com')->subject($subject);
+        $testEmailAddress = Setting::where('key', 'TEST_EMAILS_TO')->first();
+        if($testEmailAddress){
+            $sendEmailTo = $testEmailAddress->value;
+            Mail::html($body, function (Message $message) use ($sendEmailTo, $subject) {
+                $message->to($sendEmailTo)->subject($subject);
             });
-
-            return $email;
-
+            return redirect()->back()->with('message', 'Test email sent successfully');
         }else{
-
-            $subject = 'Test email subject';
-            $body = 'Test email  content from the outreach softwere';
-
-            Mail::html($body, function (Message $message) use ($subject) {
-                $message->to('shusanto294@gmail.com')->subject($subject);
-            });
-
-            echo 'Test email sent';
+            return redirect()->back()->with('error', 'No email address set to send test emails');
         }
     }
 

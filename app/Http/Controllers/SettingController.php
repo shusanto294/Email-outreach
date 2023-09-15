@@ -30,4 +30,21 @@ class SettingController extends Controller
         return redirect()->back();
     }
 
+    public function update(Request $request){
+        $values =  $request->all();
+        foreach($values as $key => $value){
+            $setting = Setting::where('key', $key)->first();
+            if($setting){
+                $setting->value = $value;
+                $setting->save();
+            }else{
+                Setting::create([
+                    'key' => $key,
+                    'value' => $value
+                ]);
+            }
+        }
+        return redirect()->back()->with('message', 'Settings updated');
+    }
+
 }
