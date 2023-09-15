@@ -80,7 +80,7 @@ class EmailController extends Controller
     }
 
     public function testEmail(){
-        $email = Email::orderBy('id', 'desc')->first();
+        $email = Email::inRandomOrder()->first();
         if($email){
             $campaign = Campaign::find($email->campaign_id);
             $lead = Lead::find($email->lead_id);
