@@ -79,6 +79,16 @@
         text-align: right;
         margin-bottom: 50px;
     }
+
+    @media(max-width: 500px){
+        .btn.btn-secondary{
+            width: 100%;
+            margin-top: 20px;
+        }
+        .info-box{
+            margin-bottom: 20px;
+        }
+    }
     </style>
 @endsection
 
@@ -157,8 +167,7 @@
                 <input type="text" name="MAIL_HOST" placeholder="MAIL HOST" class="form-control mb-3" value="{{ $mailHost ? $mailHost->value : '' }}">
                 <input type="email" name="MAIL_USERNAME" placeholder="MAIL USERNAME" class="form-control mb-3" value="{{ $mailUsername ? $mailUsername->value : '' }}">
                 <input type="password" name="MAIL_PASSWORD" placeholder="MAIL PASSWORD" class="form-control mb-3" value="{{ $mailPassword ? $mailPassword->value : '' }}">
-                <button type="submit"  class="btn btn-secondary">Save Mail Settings</button>
-                <a href="/test-email" class="btn btn-secondary">Send test email</a>
+                
             </div>
             <div class="col-lg-6">
                 <input type="text" name="MAIL_PORT" placeholder="MAIL PORT" class="form-control mb-3" value="{{ $mailPort ? $mailPort->value : '' }}">
@@ -167,6 +176,8 @@
                 
             </div>
         </div>
+        <button type="submit"  class="btn btn-secondary">Save Mail Settings</button>
+        <a href="/test-email" class="btn btn-secondary">Send test email</a>
     </form>
 
 @if(session('message'))
