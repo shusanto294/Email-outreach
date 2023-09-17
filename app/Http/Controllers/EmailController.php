@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lead;
 use App\Models\Email;
+use App\Models\Mailbox;
 use App\Models\Setting;
 use App\Models\Campaign;
 use App\Mail\MyTestEmail;
@@ -42,23 +43,32 @@ class EmailController extends Controller
     }
 
     public function send(){
-        config(['mail.mailers.smtp.host' => Setting::where('key', 'MAIL_HOST')->first()->value ]);
-        config(['mail.mailers.smtp.port' => Setting::where('key', 'MAIL_PORT')->first()->value ]);
-        config(['mail.mailers.smtp.username' => Setting::where('key', 'MAIL_USERNAME')->first()->value ]);
-        config(['mail.mailers.smtp.password' => Setting::where('key', 'MAIL_PASSWORD')->first()->value ]);
-
-        config(['mail.from.address' => Setting::where('key', 'MAIL_USERNAME')->first()->value ]);
-        config(['mail.from.name' => Setting::where('key', 'MAIL_FROM_NAME')->first()->value ]);
-
+        
         $sendEmailsSetting = Setting::where('key', 'send_emails')->first();
 
         if($sendEmailsSetting->value == 'on'){
+
+            $lastEmailSentFrom = Setting::where('key', 'last_email_sent_from')->first();
+            $mailbox = Mailbox::where('id', '>', $lastEmailSentFrom->value)->orderBy('id', 'asc')->first();
+            if(!$mailbox){
+                $mailbox = Mailbox::orderBy('id', 'asc')->first();
+            }
+
+            config(['mail.mailers.smtp.host' => $mailbox->mail_host ]);
+            config(['mail.mailers.smtp.port' => $mailbox->mail_port ]);
+            config(['mail.mailers.smtp.username' => $mailbox->mail_username ]);
+            config(['mail.mailers.smtp.password' => $mailbox->mail_password ]);
+            config(['mail.from.address' => $mailbox->mail_from_address ]);
+            config(['mail.from.name' => $mailbox->mail_from_name ]);
+            
             $email = Email::where('sent', 0)->orderBy('id', 'asc')->first();
             if($email){
                 $campaign = Campaign::find($email->campaign_id);
                 $lead = Lead::find($email->lead_id);
 
                 $email->sent += 1;
+                $email->mailbox_id = $mailbox->id;
+                $email->sent_from = $mailbox->mail_username;
                 $email->save(); 
 
                 $subject = $email->subject;
@@ -76,7 +86,11 @@ class EmailController extends Controller
                     $message->to($lead->email)->subject($subject);
                 });
 
+                $lastEmailSentFrom->value = $mailbox->id;
+                $lastEmailSentFrom->save();
+
                 return $email;
+                //return $mailbox;
             }else{
                 echo 'No Emails to send'; 
             }
@@ -84,17 +98,19 @@ class EmailController extends Controller
         }else{
             echo 'Emails sendings are off right now';
         }
+        
 
     }
 
-    public function testEmail(){
-        config(['mail.mailers.smtp.host' => Setting::where('key', 'MAIL_HOST')->first()->value ]);
-        config(['mail.mailers.smtp.port' => Setting::where('key', 'MAIL_PORT')->first()->value ]);
-        config(['mail.mailers.smtp.username' => Setting::where('key', 'MAIL_USERNAME')->first()->value ]);
-        config(['mail.mailers.smtp.password' => Setting::where('key', 'MAIL_PASSWORD')->first()->value ]);
+    public function testEmail($mailboxID){
+        $mailbox = Mailbox::find($mailboxID);
 
-        config(['mail.from.address' => Setting::where('key', 'MAIL_USERNAME')->first()->value ]);
-        config(['mail.from.name' => Setting::where('key', 'MAIL_FROM_NAME')->first()->value ]);
+        config(['mail.mailers.smtp.host' => $mailbox->mail_host ]);
+        config(['mail.mailers.smtp.port' => $mailbox->mail_port ]);
+        config(['mail.mailers.smtp.username' => $mailbox->mail_username ]);
+        config(['mail.mailers.smtp.password' => $mailbox->mail_password ]);
+        config(['mail.from.address' => $mailbox->mail_from_address ]);
+        config(['mail.from.name' => $mailbox->mail_from_name ]);
         
         $uniqueId = time() . mt_rand(1000, 9999);
 

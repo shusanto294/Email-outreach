@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\MailboxController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\CampaignController;
@@ -68,7 +69,7 @@ Route::get('/campaign/{id}/opened', [CampaignController::class, 'showOpened'])->
 // Route::get('/campaign/{id}/opened', [EmailController::class, 'showOpened'])->middleware(['auth', 'verified'])->name('campaign.opened');
 
 Route::get('/send-email', [EmailController::class, 'send']);
-Route::get('/test-email', [EmailController::class, 'testEmail'])->name('test.email');
+Route::get('/test-email/{$mailboxID}', [EmailController::class, 'testEmail'])->name('test.email');
 Route::get('/track-email/{id}', [EmailController::class, 'trackEmail'])->name('track.email');
 
 Route::get('/emails', [EmailController::class, 'index'])->middleware(['auth', 'verified'])->name('emails.index');
@@ -84,5 +85,12 @@ Route::middleware('auth')->group(function () {
 
 //Settings
 Route::post('/update-settings', [SettingController::class, 'update'])->middleware(['auth', 'verified'])->name('update.settings');
+
+
+//Mailboxes
+Route::get('/mailboxes', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox.index');
+Route::post('/mailbox/create', [MailboxController::class, 'create'])->middleware(['auth', 'verified'])->name('mailbox.create');
+Route::get('/mailbox/{id}/delete', [MailboxController::class, 'delete'])->middleware(['auth', 'verified'])->name('mailbox.delete');
+
 
 require __DIR__.'/auth.php';

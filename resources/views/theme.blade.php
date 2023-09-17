@@ -44,6 +44,9 @@
                 <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
               </li>
               <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/mailboxes">Mailboxes</a>
+              </li>
+              <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/lists">Lists</a>
               </li>
               <li class="nav-item">

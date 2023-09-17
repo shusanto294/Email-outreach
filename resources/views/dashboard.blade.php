@@ -142,15 +142,15 @@
         <div class="col-lg-3">
             <div class="info-box">
                 @php
-                    $totalEmailOpenedSentCount = App\Models\Email::where('opened', '>', 0)->count();
+                    $totalEmailsOpened = App\Models\Email::where('opened', '>', 0)->count();
                 @endphp
-                <div class="number">{{ $totalEmailOpenedSentCount }}</div>
+                <div class="number">{{ $totalEmailsOpened }}</div>
                 <div class="text">Emails opened</div>
             </div>
         </div>
     </div>
 
-    @php
+    {{-- @php
         $mailFromName = App\Models\Setting::where('key', 'MAIL_FROM_NAME')->first();
         $mailHost = App\Models\Setting::where('key', 'MAIL_HOST')->first();
         $mailPort = App\Models\Setting::where('key', 'MAIL_PORT')->first();
@@ -178,7 +178,7 @@
         </div>
         <button type="submit"  class="btn btn-secondary">Save Mail Settings</button>
         <a href="/test-email" class="btn btn-secondary">Send test email</a>
-    </form>
+    </form> --}}
 
 @if(session('message'))
     <div class="alert alert-success mt-4">

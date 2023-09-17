@@ -13,16 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('emails', function (Blueprint $table) {
+        Schema::create('mailboxes', function (Blueprint $table) {
             $table->id();
-            $table->string('subject');
-            $table->text('body');
-            $table->integer('campaign_id');
-            $table->integer('lead_id');
-            $table->string('mailbox_id')->nullable();
-            $table->string('sent_from')->nullable();
-            $table->integer('sent')->default(0);
-            $table->integer('opened')->default(0);
+            $table->string('mail_host');
+            $table->string('mail_port');
+            $table->string('mail_username');
+            $table->string('mail_password');
+            $table->string('mail_from_address');
+            $table->string('mail_from_name');
             $table->timestamps();
         });
     }
@@ -34,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('emails');
+        Schema::dropIfExists('mailboxes');
     }
 };

@@ -32,7 +32,7 @@ table a:hover{
         <th scope="col">#id</th>
         <th scope="col">Name</th>
         <th scope="col">Leads</th>
-        <th scope="col">NO PS</th>
+        {{-- <th scope="col">NO PS</th> --}}
         <th scope="col" style="text-align: right;">Action</th>
       </tr>
     </thead>
@@ -45,10 +45,10 @@ table a:hover{
                     $leadsCount = App\Models\Lead::where('leadlist_id', $list->id)->count();
                   @endphp
                 <td><a href="{{ route('show.list', $list->id) }}">{{ $leadsCount }}</a></td>
-                @php
+                {{-- @php
                     $noPsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('personalized_line', null)->count();
                 @endphp
-                <td><a href="{{ route('show.no_ps.list', $list->id) }}">{{ $noPsleadsCount }}</a></td>
+                <td><a href="{{ route('show.no_ps.list', $list->id) }}">{{ $noPsleadsCount }}</a></td> --}}
                 <td style="text-align: right;"><a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign</a></td>
             </tr>
         @endforeach
