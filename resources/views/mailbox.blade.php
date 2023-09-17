@@ -41,7 +41,7 @@ table a:hover{
         @foreach ($mailboxes as $mailbox)
             <tr>
                 <td>{{ $mailbox->id }}</td>
-                <td>{{ $mailbox->mail_username }}</td>
+                <td><a href="{{ route('mailbox.show', $mailbox->id) }}">{{ $mailbox->mail_username }}</a> </td>
                 @php
                     $totalEmailSent = App\Models\Email::where('mailbox_id', $mailbox->id)->count();
                 @endphp

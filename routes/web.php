@@ -69,7 +69,7 @@ Route::get('/campaign/{id}/opened', [CampaignController::class, 'showOpened'])->
 // Route::get('/campaign/{id}/opened', [EmailController::class, 'showOpened'])->middleware(['auth', 'verified'])->name('campaign.opened');
 
 Route::get('/send-email', [EmailController::class, 'send']);
-Route::get('/test-email/{$mailboxID}', [EmailController::class, 'testEmail'])->name('test.email');
+Route::get('/test-email/{mailboxID}', [EmailController::class, 'testEmail'])->name('test.email');
 Route::get('/track-email/{id}', [EmailController::class, 'trackEmail'])->name('track.email');
 
 Route::get('/emails', [EmailController::class, 'index'])->middleware(['auth', 'verified'])->name('emails.index');
@@ -90,6 +90,8 @@ Route::post('/update-settings', [SettingController::class, 'update'])->middlewar
 //Mailboxes
 Route::get('/mailboxes', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox.index');
 Route::post('/mailbox/create', [MailboxController::class, 'create'])->middleware(['auth', 'verified'])->name('mailbox.create');
+Route::get('/mailbox/{id}', [MailboxController::class, 'show'])->middleware(['auth', 'verified'])->name('mailbox.show');
+Route::post('/mailbox/{id}/update', [MailboxController::class, 'update'])->middleware(['auth', 'verified'])->name('mailbox.update');
 Route::get('/mailbox/{id}/delete', [MailboxController::class, 'delete'])->middleware(['auth', 'verified'])->name('mailbox.delete');
 
 

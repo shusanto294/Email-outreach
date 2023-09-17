@@ -150,48 +150,6 @@
         </div>
     </div>
 
-    {{-- @php
-        $mailFromName = App\Models\Setting::where('key', 'MAIL_FROM_NAME')->first();
-        $mailHost = App\Models\Setting::where('key', 'MAIL_HOST')->first();
-        $mailPort = App\Models\Setting::where('key', 'MAIL_PORT')->first();
-        $mailUsername = App\Models\Setting::where('key', 'MAIL_USERNAME')->first();
-        $mailPassword = App\Models\Setting::where('key', 'MAIL_PASSWORD')->first();
-        $mailFromAddress = App\Models\Setting::where('key', 'MAIL_FROM_ADDRESS')->first();
-        $testEmailsTo = App\Models\Setting::where('key', 'TEST_EMAILS_TO')->first();
-    @endphp
-
-    <form action="{{ route('update.settings') }}" method="POST">
-        @csrf
-        <div class="row">
-            <div class="col-lg-6">
-                <input type="text" name="MAIL_HOST" placeholder="MAIL HOST" class="form-control mb-3" value="{{ $mailHost ? $mailHost->value : '' }}">
-                <input type="email" name="MAIL_USERNAME" placeholder="MAIL USERNAME" class="form-control mb-3" value="{{ $mailUsername ? $mailUsername->value : '' }}">
-                <input type="password" name="MAIL_PASSWORD" placeholder="MAIL PASSWORD" class="form-control mb-3" value="{{ $mailPassword ? $mailPassword->value : '' }}">
-                
-            </div>
-            <div class="col-lg-6">
-                <input type="text" name="MAIL_PORT" placeholder="MAIL PORT" class="form-control mb-3" value="{{ $mailPort ? $mailPort->value : '' }}">
-                <input type="text" name="MAIL_FROM_NAME" placeholder="MAIL FROM NAME" class="form-control mb-3" value="{{ $mailFromName ? $mailFromName->value : '' }}">
-                <input type="email" name="TEST_EMAILS_TO" placeholder="TEST EMAILS TO" class="form-control mb-3" value="{{ $testEmailsTo ? $testEmailsTo->value : '' }}">
-                
-            </div>
-        </div>
-        <button type="submit"  class="btn btn-secondary">Save Mail Settings</button>
-        <a href="/test-email" class="btn btn-secondary">Send test email</a>
-    </form> --}}
-
-@if(session('message'))
-    <div class="alert alert-success mt-4">
-        {{ session('message') }}
-    </div>
-@endif
-
-@if(session('error'))
-    <div class="alert alert-danger mt-4">
-        {{ session('error') }}
-    </div>
-@endif
-
 @endsection
 
 

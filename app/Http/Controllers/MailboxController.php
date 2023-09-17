@@ -50,9 +50,12 @@ class MailboxController extends Controller
      * @param  \App\Models\Mailbox  $mailbox
      * @return \Illuminate\Http\Response
      */
-    public function show(Mailbox $mailbox)
+    public function show($id)
     {
-        //
+        $mailbox = Mailbox::find($id);
+        return view('mailbox-single', [
+            'mailbox' => $mailbox
+        ]);
     }
 
     /**
@@ -73,9 +76,11 @@ class MailboxController extends Controller
      * @param  \App\Models\Mailbox  $mailbox
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateMailboxRequest $request, Mailbox $mailbox)
+    public function update(Request $request, $id)
     {
-        //
+        $mailbox = Mailbox::find($id);
+        $mailbox->update($request->all());
+        return redirect()->back()->with('success', 'Mailbox updated  successfully');
     }
 
     /**
