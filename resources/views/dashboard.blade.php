@@ -150,6 +150,16 @@
         </div>
     </div>
 
+    @php
+        $testEmailsTo = App\Models\Setting::where('key', 'send_test_emails_to')->first();
+    @endphp
+    <form action="{{ route('update.settings') }}" method="POST" class="col-lg-6">
+        @csrf
+        <label for="send_test_emails_to" class="mb-2">Send test emails to :</label>
+        <input type="email" name="send_test_emails_to" id="send_test_emails_to" placeholder="user@example.com" class="form-control mb-3" value="{{ $testEmailsTo ? $testEmailsTo->value : '' }}">
+        <button type="submit"  class="btn btn-secondary">Save Settings</button>
+    </form>
+
 @endsection
 
 

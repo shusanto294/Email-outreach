@@ -17,6 +17,8 @@ table a:hover{
 
 @section('content')
 
+@include('alerts')
+
 <p style="text-align: right">
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">

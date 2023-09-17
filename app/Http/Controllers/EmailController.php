@@ -117,13 +117,13 @@ class EmailController extends Controller
         $subject = 'Test email - '. $uniqueId;
         $body = 'This is a test email generated from the outreach softwere to check the delivaribility - '. $uniqueId;
 
-        $testEmailAddress = Setting::where('key', 'TEST_EMAILS_TO')->first();
+        $testEmailAddress = Setting::where('key', 'send_test_emails_to')->first();
         if($testEmailAddress){
             $sendEmailTo = $testEmailAddress->value;
             Mail::html($body, function (Message $message) use ($sendEmailTo, $subject) {
                 $message->to($sendEmailTo)->subject($subject);
             });
-            return redirect()->back()->with('message', 'Test email sent successfully');
+            return redirect()->back()->with('success', 'Test email sent successfully');
         }else{
             return redirect()->back()->with('error', 'No email address set to send test emails');
         }

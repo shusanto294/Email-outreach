@@ -24,6 +24,7 @@
         <input required type="text" name="mail_from_name" id="mail_from_address" value="{{ $mailbox->mail_from_name }}" placeholder="John Doe" class="form-control mb-3">
         
         <button type="submit" class="btn btn-secondary mt-3">Update Mailbox</button>
+        <a class="btn btn-secondary mt-3" href="{{ route('test.email', $mailbox->id) }}">Send Test Email</a>
     </form>
     
 @endsection
