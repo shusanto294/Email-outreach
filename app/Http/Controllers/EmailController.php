@@ -54,11 +54,11 @@ class EmailController extends Controller
                 $mailbox = Mailbox::orderBy('id', 'asc')->first();
             }
 
-            config(['mail.mailers.smtp.host' => $mailbox->mail_host ]);
-            config(['mail.mailers.smtp.port' => $mailbox->mail_port ]);
+            config(['mail.mailers.smtp.host' => $mailbox->mail_smtp_host ]);
+            config(['mail.mailers.smtp.port' => $mailbox->mail_smtp_port ]);
             config(['mail.mailers.smtp.username' => $mailbox->mail_username ]);
             config(['mail.mailers.smtp.password' => $mailbox->mail_password ]);
-            config(['mail.from.address' => $mailbox->mail_from_address ]);
+            config(['mail.from.address' => $mailbox->mail_username ]);
             config(['mail.from.name' => $mailbox->mail_from_name ]);
             
             $email = Email::where('sent', 0)->orderBy('id', 'asc')->first();
@@ -105,11 +105,11 @@ class EmailController extends Controller
     public function testEmail($mailboxID){
         $mailbox = Mailbox::find($mailboxID);
 
-        config(['mail.mailers.smtp.host' => $mailbox->mail_host ]);
-        config(['mail.mailers.smtp.port' => $mailbox->mail_port ]);
+        config(['mail.mailers.smtp.host' => $mailbox->mail_smtp_host ]);
+        config(['mail.mailers.smtp.port' => $mailbox->mail_smtp_port ]);
         config(['mail.mailers.smtp.username' => $mailbox->mail_username ]);
         config(['mail.mailers.smtp.password' => $mailbox->mail_password ]);
-        config(['mail.from.address' => $mailbox->mail_from_address ]);
+        config(['mail.from.address' => $mailbox->mail_username ]);
         config(['mail.from.name' => $mailbox->mail_from_name ]);
         
         $uniqueId = time() . mt_rand(1000, 9999);

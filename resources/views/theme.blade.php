@@ -58,6 +58,9 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/emails">Emails</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/replies">Replies</a>
+              </li>
 
             </ul>
           </div>

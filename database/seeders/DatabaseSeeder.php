@@ -36,6 +36,11 @@ class DatabaseSeeder extends Seeder
             'key' => 'last_email_sent_from',
             'value' => 0,
         ]);
+
+        DB::table('settings')->insert([
+            'key' => 'last_reply_checked_from',
+            'value' => 0,
+        ]);
         
     }
 }

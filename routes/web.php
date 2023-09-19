@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\MailboxController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
@@ -93,6 +94,13 @@ Route::post('/mailbox/create', [MailboxController::class, 'create'])->middleware
 Route::get('/mailbox/{id}', [MailboxController::class, 'show'])->middleware(['auth', 'verified'])->name('mailbox.show');
 Route::post('/mailbox/{id}/update', [MailboxController::class, 'update'])->middleware(['auth', 'verified'])->name('mailbox.update');
 Route::get('/mailbox/{id}/delete', [MailboxController::class, 'delete'])->middleware(['auth', 'verified'])->name('mailbox.delete');
+
+//Replies
+Route::get('/replies', [ReplyController::class, 'index'])->middleware(['auth', 'verified'])->name('replies.index');
+Route::get('/check-replies', [ReplyController::class, 'checkRepliesFromAllInbox'])->middleware(['auth', 'verified'])->name('replies.check.from.all.inboxes');
+Route::get('/check-replies/{mailboxID}', [ReplyController::class, 'checkReplies'])->middleware(['auth', 'verified'])->name('replies.check');
+Route::get('/delete-reply/{id}', [ReplyController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete.reply');
+Route::get('/reply/{id}', [ReplyController::class, 'show'])->middleware(['auth', 'verified'])->name('show.reply');
 
 
 require __DIR__.'/auth.php';
