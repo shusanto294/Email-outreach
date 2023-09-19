@@ -35,7 +35,7 @@ table a:hover{
         @foreach ($replies as $reply)
             <tr>
               <td>{{ $reply->id }}</td>
-              <td><a href="{{ route('show.reply', $reply->id) }}">{{ $reply->subject }}</a></td>
+              <td><a href="{{ route('show.reply', $reply->id) }}">{!! $reply->seen < 1 ? '<i style="color: red;margin-right: 10px;" class="fa-regular fa-bell"></i>' : '' !!}  {{ $reply->subject }}</a></td>
               <td>{{ $reply->from_address }}</td>
               <td>{{ $reply->to }}</td> 
               <td> <a href="{{ route('delete.reply', $reply->id) }}">Delete</a>  </td>

@@ -93,7 +93,7 @@ class ReplyController extends Controller
         $lastReplyCheckedFrom->value = $mailbox->id;
         $lastReplyCheckedFrom->save();
 
-        echo 'Checking mailbox : ' . $mailbox->mail_username .'<br>';
+        echo '<p>Checking mailbox : ' . $mailbox->mail_username .'</p>';
 
         config(['imap.accounts.default.host' => $mailbox->mail_imap_host ]);
         config(['imap.accounts.default.port' => $mailbox->mail_imap_port ]);
@@ -130,7 +130,7 @@ class ReplyController extends Controller
                 echo '<p>Email: ' . $sender->mailbox . '@' . $sender->host . '</p>';
                 //echo '<p>From: ' . $message->getFrom()[0]->mailbox . '@' . $message->getFrom()[0]->host . '</p>';
                 echo '<div style="margin-bottom: 20px;"><h3>' . $message->getSubject() . '</h3></div>';
-                echo $message->getHTMLBody();
+                //echo $message->getHTMLBody();
                 echo '</div>';
 
                 Reply::create([
