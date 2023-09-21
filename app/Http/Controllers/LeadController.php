@@ -89,4 +89,35 @@ class LeadController extends Controller
             'leads' => $leads
         ]);
     }
+
+    public function verify_lead(){
+        $lead = Lead::where('verified', null)->first();
+
+        if(!$lead){
+            echo 'No lead found';
+            return;
+        }
+
+        $email = $lead->email;
+        $domain = substr($email, strpos($email, '@') + 1);
+        
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $lead->verified = 'false';
+            $lead->save();
+            echo $email. 'Email format is not valid <br>';
+            return;
+        }
+
+        if(!checkdnsrr($domain)) {
+            $lead->verified = 'false';
+            $lead->save();
+            echo $email . ' - Could not be verified *****';
+            return;
+       }
+
+       echo $email . ' - Verified';
+       $lead->verified = 'true';
+       $lead->save();
+       
+    }
 }

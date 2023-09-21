@@ -31,7 +31,9 @@ table a:hover{
       <tr>
         <th scope="col">#id</th>
         <th scope="col">Name</th>
-        <th scope="col">Leads</th>
+        <th scope="col">Total Leads</th>
+        <th scope="col">Verified</th>
+        <th scope="col">Unverified</th>
         {{-- <th scope="col">NO PS</th> --}}
         <th scope="col" style="text-align: right;">Action</th>
       </tr>
@@ -41,10 +43,20 @@ table a:hover{
             <tr>
                 <td>{{ $list->id }}</td>
                 <td><a href="{{ route('show.list', $list->id) }}">{{ $list->name }}</a></td>
-                  @php
-                    $leadsCount = App\Models\Lead::where('leadlist_id', $list->id)->count();
-                  @endphp
+                @php
+                  $leadsCount = App\Models\Lead::where('leadlist_id', $list->id)->count();
+                @endphp
                 <td><a href="{{ route('show.list', $list->id) }}">{{ $leadsCount }}</a></td>
+
+                @php
+                $verifiedCount = App\Models\Lead::where('leadlist_id', $list->id)->where('verified', 'true')->count();
+                @endphp
+                <td><a href="{{ route('show.verified.list', $list->id) }}">{{ $verifiedCount }}</a></td>
+
+                @php
+                $unverifiedCount = App\Models\Lead::where('leadlist_id', $list->id)->where('verified', '!=' , 'true')->count();
+                @endphp
+                <td><a href="{{ route('show.not.verified.list', $list->id) }}">{{ $unverifiedCount }}</a></td>
                 {{-- @php
                     $noPsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('personalized_line', null)->count();
                 @endphp

@@ -71,38 +71,20 @@ class LeadlistController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Leadlist  $leadlist
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Leadlist $leadlist)
+    public function show_verified($listId)
     {
-        //
+        $leads = Lead::where('leadlist_id', $listId)->where('verified', 'true')->orderBy('id', 'desc')->paginate(20);
+        return view('leads', [
+          'leads' => $leads
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateLeadlistRequest  $request
-     * @param  \App\Models\Leadlist  $leadlist
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateLeadlistRequest $request, Leadlist $leadlist)
+    public function show_not_verified($listId)
     {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Leadlist  $leadlist
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Leadlist $leadlist)
-    {
-        //
+        $leads = Lead::where('leadlist_id', $listId)->where('verified', '!=' , 'true')->orderBy('id', 'desc')->paginate(20);
+        return view('leads', [
+          'leads' => $leads
+        ]);
     }
 
     public function add_to_campaign($id){

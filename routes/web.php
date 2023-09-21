@@ -48,11 +48,14 @@ Route::get('/leads', [LeadController::class, 'index'])->middleware(['auth', 'ver
 Route::get('/lead/{id}', [LeadController::class, 'show'])->middleware(['auth', 'verified'])->name('lead.show');
 Route::post('/lead/{id}/update', [LeadController::class, 'update'])->middleware(['auth', 'verified'])->name('lead.update');
 Route::post('/lead/search', [LeadController::class, 'search'])->middleware(['auth', 'verified'])->name('lead.search');
+Route::get('/verify-lead', [LeadController::class, 'verify_lead'])->name('verify.lead');
 
 Route::get('/lists', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('lists.index');
 Route::post('/add-list', [LeadlistController::class, 'create'])->middleware(['auth', 'verified'])->name('add-list.post');
 Route::get('/list/{id}', [LeadlistController::class, 'show'])->middleware(['auth', 'verified'])->name('show.list');
 Route::get('/list/{id}/no-ps', [LeadlistController::class, 'show_no_ps'])->middleware(['auth', 'verified'])->name('show.no_ps.list');
+Route::get('/list/{id}/verified', [LeadlistController::class, 'show_verified'])->middleware(['auth', 'verified'])->name('show.verified.list');
+Route::get('/list/{id}/not-verified', [LeadlistController::class, 'show_not_verified'])->middleware(['auth', 'verified'])->name('show.not.verified.list');
 Route::get('/list/{id}/add-to-campaign', [LeadlistController::class, 'add_to_campaign'])->middleware(['auth', 'verified'])->name('add-to-campaign.list');
 Route::post('/add-to-campaign/{id}', [LeadlistController::class, 'create_emails'])->middleware(['auth', 'verified'])->name('add-to-campaign.post');
 
@@ -97,7 +100,7 @@ Route::get('/mailbox/{id}/delete', [MailboxController::class, 'delete'])->middle
 
 //Replies
 Route::get('/replies', [ReplyController::class, 'index'])->middleware(['auth', 'verified'])->name('replies.index');
-Route::get('/check-replies', [ReplyController::class, 'checkRepliesFromAllInbox'])->middleware(['auth', 'verified'])->name('replies.check.from.all.inboxes');
+Route::get('/check-replies', [ReplyController::class, 'checkRepliesFromAllInbox'])->name('replies.check.from.all.inboxes');
 Route::get('/check-replies/{mailboxID}', [ReplyController::class, 'checkReplies'])->middleware(['auth', 'verified'])->name('replies.check');
 Route::get('/delete-reply/{id}', [ReplyController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete.reply');
 Route::get('/reply/{id}', [ReplyController::class, 'show'])->middleware(['auth', 'verified'])->name('show.reply');
