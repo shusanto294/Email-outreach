@@ -96,10 +96,10 @@ class LeadlistController extends Controller
     public function create_emails(Request $request){
         //return $request->all();
         $campaign = Campaign::find($request->campaign_id);
-        $leads = Lead::where('leadlist_id', $request->list_id)->where('subscribe', 1)->get();
+        $leads = Lead::where('leadlist_id', $request->list_id)->where('subscribe', 1)->where('verified', 'true')->get();
 
         foreach($leads as $lead){
-            $existingEmail = Email::where('campaign_id', $campaign->id)->where('lead_id', $lead->id)->where('verified', 'true')->first();
+            $existingEmail = Email::where('campaign_id', $campaign->id)->where('lead_id', $lead->id)->first();
             if ($existingEmail === null) {
                 $subject = $campaign->subject;
                 $body = $campaign->body;
