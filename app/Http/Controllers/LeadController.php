@@ -81,8 +81,7 @@ class LeadController extends Controller
             ->orWhere('company', 'like', '%' . $request->searchText . '%')
             ->orWhere('company_website', 'like', '%' . $request->searchText . '%')
             ->orWhere('location', 'like', '%' . $request->searchText . '%')
-            ->orWhere('email', 'like', '%' . $request->searchText . '%')
-            ->orWhere('technology', 'like', '%' . $request->searchText . '%');
+            ->orWhere('email', 'like', '%' . $request->searchText . '%');
         })->orderBy('created_at', 'desc')->paginate(10);
     
         return view('leads', [
