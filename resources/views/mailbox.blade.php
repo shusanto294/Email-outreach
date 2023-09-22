@@ -88,10 +88,10 @@ table a:hover{
             <input required type="text" name="mail_password" id="mail_password" value="apple727354" class="form-control mb-3">
 
             <label for="mail_smtp_host">Mail SMTP Host</label>
-            <input required type="text" name="mail_smtp_host" id="mail_smtp_host" placeholder="example.com" class="form-control mb-3">
+            <input required type="text" name="mail_smtp_host" id="mail_smtp_host" value="smtp.gmail.com" class="form-control mb-3">
             
             <label for="mail_imap_host">Mail IAMP Host</label>
-            <input required type="text" name="mail_imap_host" id="mail_imap_host" placeholder="example.com" class="form-control mb-3">
+            <input required type="text" name="mail_imap_host" id="mail_imap_host" value="imap.gmail.com" class="form-control mb-3">
 
             <label for="mail_smtp_port">Mail SMTP Port</label>
             <input required type="text" name="mail_smtp_port" id="mail_smtp_port" value="465" class="form-control mb-3">
