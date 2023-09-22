@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('from_address');
             $table->string('to');
             $table->text('subject');
-            $table->text('body');
+            $table->longText('body');
             $table->integer('seen')->default(0);
             $table->timestamps();
         });
