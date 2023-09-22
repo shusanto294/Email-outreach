@@ -78,7 +78,7 @@ table a:hover{
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;">
       <div class="modal-content">
-        <div class="modal-body">
+        <div class="modal-body"> 
           <form action="{{ route('mailbox.create') }}" method="POST">
             @csrf
             <label for="mail_username">Mail username</label>
