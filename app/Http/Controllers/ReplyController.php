@@ -30,51 +30,47 @@ class ReplyController extends Controller
         config(['imap.accounts.default.port' => $mailbox->mail_imap_port ]);
         config(['imap.accounts.default.username' => $mailbox->mail_username ]);
         config(['imap.accounts.default.password' => $mailbox->mail_password ]);
-
-
+        
         /** @var \Webklex\PHPIMAP\Client $client */
-        $client = Client::account('default');
+        $client = Client::account('default');  
 
         // Connect to the IMAP Server
         $client->connect();
 
         // Get all Mailboxes
         /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
-        $folders = $client->getFolders();
+        $inboxFolder = $client->getFolder('INBOX');
 
-        // Loop through every Mailbox
-        /** @var \Webklex\PHPIMAP\Folder $folder */
-        foreach ($folders as $folder) {
-            // Get all unseen Messages of the current Mailbox $folder
-            /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
-            $messages = $folder->messages()->unseen()->get();
-            if(count($messages) < 1){
-                echo 'No new emails found !';
-                return;
-            }
 
-            /** @var \Webklex\PHPIMAP\Message $message */
-            foreach ($messages as $message) {
-                echo '<div style="background: #ddd; padding: 20px; margin-bottom: 20px;">';
-                $sender = $message->getFrom()[0];
-                echo '<p>Name : ' . $sender->personal . '</p>';
-                echo '<p>Email: ' . $sender->mailbox . '@' . $sender->host . '</p>';
-                //echo '<p>From: ' . $message->getFrom()[0]->mailbox . '@' . $message->getFrom()[0]->host . '</p>';
-                echo '<div style="margin-bottom: 20px;"><h3>' . $message->getSubject() . '</h3></div>';
-                echo $message->getHTMLBody();
-                echo '</div>';
-
-                Reply::create([
-                    'from_name' => $sender->personal,
-                    'from_address' => $sender->mailbox . '@' . $sender->host,
-                    'to' => $mailbox->mail_username,
-                    'subject' => $message->getSubject(),
-                    'body' => $message->getHTMLBody()
-                ]);
-
-                $message->setFlag(['Seen']);
-            }
+        $twoDaysAgo = now()->subDays(2);
+        $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
+        if(count($messages) < 1){
+            echo 'No new emails found !';
+            return;
         }
+
+        /** @var \Webklex\PHPIMAP\Message $message */
+        foreach ($messages as $message) {
+            echo '<div style="background: #ddd; padding: 20px; margin-bottom: 20px;">';
+            $sender = $message->getFrom()[0];
+            echo '<p>Name : ' . $sender->personal . '</p>';
+            echo '<p>Email: ' . $sender->mailbox . '@' . $sender->host . '</p>';
+            //echo '<p>From: ' . $message->getFrom()[0]->mailbox . '@' . $message->getFrom()[0]->host . '</p>';
+            echo '<div style="margin-bottom: 20px;"><h3>' . $message->getSubject() . '</h3></div>';
+            //echo $message->getHTMLBody();
+            echo '</div>';
+
+            Reply::create([
+                'from_name' => $sender->personal,
+                'from_address' => $sender->mailbox . '@' . $sender->host,
+                'to' => $mailbox->mail_username,
+                'subject' => $message->getSubject(),
+                'body' => $message->getHTMLBody()
+            ]);
+
+            $message->setFlag(['Seen']);
+        }
+
 
         // Disconnect from the IMAP server
         $client->disconnect();
@@ -101,52 +97,49 @@ class ReplyController extends Controller
         config(['imap.accounts.default.password' => $mailbox->mail_password ]);
 
 
-        /** @var \Webklex\PHPIMAP\Client $client */
-        $client = Client::account('default');
+       /** @var \Webklex\PHPIMAP\Client $client */
+       $client = Client::account('default');  
 
-        // Connect to the IMAP Server
-        $client->connect();
+       // Connect to the IMAP Server
+       $client->connect();
 
-        // Get all Mailboxes
-        /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
-        $folders = $client->getFolders();
+       // Get all Mailboxes
+       /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
+       $inboxFolder = $client->getFolder('INBOX');
 
-        // Loop through every Mailbox
-        /** @var \Webklex\PHPIMAP\Folder $folder */
-        foreach ($folders as $folder) {
-            // Get all unseen Messages of the current Mailbox $folder
-            /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
-            $messages = $folder->messages()->unseen()->get();
-            if(count($messages) < 1){
-                echo 'No new emails found !';
-                return;
-            }
 
-            /** @var \Webklex\PHPIMAP\Message $message */
-            foreach ($messages as $message) {
-                echo '<div style="background: #ddd; padding: 20px; margin-bottom: 20px;">';
-                $sender = $message->getFrom()[0];
-                echo '<p>Name : ' . $sender->personal . '</p>';
-                echo '<p>Email: ' . $sender->mailbox . '@' . $sender->host . '</p>';
-                //echo '<p>From: ' . $message->getFrom()[0]->mailbox . '@' . $message->getFrom()[0]->host . '</p>';
-                echo '<div style="margin-bottom: 20px;"><h3>' . $message->getSubject() . '</h3></div>';
-                //echo $message->getHTMLBody();
-                echo '</div>';
+       $twoDaysAgo = now()->subDays(2);
+       $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
+       if(count($messages) < 1){
+           echo 'No new emails found !';
+           return;
+       }
 
-                Reply::create([
-                    'from_name' => $sender->personal,
-                    'from_address' => $sender->mailbox . '@' . $sender->host,
-                    'to' => $mailbox->mail_username,
-                    'subject' => $message->getSubject(),
-                    'body' => $message->getHTMLBody()
-                ]);
+       /** @var \Webklex\PHPIMAP\Message $message */
+       foreach ($messages as $message) {
+           echo '<div style="background: #ddd; padding: 20px; margin-bottom: 20px;">';
+           $sender = $message->getFrom()[0];
+           echo '<p>Name : ' . $sender->personal . '</p>';
+           echo '<p>Email: ' . $sender->mailbox . '@' . $sender->host . '</p>';
+           //echo '<p>From: ' . $message->getFrom()[0]->mailbox . '@' . $message->getFrom()[0]->host . '</p>';
+           echo '<div style="margin-bottom: 20px;"><h3>' . $message->getSubject() . '</h3></div>';
+           //echo $message->getHTMLBody();
+           echo '</div>';
 
-                $message->setFlag(['Seen']);
-            }
-        }
+           Reply::create([
+               'from_name' => $sender->personal,
+               'from_address' => $sender->mailbox . '@' . $sender->host,
+               'to' => $mailbox->mail_username,
+               'subject' => $message->getSubject(),
+               'body' => $message->getHTMLBody()
+           ]);
 
-        // Disconnect from the IMAP server
-        $client->disconnect();
+           $message->setFlag(['Seen']);
+       }
+
+
+       // Disconnect from the IMAP server
+       $client->disconnect();
 
     }
 
