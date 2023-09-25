@@ -137,7 +137,7 @@ class EmailController extends Controller
     }
 
     public function showOpened($id){
-        $emails = Email::where('campaign_id', $id)->where('opened','>', 0)->orderBy('opened', 'desc')->paginate(20);
+        $emails = Email::where('campaign_id', $id)->where('opened','>', 0)->orderBy('id', 'desc')->paginate(20);
         return view('emails', [
             'emails' => $emails
         ]);
