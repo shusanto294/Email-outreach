@@ -65,17 +65,18 @@ return [
             "extensions" => []
         ],
 
-       /*
+       
+        /*
+
         'gmail' => [ // account identifier
             'host' => 'imap.gmail.com',
             'port' => 993,
             'encryption' => 'ssl',
             'validate_cert' => true,
-            'username' => 'shusanto@gmail.com',
+            'username' => 'example.gmail.com',
             'password' => 'password',
             'authentication' => 'oauth',
         ],
-
          
         'another' => [ // account identifier
             'host' => '',

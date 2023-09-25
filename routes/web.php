@@ -101,7 +101,7 @@ Route::get('/mailbox/{id}/delete', [MailboxController::class, 'delete'])->middle
 //Replies
 Route::get('/replies', [ReplyController::class, 'index'])->middleware(['auth', 'verified'])->name('replies.index');
 Route::get('/check-replies', [ReplyController::class, 'checkRepliesFromAllInbox'])->name('replies.check.from.all.inboxes');
-Route::get('/check-replies/{mailboxID}', [ReplyController::class, 'checkReplies'])->middleware(['auth', 'verified'])->name('replies.check');
+Route::get('/check-replies/{mailboxID}', [ReplyController::class, 'checkReplies'])->name('replies.check');
 Route::get('/delete-reply/{id}', [ReplyController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete.reply');
 Route::get('/reply/{id}', [ReplyController::class, 'show'])->middleware(['auth', 'verified'])->name('show.reply');
 
