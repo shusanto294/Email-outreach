@@ -68,7 +68,7 @@ class ReplyController extends Controller
                 'body' => $message->getHTMLBody()
             ]);
 
-            $message->setFlag(['Seen']);
+            //$message->setFlag(['Seen']);
         }
 
 
@@ -134,7 +134,7 @@ class ReplyController extends Controller
                'body' => $message->getHTMLBody()
            ]);
 
-           $message->setFlag(['Seen']);
+           //$message->setFlag(['Seen']);
        }
 
 

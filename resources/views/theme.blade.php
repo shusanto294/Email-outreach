@@ -61,9 +61,9 @@
               @php
                   $reliesNotSeen = App\Models\Reply::where('seen', '<', 1)->count();
               @endphp
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/replies">Replies {{ $reliesNotSeen? '('.$reliesNotSeen.')' : '' }}</a>
-              </li>
+              </li> --}}
 
             </ul>
           </div>
