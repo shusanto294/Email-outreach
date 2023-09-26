@@ -54,6 +54,8 @@ class EmailController extends Controller
                 $mailbox = Mailbox::orderBy('id', 'asc')->first();
             }
 
+            return $mailbox;
+
             config(['mail.mailers.smtp.host' => $mailbox->mail_smtp_host ]);
             config(['mail.mailers.smtp.port' => $mailbox->mail_smtp_port ]);
             config(['mail.mailers.smtp.username' => $mailbox->mail_username ]);
@@ -61,39 +63,39 @@ class EmailController extends Controller
             config(['mail.from.address' => $mailbox->mail_username ]);
             config(['mail.from.name' => $mailbox->mail_from_name ]);
             
-            $email = Email::where('sent', 0)->orderBy('id', 'asc')->first();
-            if($email){
-                $campaign = Campaign::find($email->campaign_id);
-                $lead = Lead::find($email->lead_id);
+            // $email = Email::where('sent', 0)->orderBy('id', 'asc')->first();
+            // if($email){
+            //     $campaign = Campaign::find($email->campaign_id);
+            //     $lead = Lead::find($email->lead_id);
 
-                $email->sent += 1;
-                $email->mailbox_id = $mailbox->id;
-                $email->sent_from = $mailbox->mail_username;
-                $email->save(); 
+            //     $email->sent += 1;
+            //     $email->mailbox_id = $mailbox->id;
+            //     $email->sent_from = $mailbox->mail_username;
+            //     $email->save(); 
 
-                $subject = $email->subject;
-                $body = $email->body;
+            //     $subject = $email->subject;
+            //     $body = $email->body;
                 
-                $uniqueId = uniqid(rand(), true);
-                $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
-                $finalUniqueId = $prefix . $uniqueId;
-                $trackingUrl = route('track.email', ['id' => $email->id, 'uid' => $finalUniqueId]);
-                $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
+            //     $uniqueId = uniqid(rand(), true);
+            //     $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
+            //     $finalUniqueId = $prefix . $uniqueId;
+            //     $trackingUrl = route('track.email', ['id' => $email->id, 'uid' => $finalUniqueId]);
+            //     $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
 
-                $body .= $trackingPixel;
+            //     $body .= $trackingPixel;
 
-                Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
-                    $message->to($lead->email)->subject($subject);
-                });
+            //     Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
+            //         $message->to($lead->email)->subject($subject);
+            //     });
 
-                $lastEmailSentFrom->value = $mailbox->id;
-                $lastEmailSentFrom->save();
+            //     $lastEmailSentFrom->value = $mailbox->id;
+            //     $lastEmailSentFrom->save();
 
-                return $email;
-                //return $mailbox;
-            }else{
-                echo 'No Emails to send'; 
-            }
+            //     return $email;
+            //     //return $mailbox;
+            // }else{
+            //     echo 'No Emails to send'; 
+            // }
 
         }else{
             echo 'Emails sendings are off right now';
