@@ -50,6 +50,9 @@ class EmailController extends Controller
 
             $lastEmailSentFrom = Setting::where('key', 'last_email_sent_from')->first();
             $mailbox = Mailbox::where('id', '>', $lastEmailSentFrom->value)->orderBy('id', 'asc')->first();
+            var_dump($mailbox);
+
+
             if(!$mailbox){
                 $mailbox = Mailbox::orderBy('id', 'asc')->first();
             }
