@@ -41,17 +41,23 @@ table a:hover{
         <th scope="col">Action</th>
     </thead>
     <tbody>
+
+    @php
+      $lastCampaign = App\Models\Campaign::orderby('id', 'desc')->first();
+      echo $lastCampaign->id;
+    @endphp
+
         @foreach ($mailboxes as $mailbox)
             <tr>
                 <td>{{ $mailbox->id }}</td>
                 <td><a href="{{ route('mailbox.show', $mailbox->id) }}">{{ $mailbox->mail_username }}</a> </td>
                 @php
-                    $totalEmailSent = App\Models\Email::where('mailbox_id', $mailbox->id)->count();
+                    $totalEmailSent = App\Models\Email::where('campaign_id', $lastCampaign->id)->where('mailbox_id', $mailbox->id)->count();
                 @endphp
                 <td>{{ $totalEmailSent }}</td>
                 
                 @php
-                    $totalEmailOpened = App\Models\Email::where('mailbox_id', $mailbox->id)->where('opened', '>' , 0)->count();
+                    $totalEmailOpened = App\Models\Email::where('campaign_id', $lastCampaign->id)->where('mailbox_id', $mailbox->id)->where('opened', '>' , 0)->count();
                 @endphp
                 <td>{{ $totalEmailOpened }}</td>
                 <td>
