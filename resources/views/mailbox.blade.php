@@ -44,7 +44,6 @@ table a:hover{
 
     @php
       $lastCampaign = App\Models\Campaign::orderby('id', 'desc')->first();
-      echo $lastCampaign->id;
     @endphp
 
         @foreach ($mailboxes as $mailbox)
