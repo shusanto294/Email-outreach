@@ -42,8 +42,8 @@ class ReplyController extends Controller
         $inboxFolder = $client->getFolder('INBOX');
 
 
-        $twoDaysAgo = now()->subDays(2);
-        $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
+        // $twoDaysAgo = now()->subDays(2);
+        $messages = $inboxFolder->messages()->unseen()->limit(10)->get();
         if(count($messages) < 1){
             echo 'No new emails found !';
             return;
@@ -60,15 +60,21 @@ class ReplyController extends Controller
             //echo $message->getHTMLBody();
             echo '</div>';
 
-            Reply::create([
-                'from_name' => $sender->personal,
-                'from_address' => $sender->mailbox . '@' . $sender->host,
-                'to' => $mailbox->mail_username,
-                'subject' => $message->getSubject(),
-                'body' => $message->getHTMLBody()
-            ]);
+            $substring = "?utf";
 
-            //$message->setFlag(['Seen']);
+            if (strpos($message->getSubject(), $substring) && strpos($sender->personal, $substring)) {
+                // echo 'Dont store the reply on database';
+            } else {
+                Reply::create([
+                    'from_name' => $sender->personal,
+                    'from_address' => $sender->mailbox . '@' . $sender->host,
+                    'to' => $mailbox->mail_username,
+                    'subject' => $message->getSubject(),
+                    'body' => $message->getHTMLBody()
+                ]);
+            }
+
+            $message->setFlag(['Seen']);
         }
 
 
@@ -108,8 +114,8 @@ class ReplyController extends Controller
        $inboxFolder = $client->getFolder('INBOX');
 
 
-       $twoDaysAgo = now()->subDays(2);
-       $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
+    //    $twoDaysAgo = now()->subDays(2);
+       $messages = $inboxFolder->messages()->unseen()->limit(10)->get();
        if(count($messages) < 1){
            echo 'No new emails found !';
            return;
@@ -126,15 +132,21 @@ class ReplyController extends Controller
            //echo $message->getHTMLBody();
            echo '</div>';
 
-           Reply::create([
-               'from_name' => $sender->personal,
-               'from_address' => $sender->mailbox . '@' . $sender->host,
-               'to' => $mailbox->mail_username,
-               'subject' => $message->getSubject(),
-               'body' => $message->getHTMLBody()
-           ]);
+           $substring = "?utf";
 
-           //$message->setFlag(['Seen']);
+           if (strpos($message->getSubject(), $substring) && strpos($sender->personal, $substring)) {
+               // echo 'Dont store the reply on database';
+           } else {
+               Reply::create([
+                   'from_name' => $sender->personal,
+                   'from_address' => $sender->mailbox . '@' . $sender->host,
+                   'to' => $mailbox->mail_username,
+                   'subject' => $message->getSubject(),
+                   'body' => $message->getHTMLBody()
+               ]);
+           }
+
+           $message->setFlag(['Seen']);
        }
 
 

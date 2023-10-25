@@ -36,7 +36,7 @@ table a:hover{
         <th scope="col">Sent</th>
         <th scope="col">Opened</th>
         <th scope="col">Open rate</th>
-        {{-- <th scope="col">Replies</th> --}}
+        <th scope="col">Replies</th>
         <th scope="col">Test</th>
         <th scope="col">Action</th>
     </thead>
@@ -69,7 +69,7 @@ table a:hover{
                     }
                   @endphp
                 </td>
-                {{-- <td><a target="_blank" href="{{ route('replies.check', $mailbox->id) }}">Check Replies</a></td> --}}
+                <td><a target="_blank" href="{{ route('replies.check', $mailbox->id) }}">Check Replies</a></td>
                 <td><a href="{{ route('test.email', $mailbox->id) }}">Send Test Email</a></td>
                 <td><a href="{{ route('mailbox.delete', $mailbox->id) }}">Delete</a></td>
               </tr>
