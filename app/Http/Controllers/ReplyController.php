@@ -42,8 +42,9 @@ class ReplyController extends Controller
         $inboxFolder = $client->getFolder('INBOX');
 
 
-        // $twoDaysAgo = now()->subDays(2);
+        
         $messages = $inboxFolder->messages()->unseen()->limit(10)->get();
+        // $messages = $inboxFolder->messages()->all()->limit(10)->get();
         if(count($messages) < 1){
             echo 'No new emails found !';
             return;
@@ -60,17 +61,14 @@ class ReplyController extends Controller
             //echo $message->getHTMLBody();
             echo '</div>';
 
-            $substrings = [
-                "?utf", 
-                "Client configuration settings for",
-                "Mail delivery failed",
-                "Warning: message",
-                "Delivery Status Notification"
+            $ignores = [
+                "cpanel", 
+                "Mailer-Daemon"
             ];
             $shouldStore = true;
 
-            foreach ($substrings as $substring) {
-                if (strpos($message->getSubject(), $substring)) {
+            foreach ($ignores as $ignore) {
+                if ($sender->mailbox == $ignore) {
                     $shouldStore = false;
                     break;
                 }
@@ -144,31 +142,29 @@ class ReplyController extends Controller
            //echo $message->getHTMLBody();
            echo '</div>';
 
-            $substrings = [
-                            "?utf", 
-                            "Client configuration settings for",
-                            "Mail delivery failed",
-                            "Warning: message",
-                            "Delivery Status Notification"
-                        ];
-            $shouldStore = true;
-
-            foreach ($substrings as $substring) {
-                if (strpos($message->getSubject(), $substring)) {
-                    $shouldStore = false;
-                    break;
-                }
-            }
+        $ignores = [
+            "cpanel", 
+            "Mailer-Daemon"
+        ];
         
-            if ($shouldStore) {
-                Reply::create([
-                    'from_name' => $sender->personal,
-                    'from_address' => $sender->mailbox . '@' . $sender->host,
-                    'to' => $mailbox->mail_username,
-                    'subject' => $message->getSubject(),
-                    'body' => $message->getHTMLBody()
-                ]);
+        $shouldStore = true;
+
+        foreach ($ignores as $ignore) {
+            if ($sender->mailbox == $ignore) {
+                $shouldStore = false;
+                break;
             }
+        }
+    
+        if ($shouldStore) {
+            Reply::create([
+                'from_name' => $sender->personal,
+                'from_address' => $sender->mailbox . '@' . $sender->host,
+                'to' => $mailbox->mail_username,
+                'subject' => $message->getSubject(),
+                'body' => $message->getHTMLBody()
+            ]);
+        }
 
            $message->setFlag(['Seen']);
        }
