@@ -61,12 +61,12 @@ class ReplyController extends Controller
             echo '</div>';
 
             $substrings = [
-                            "?utf", 
-                            "Client configuration settings for",
-                            "Mail delivery failed: returning message to sender",
-                            "Warning: message",
-                            "Delivery Status Notification"
-                        ];
+                "?utf", 
+                "Client configuration settings for",
+                "Mail delivery failed",
+                "Warning: message",
+                "Delivery Status Notification"
+            ];
             $shouldStore = true;
 
             foreach ($substrings as $substring) {
@@ -147,7 +147,7 @@ class ReplyController extends Controller
             $substrings = [
                             "?utf", 
                             "Client configuration settings for",
-                            "Mail delivery failed: returning message to sender",
+                            "Mail delivery failed",
                             "Warning: message",
                             "Delivery Status Notification"
                         ];
