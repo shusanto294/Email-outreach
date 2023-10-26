@@ -60,11 +60,23 @@ class ReplyController extends Controller
             //echo $message->getHTMLBody();
             echo '</div>';
 
-            $substring = "?utf";
+            $substrings = [
+                            "?utf", 
+                            "Client configuration settings for",
+                            "Mail delivery failed: returning message to sender",
+                            "Warning: message",
+                            "Delivery Status Notification (Failure)"
+                        ];
+            $shouldStore = true;
 
-            if (strpos($message->getSubject(), $substring) && strpos($sender->personal, $substring)) {
-                // echo 'Dont store the reply on database';
-            } else {
+            foreach ($substrings as $substring) {
+                if (strpos($message->getSubject(), $substring)) {
+                    $shouldStore = false;
+                    break;
+                }
+            }
+        
+            if ($shouldStore) {
                 Reply::create([
                     'from_name' => $sender->personal,
                     'from_address' => $sender->mailbox . '@' . $sender->host,
@@ -132,19 +144,31 @@ class ReplyController extends Controller
            //echo $message->getHTMLBody();
            echo '</div>';
 
-           $substring = "?utf";
+            $substrings = [
+                            "?utf", 
+                            "Client configuration settings for",
+                            "Mail delivery failed: returning message to sender",
+                            "Warning: message",
+                            "Delivery Status Notification (Failure)"
+                        ];
+            $shouldStore = true;
 
-           if (strpos($message->getSubject(), $substring) && strpos($sender->personal, $substring)) {
-               // echo 'Dont store the reply on database';
-           } else {
-               Reply::create([
-                   'from_name' => $sender->personal,
-                   'from_address' => $sender->mailbox . '@' . $sender->host,
-                   'to' => $mailbox->mail_username,
-                   'subject' => $message->getSubject(),
-                   'body' => $message->getHTMLBody()
-               ]);
-           }
+            foreach ($substrings as $substring) {
+                if (strpos($message->getSubject(), $substring)) {
+                    $shouldStore = false;
+                    break;
+                }
+            }
+        
+            if ($shouldStore) {
+                Reply::create([
+                    'from_name' => $sender->personal,
+                    'from_address' => $sender->mailbox . '@' . $sender->host,
+                    'to' => $mailbox->mail_username,
+                    'subject' => $message->getSubject(),
+                    'body' => $message->getHTMLBody()
+                ]);
+            }
 
            $message->setFlag(['Seen']);
        }
