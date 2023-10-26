@@ -95,7 +95,7 @@
         <th scope="col">Name</th>
         <th scope="col">Website</th>
         <th scope="col">Email</th>
-        <th scope="col"><i class="fa-solid fa-circle-check"></i></th>
+        {{-- <th scope="col"><i class="fa-solid fa-circle-check"></i></th> --}}
       </tr>
     </thead>
     <tbody>
@@ -108,8 +108,7 @@
               </td>
               <td>{{ $lead->company_website }}</td>
               <td>{{ $lead->email }}</td>
-              <td>{!! $lead->verified == 'true' ? '<i style="color: green;" class="fa-solid fa-circle-check"></i>' : '<i style="color: red;" class="fa-regular fa-circle-xmark"></i>' !!}</td>
-
+              {{-- <td>{!! $lead->verified == 'true' ? '<i style="color: green;" class="fa-solid fa-circle-check"></i>' : '<i style="color: red;" class="fa-regular fa-circle-xmark"></i>' !!}</td> --}}
             </tr>
         @endforeach
     </tbody>
