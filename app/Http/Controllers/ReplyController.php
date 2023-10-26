@@ -65,7 +65,7 @@ class ReplyController extends Controller
                             "Client configuration settings for",
                             "Mail delivery failed: returning message to sender",
                             "Warning: message",
-                            "Delivery Status Notification (Failure)"
+                            "Delivery Status Notification"
                         ];
             $shouldStore = true;
 
@@ -149,7 +149,7 @@ class ReplyController extends Controller
                             "Client configuration settings for",
                             "Mail delivery failed: returning message to sender",
                             "Warning: message",
-                            "Delivery Status Notification (Failure)"
+                            "Delivery Status Notification"
                         ];
             $shouldStore = true;
 
