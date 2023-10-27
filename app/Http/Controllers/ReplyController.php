@@ -63,7 +63,8 @@ class ReplyController extends Controller
 
             $ignores = [
                 "cpanel", 
-                "Mailer-Daemon"
+                "Mailer-Daemon",
+                "mailer-daemon"
             ];
             $shouldStore = true;
 
@@ -144,7 +145,8 @@ class ReplyController extends Controller
 
         $ignores = [
             "cpanel", 
-            "Mailer-Daemon"
+            "Mailer-Daemon",
+            "mailer-daemon"
         ];
         
         $shouldStore = true;

@@ -70,7 +70,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          margin: 0 auto;
+          margin-right: 15px;
       }
       #sendEmailsForm {
     display: flex;
@@ -151,6 +151,10 @@ form#sendEmailsForm p {
     margin-right: 20px;
     font-weight: bold;
 }
+.opened-count-and-time{
+  display: flex;
+  justify-content: center;
+}
     </style>
 @endsection
 
@@ -210,7 +214,7 @@ form#sendEmailsForm p {
                 {!! $email->sent == 0 ? '' : '<i class="fa-solid fa-check"></i>' !!}
               </td>
               <td style="text-align: center;">
-                {!! $email->opened == 0 ? '' : '<div class="opened">'.$email->opened.'</div>' !!}
+                {!! $email->opened == 0 ? '' : '<div class="opened-count-and-time"><div class="opened">'.$email->opened.'</div>'. \Carbon\Carbon::parse($email->updated_at)->format('h:i A'). '</div>' !!}
               </td>
             </tr>
         @endforeach
