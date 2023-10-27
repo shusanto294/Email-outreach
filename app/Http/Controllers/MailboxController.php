@@ -16,7 +16,7 @@ class MailboxController extends Controller
      */
     public function index()
     {
-        $mailboxes = Mailbox::paginate(10);
+        $mailboxes = Mailbox::paginate(50);
         return view('mailbox', [
             'mailboxes' => $mailboxes
         ]);
