@@ -89,11 +89,9 @@ class EmailController extends Controller
 
                 $body .= $trackingPixel;
 
-                /*
                 Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
                     $message->to($lead->email)->subject($subject);
                 });
-                */
 
                 return $email;
                 //return $mailbox;
