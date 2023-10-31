@@ -94,23 +94,6 @@
 
 @section('content')
 
-    {{-- <form action="{{ route('settings.send-emails') }}" method="POST" class="email-switch" id="sendEmailsForm">
-        @csrf
-        <p>Send emails</p>
-        <label class="switch">
-        @php
-            $sendEmailsSetting = App\Models\Setting::where('key', 'send_emails')->first();
-            $sendEmails = 'off';
-            if($sendEmailsSetting){
-                $sendEmails = $sendEmailsSetting->value;
-            }
-        @endphp
-        <input type="checkbox" name="send_emails" id="sendEmails" {{ $sendEmails == 'on' ? 'checked' : '' }}>
-        <span class="slider round"></span>
-        </label>
-    </form> --}}
-
-
     <div class="row mb-5">
         <div class="col-lg-3">
             <div class="info-box">
@@ -124,7 +107,7 @@
         <div class="col-lg-3">
             <div class="info-box">
                 @php
-                    $totalEmailNotSentCount = App\Models\Email::where('sent', 0)->count();
+                    $totalEmailNotSentCount = App\Models\Email::where('sent', '=' , null)->count();
                 @endphp
                 <div class="number">{{ $totalEmailNotSentCount }}</div>
                 <div class="text">Emails to be sent</div>
@@ -133,7 +116,7 @@
         <div class="col-lg-3">
             <div class="info-box">
                 @php
-                    $totalEmailSentCount = App\Models\Email::where('sent', 1)->count();
+                    $totalEmailSentCount = App\Models\Email::where('sent', '!=' , null)->count();
                 @endphp
                 <div class="number">{{ $totalEmailSentCount }}</div>
                 <div class="text">Emails sent</div>
@@ -142,7 +125,7 @@
         <div class="col-lg-3">
             <div class="info-box">
                 @php
-                    $totalEmailsOpened = App\Models\Email::where('opened', '>', 0)->count();
+                    $totalEmailsOpened = App\Models\Email::where('opened', '!=', 0)->count();
                 @endphp
                 <div class="number">{{ $totalEmailsOpened }}</div>
                 <div class="text">Emails opened</div>

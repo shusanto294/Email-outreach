@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Carbon\Carbon;
 
 class EmailController extends Controller
 {   
@@ -43,7 +44,9 @@ class EmailController extends Controller
     }
 
     public function send(){
-        
+        $currentTime = Carbon::now();
+        //return $currentTime;
+
         $sendEmailsSetting = Setting::where('key', 'send_emails')->first();
 
         if($sendEmailsSetting->value == 'on'){
@@ -65,12 +68,12 @@ class EmailController extends Controller
             config(['mail.from.address' => $mailbox->mail_username ]);
             config(['mail.from.name' => $mailbox->mail_from_name ]);
             
-            $email = Email::where('sent', 0)->orderBy('id', 'asc')->first();
+            $email = Email::where('sent', null)->orderBy('id', 'asc')->first();
             if($email){
                 $campaign = Campaign::find($email->campaign_id);
                 $lead = Lead::find($email->lead_id);
 
-                $email->sent += 1;
+                $email->sent = $currentTime;
                 $email->mailbox_id = $mailbox->id;
                 $email->sent_from = $mailbox->mail_username;
                 $email->save(); 
@@ -86,9 +89,11 @@ class EmailController extends Controller
 
                 $body .= $trackingPixel;
 
+                /*
                 Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
                     $message->to($lead->email)->subject($subject);
                 });
+                */
 
                 return $email;
                 //return $mailbox;
@@ -99,7 +104,6 @@ class EmailController extends Controller
         }else{
             echo 'Emails sendings are off right now';
         }
-        
 
     }
 
@@ -146,8 +150,10 @@ class EmailController extends Controller
 
     public function trackEmail($id){
         $email = Email::find($id);
+        $currentTime = Carbon::now();
         if ($email) {
-            $email->opened += 1;
+            $email->opened = $currentTime;
+            $email->opened_count += 1;
             $email->save();
     
             $trackingPixelPath = public_path('images/mypixel.png');

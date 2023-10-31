@@ -70,7 +70,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          margin-right: 15px;
+          margin-left: 15px;
       }
       #sendEmailsForm {
     display: flex;
@@ -211,10 +211,11 @@ form#sendEmailsForm p {
                 <a href="{{ route('email.single', $email->id) }}">{{ $email->subject }}</a>
               </td>
               <td>
-                {!! $email->sent == 0 ? '' : '<i class="fa-solid fa-check"></i>' !!}
+                {!! \Carbon\Carbon::parse($email->sent)->format('h:i A')  !!}
               </td>
               <td style="text-align: center;">
-                {!! $email->opened == 0 ? '' : '<div class="opened-count-and-time"><div class="opened">'.$email->opened.'</div>'. \Carbon\Carbon::parse($email->updated_at)->format('h:i A'). '</div>' !!}
+                {{-- {!! $email->opened == 0 ? '' : '<div class="opened-count-and-time"><div class="opened">'.$email->opened_count.'</div>'. \Carbon\Carbon::parse($email->updated_at)->format('h:i A'). '</div>' !!} --}}
+                {!! $email->opened == 0 ? '' :  '<div class="opened-count-and-time">' . \Carbon\Carbon::parse($email->opened)->format('h:i A') . '<div class="opened">'.$email->opened_count.'</div>'. '</div>'  !!}
               </td>
             </tr>
         @endforeach
