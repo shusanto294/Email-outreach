@@ -211,7 +211,7 @@ form#sendEmailsForm p {
                 <a href="{{ route('email.single', $email->id) }}">{{ $email->subject }}</a>
               </td>
               <td>
-                {!! \Carbon\Carbon::parse($email->sent)->format('h:i A')  !!}
+                {!! $email->opened ? \Carbon\Carbon::parse($email->sent)->format('h:i A') : ''  !!}
               </td>
               <td style="text-align: center;">
                 {{-- {!! $email->opened == 0 ? '' : '<div class="opened-count-and-time"><div class="opened">'.$email->opened_count.'</div>'. \Carbon\Carbon::parse($email->updated_at)->format('h:i A'). '</div>' !!} --}}
