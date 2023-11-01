@@ -97,6 +97,7 @@ Route::post('/mailbox/create', [MailboxController::class, 'create'])->middleware
 Route::get('/mailbox/{id}', [MailboxController::class, 'show'])->middleware(['auth', 'verified'])->name('mailbox.show');
 Route::post('/mailbox/{id}/update', [MailboxController::class, 'update'])->middleware(['auth', 'verified'])->name('mailbox.update');
 Route::get('/mailbox/{id}/delete', [MailboxController::class, 'delete'])->middleware(['auth', 'verified'])->name('mailbox.delete');
+Route::get('/check-deliveribility/{id}', [MailboxController::class, 'checkDeliveribility'])->name('mailbox.check.deliveribility');
 
 //Replies
 Route::get('/replies', [ReplyController::class, 'index'])->middleware(['auth', 'verified'])->name('replies.index');
