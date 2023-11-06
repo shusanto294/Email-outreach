@@ -50,6 +50,10 @@ class ReplyController extends Controller
             return;
         }
 
+        $keywords = Setting::where('key', 'ignore_replies_keywords')->first();
+        $cleanedString = str_replace(', ', ',', $keywords->value);
+        $ignores = explode(",", $cleanedString);
+
         /** @var \Webklex\PHPIMAP\Message $message */
         foreach ($messages as $message) {
             echo '<div style="background: #ddd; padding: 20px; margin-bottom: 20px;">';
@@ -60,32 +64,36 @@ class ReplyController extends Controller
             echo '<div style="margin-bottom: 20px;"><h3>' . $message->getSubject() . '</h3></div>';
             //echo $message->getHTMLBody();
             echo '</div>';
-
-            $ignores = [
-                "cpanel", 
-                "Mailer-Daemon",
-                "mailer-daemon"
-            ];
-            $shouldStore = true;
-
-            foreach ($ignores as $ignore) {
-                if ($sender->mailbox == $ignore) {
-                    $shouldStore = false;
-                    break;
-                }
-            }
-        
-            if ($shouldStore) {
-                Reply::create([
-                    'from_name' => $sender->personal,
-                    'from_address' => $sender->mailbox . '@' . $sender->host,
-                    'to' => $mailbox->mail_username,
-                    'subject' => $message->getSubject(),
-                    'body' => $message->getHTMLBody()
-                ]);
-            }
-
-            $message->setFlag(['Seen']);
+ 
+ 
+             $shouldStore = true;
+             $emailString = $sender->personal. $sender->mailbox. $sender->host. $message->getSubject(). $message->getHTMLBody();
+             
+ 
+            //  var_dump($sender);
+            //  echo '<hr>';
+            //  var_dump($message);
+ 
+             foreach ($ignores as $ignore) {
+                 if (strpos($emailString, $ignore)) {
+                     echo "Substring found in the text.";
+                     $shouldStore = false;
+                     break;
+                 }
+             }
+     
+             if ($shouldStore) {
+                 Reply::create([
+                     'from_name' => $sender->personal,
+                     'from_address' => $sender->mailbox . '@' . $sender->host,
+                     'to' => $mailbox->mail_username,
+                     'subject' => $message->getSubject(),
+                     'body' => $message->getHTMLBody()
+                 ]);
+             }
+ 
+             $message->setFlag(['Seen']);
+ 
         }
 
 
@@ -132,6 +140,10 @@ class ReplyController extends Controller
            return;
        }
 
+       $keywords = Setting::where('key', 'ignore_replies_keywords')->first();
+       $cleanedString = str_replace(', ', ',', $keywords->value);
+       $ignores = explode(",", $cleanedString);
+
        /** @var \Webklex\PHPIMAP\Message $message */
        foreach ($messages as $message) {
            echo '<div style="background: #ddd; padding: 20px; margin-bottom: 20px;">';
@@ -143,32 +155,35 @@ class ReplyController extends Controller
            //echo $message->getHTMLBody();
            echo '</div>';
 
-        $ignores = [
-            "cpanel", 
-            "Mailer-Daemon",
-            "mailer-daemon"
-        ];
-        
-        $shouldStore = true;
 
-        foreach ($ignores as $ignore) {
-            if ($sender->mailbox == $ignore) {
-                $shouldStore = false;
-                break;
+            $shouldStore = true;
+            $emailString = $sender->personal. $sender->mailbox. $sender->host. $message->getSubject(). $message->getHTMLBody();
+            
+
+            // var_dump($sender);
+            // echo '<hr>';
+            // var_dump($message);
+
+            foreach ($ignores as $ignore) {
+                if (strpos($emailString, $ignore)) {
+                    echo "Substring found in the text.";
+                    $shouldStore = false;
+                    break;
+                }
             }
-        }
     
-        if ($shouldStore) {
-            Reply::create([
-                'from_name' => $sender->personal,
-                'from_address' => $sender->mailbox . '@' . $sender->host,
-                'to' => $mailbox->mail_username,
-                'subject' => $message->getSubject(),
-                'body' => $message->getHTMLBody()
-            ]);
-        }
+            if ($shouldStore) {
+                Reply::create([
+                    'from_name' => $sender->personal,
+                    'from_address' => $sender->mailbox . '@' . $sender->host,
+                    'to' => $mailbox->mail_username,
+                    'subject' => $message->getSubject(),
+                    'body' => $message->getHTMLBody()
+                ]);
+            }
 
-           $message->setFlag(['Seen']);
+            $message->setFlag(['Seen']);
+
        }
 
 

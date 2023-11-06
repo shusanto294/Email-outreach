@@ -111,7 +111,9 @@ class MailboxController extends Controller
         $emailAddresses = Setting::where('key', 'send_test_emails_to')->first();
 
         if($emailAddresses){
-            $recipients = explode(",", $emailAddresses->value);
+            $cleanedString = str_replace(', ', ',', $emailAddresses->value);
+            $recipients = explode(",", $cleanedString);
+
             $uniqueId = time() . mt_rand(1000, 9999);
             $subject = 'Test email - '. $uniqueId;
             $body = 'This is a test email generated from the outreach softwere to check the delivaribility - '. $uniqueId;
@@ -125,7 +127,7 @@ class MailboxController extends Controller
     
             echo 'Eails sent from: ' . $mailbox->mail_username;
             echo '<br><br>';
-            echo 'Eails sent to: ' . $emailAddresses->value;
+            echo 'Eails sent to: ' . $cleanedString;
         }else{
             echo 'No test emails set';
         }

@@ -26,7 +26,17 @@
         <label for="mail_from_name">Mail From Name</label>
         <input required type="text" name="mail_from_name" id="mail_from_name" value="{{ $mailbox->mail_from_name }}" placeholder="993" class="form-control mb-3">
 
-
+        <label for="status">Status</label>
+        <div class="form-check">
+            <input type="radio" required name="status" id="status_on" value="on" class="form-check-input" @if($mailbox->status == 'on') checked @endif>
+            <label for="status_on" class="form-check-label">On</label>
+        </div>
+        
+        <div class="form-check">
+            <input type="radio" required name="status" id="status_off" value="off" class="form-check-input" @if($mailbox->status == 'off') checked @endif>
+            <label for="status_off" class="form-check-label">Off</label>
+        </div>
+        
         <button type="submit" class="btn btn-secondary mt-3">Update Mailbox</button>
         <a class="btn btn-secondary mt-3" href="{{ route('test.email', $mailbox->id) }}">Send Test Email</a>
     </form>

@@ -37,12 +37,18 @@
         $lead = App\Models\Lead::find($email->lead_id);
     @endphp
     <h4>To</h4>
-    <p> <a style="color: #212529;" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a></p>
+    <p>Name: <a target="_blank" style="color: #212529;" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a></p>
+    <p>Comapny: <a target="_blank" style="color: #212529;" href="{{ $lead->company_website }}">{{ $lead->company }}</a></p>
     <h4>Subject:</h4>
     <p class="email-subject">{!! $email->opened_count == 0 ? '<i style="opacity: .5;" class="fa-regular fa-eye-slash"></i>' : '<span class="opened">'.$email->opened_count.'</span>' !!} {{ $email->subject }}</p>
 
     <h4>Body:</h4>
     {!! $email->body !!}
 
-    <div><a class="btn btn-secondary mt-4" href="{{ route('email.edit', $email->id) }}">Edit Email</a></div>
+    <div>
+      <a class="btn btn-secondary mt-4" href="{{ route('email.edit', $email->id) }}">Edit Email</a>
+      <a class="btn btn-secondary mt-4" href="mailto:{{ $lead->email }}?subject={{ $email->subject }}">Send manuallly</a>
+      <a class="btn btn-danger mt-4" href="{{ route('email.delete', $email->id) }}">Delete</a>
+      
+    </div>
 @endsection

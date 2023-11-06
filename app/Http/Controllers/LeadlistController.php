@@ -114,12 +114,17 @@ class LeadlistController extends Controller
 
                 $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $subject);
                 $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $body);
+                
+                $uniqueId = uniqid(rand(), true);
+                $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
+                $finalUniqueId = $prefix . $uniqueId;
 
                 $email = Email::create([
                     'subject' => $dynamicSubject,
                     'body' => $dynamicBody,
                     'campaign_id' => $campaign->id,
-                    'lead_id' => $lead->id
+                    'lead_id' => $lead->id,
+                    'uid' => $finalUniqueId
                 ]);
                 
             }

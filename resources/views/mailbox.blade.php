@@ -36,9 +36,10 @@ table a:hover{
         <th scope="col">Sent</th>
         <th scope="col">Opened</th>
         <th scope="col">Open rate</th>
-        <th scope="col">Deliveribility</th>
+        <th scope="col">Status</th>
+        <th scope="col">Test</th>
         <th scope="col">Replies</th>
-        <th scope="col">Action</th>
+        <th scope="col">Delete</th>
     </thead>
     <tbody>
 
@@ -73,7 +74,14 @@ table a:hover{
                     }
                   @endphp
                 </td>
-                <td><a target="_blank" href="{{ route('mailbox.check.deliveribility', $mailbox->id) }}">Check deliveribility</a></td>
+                <td>
+                  @if ($mailbox->status == 'on')
+                      <span style="background: green; color: #fff; padding: 2px 5px;">On</span>
+                  @else
+                    <span style="background: red; color: #fff; padding: 2px 5px;">Off</span>
+                  @endif
+                </td>
+                <td><a target="_blank" href="{{ route('mailbox.check.deliveribility', $mailbox->id) }}">Send test email</a></td>
                 <td><a target="_blank" href="{{ route('replies.check', $mailbox->id) }}">Check Replies</a></td>
                 <td><a href="{{ route('mailbox.delete', $mailbox->id) }}">Delete</a></td>
               </tr>
@@ -110,7 +118,18 @@ table a:hover{
 
             <label for="mail_from_address">Mail From Name</label>
             <input required type="text" name="mail_from_name" id="mail_from_address" value="Shusanto Modak" class="form-control mb-3">
+
+            <label for="status">Status</label>
+            <div class="form-check">
+              <input type="radio" required name="status" id="status_on" value="on" class="form-check-input">
+              <label for="status_on" class="form-check-label">On</label>
+            </div>
             
+            <div class="form-check">
+              <input type="radio" required name="status" id="status_off" value="off" class="form-check-input" checked>
+              <label for="status_off" class="form-check-label">Off</label>
+            </div>
+                
             <button type="submit" class="btn btn-secondary mt-3">Add Mailbox</button>
         </form>
         </div>

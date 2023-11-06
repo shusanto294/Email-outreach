@@ -52,7 +52,7 @@ class EmailController extends Controller
         if($sendEmailsSetting->value == 'on'){
 
             $lastEmailSentFrom = Setting::where('key', 'last_email_sent_from')->first();
-            $mailbox = Mailbox::where('id', '>', $lastEmailSentFrom->value)->orderBy('id', 'asc')->first();
+            $mailbox = Mailbox::where('id', '>', $lastEmailSentFrom->value)->where('status', 'on')->first();
 
             if(!$mailbox){
                 $mailbox = Mailbox::orderBy('id', 'asc')->first();
@@ -80,11 +80,8 @@ class EmailController extends Controller
 
                 $subject = $email->subject;
                 $body = $email->body;
-                
-                $uniqueId = uniqid(rand(), true);
-                $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
-                $finalUniqueId = $prefix . $uniqueId;
-                $trackingUrl = route('track.email', ['id' => $email->id, 'uid' => $finalUniqueId]);
+
+                $trackingUrl = route('track.email', ['uid' => $email->uid]);
                 $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
 
                 $body .= $trackingPixel;
@@ -105,32 +102,32 @@ class EmailController extends Controller
 
     }
 
-    public function testEmail($mailboxID){
-        $mailbox = Mailbox::find($mailboxID);
+    // public function testEmail($mailboxID){
+    //     $mailbox = Mailbox::find($mailboxID);
 
-        config(['mail.mailers.smtp.host' => $mailbox->mail_smtp_host ]);
-        config(['mail.mailers.smtp.port' => $mailbox->mail_smtp_port ]);
-        config(['mail.mailers.smtp.username' => $mailbox->mail_username ]);
-        config(['mail.mailers.smtp.password' => $mailbox->mail_password ]);
-        config(['mail.from.address' => $mailbox->mail_username ]);
-        config(['mail.from.name' => $mailbox->mail_from_name ]);
+    //     config(['mail.mailers.smtp.host' => $mailbox->mail_smtp_host ]);
+    //     config(['mail.mailers.smtp.port' => $mailbox->mail_smtp_port ]);
+    //     config(['mail.mailers.smtp.username' => $mailbox->mail_username ]);
+    //     config(['mail.mailers.smtp.password' => $mailbox->mail_password ]);
+    //     config(['mail.from.address' => $mailbox->mail_username ]);
+    //     config(['mail.from.name' => $mailbox->mail_from_name ]);
         
-        $uniqueId = time() . mt_rand(1000, 9999);
+    //     $uniqueId = time() . mt_rand(1000, 9999);
 
-        $subject = 'Test email - '. $uniqueId;
-        $body = 'This is a test email generated from the outreach softwere to check the delivaribility - '. $uniqueId;
+    //     $subject = 'Test email - '. $uniqueId;
+    //     $body = 'This is a test email generated from the outreach softwere to check the delivaribility - '. $uniqueId;
 
-        $testEmailAddress = Setting::where('key', 'send_test_emails_to')->first();
-        if($testEmailAddress){
-            $sendEmailTo = $testEmailAddress->value;
-            Mail::html($body, function (Message $message) use ($sendEmailTo, $subject) {
-                $message->to($sendEmailTo)->subject($subject);
-            });
-            return redirect()->back()->with('success', 'Test email sent successfully');
-        }else{
-            return redirect()->back()->with('error', 'No email address set to send test emails');
-        }
-    }
+    //     $testEmailAddress = Setting::where('key', 'send_test_emails_to')->first();
+    //     if($testEmailAddress){
+    //         $sendEmailTo = $testEmailAddress->value;
+    //         Mail::html($body, function (Message $message) use ($sendEmailTo, $subject) {
+    //             $message->to($sendEmailTo)->subject($subject);
+    //         });
+    //         return redirect()->back()->with('success', 'Test email sent successfully');
+    //     }else{
+    //         return redirect()->back()->with('error', 'No email address set to send test emails');
+    //     }
+    // }
 
     public function showSent($id){
         $emails = Email::where('campaign_id', $id)->latest()->paginate(20);
@@ -146,8 +143,8 @@ class EmailController extends Controller
         ]);
     }
 
-    public function trackEmail($id){
-        $email = Email::find($id);
+    public function trackEmail($uid){
+        $email = Email::where('uid', $uid)->first();
         $currentTime = Carbon::now();
         if ($email) {
             $email->opened = $currentTime;
@@ -165,6 +162,12 @@ class EmailController extends Controller
         }
         // Return something in case the email ID is not found
         abort(404);
+    }
+
+    public function delete($id){
+        $email = Email::find($id);
+        $email->delete();
+        return redirect('/emails')->with('success', 'Email deleted successfully');
     }
     
 

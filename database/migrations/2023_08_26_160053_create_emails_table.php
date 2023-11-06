@@ -24,6 +24,7 @@ return new class extends Migration
             $table->timestamp('sent')->nullable();
             $table->timestamp('opened')->nullable();
             $table->integer('opened_count')->default(0);
+            $table->string('uid');
             $table->timestamps();
         });
     }

@@ -160,6 +160,8 @@ form#sendEmailsForm p {
 
 @section('content')
 
+@include('alerts')
+
 <div class="row">
   <div class="col-lg-6 mb-3">
     <p><b>Email sending on/off</b></p>
@@ -193,6 +195,7 @@ form#sendEmailsForm p {
         <th scope="col">#ID</i></th>
         <th scope="col">To</i></th>
         <th scope="col">Subject</i></th>
+        {{-- <th scope="col">Delete</i></th> --}}
         <th scope="col">Sent</i></th>
         <th scope="col" style="text-align: center;">Opened</i></th>
       </tr>
@@ -210,6 +213,9 @@ form#sendEmailsForm p {
               <td>
                 <a href="{{ route('email.single', $email->id) }}">{{ $email->subject }}</a>
               </td>
+              {{-- <td>
+                <a style="color: red;" href="{{ route('email.delete', $email->id) }}">Delete</a>
+              </td> --}}
               <td>
                 {!! $email->sent ? \Carbon\Carbon::parse($email->sent)->format('h:i A') : ''  !!}
               </td>

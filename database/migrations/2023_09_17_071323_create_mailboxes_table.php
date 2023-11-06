@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('mail_username');
             $table->string('mail_password');
             $table->string('mail_from_name');
+            $table->string('status')->default('off');
             $table->timestamps();
         });
     }
