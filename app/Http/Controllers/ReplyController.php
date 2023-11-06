@@ -43,7 +43,7 @@ class ReplyController extends Controller
 
 
         
-        $messages = $inboxFolder->messages()->unseen()->limit(10)->get();
+        $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
         // $messages = $inboxFolder->messages()->all()->limit(10)->get();
         if(count($messages) < 1){
             echo 'No new emails found !';
@@ -134,7 +134,7 @@ class ReplyController extends Controller
 
 
     //    $twoDaysAgo = now()->subDays(2);
-       $messages = $inboxFolder->messages()->unseen()->limit(10)->get();
+       $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
        if(count($messages) < 1){
            echo 'No new emails found !';
            return;
