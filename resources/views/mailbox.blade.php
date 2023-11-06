@@ -121,12 +121,12 @@ table a:hover{
 
             <label for="status">Status</label>
             <div class="form-check">
-              <input type="radio" required name="status" id="status_on" value="on" class="form-check-input">
+              <input type="radio" required name="status" id="status_on" value="on" class="form-check-input" checked>
               <label for="status_on" class="form-check-label">On</label>
             </div>
             
             <div class="form-check">
-              <input type="radio" required name="status" id="status_off" value="off" class="form-check-input" checked>
+              <input type="radio" required name="status" id="status_off" value="off" class="form-check-input">
               <label for="status_off" class="form-check-label">Off</label>
             </div>
                 
