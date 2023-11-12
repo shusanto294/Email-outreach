@@ -47,7 +47,7 @@
 
     <div>
       <a class="btn btn-secondary mt-4" href="{{ route('email.edit', $email->id) }}">Edit Email</a>
-      <a class="btn btn-secondary mt-4" href="mailto:{{ $lead->email }}?subject={{ $email->subject }}">Send manuallly</a>
+      {{-- <a class="btn btn-secondary mt-4" href="mailto:{{ $lead->email }}?subject={{ $email->subject }}">Send manuallly</a> --}}
       <a class="btn btn-danger mt-4" href="{{ route('email.delete', $email->id) }}">Delete</a>
       
     </div>

@@ -16,10 +16,19 @@ table a:hover{
   text-decoration: underline;
 }
 
+.action-icons{
+    text-align: right;
+}
+.action-icons a{
+    margin: 5px;
+}
+
 </style>
 @endsection
 
 @section('content')
+
+@include('alerts')
 
 <p style="text-align: right">
   <!-- Button trigger modal -->
@@ -39,6 +48,7 @@ table a:hover{
         <th scope="col">Sent</th>
         <th scope="col">Opened</th>
         <th scope="col">Opene Rate</th>
+        <th scope="col" style="text-align: right">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -75,6 +85,15 @@ table a:hover{
                     }
                     
                   @endphp
+                </td>
+                <td>
+                  <div class="action-icons">
+                    <a href="{{ route('campaign.duplicate', $campaign->id) }}"><i class="fa-regular fa-paste"></i></a>
+                    <a href="{{ route('campaign.regerate_emails', $campaign->id) }}"><i class="fa-regular fa-envelope"></i></a>
+                    <a href="{{ route('campaign.delete',  $campaign->id) }}"><i class="fa-regular fa-trash-can"></i></a>
+                  </div>
+                  
+                  
                 </td>
             </tr>
         @endforeach

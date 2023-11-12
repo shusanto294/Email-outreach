@@ -91,24 +91,22 @@
     <thead>
       <tr>
         <th scope="col">#ID</i></th>
-        <th scope="col">Company</th>
         <th scope="col">Name</th>
+        <th scope="col">Company</th>
         <th scope="col">Website</th>
         <th scope="col">Email</th>
-        {{-- <th scope="col"><i class="fa-solid fa-circle-check"></i></th> --}}
       </tr>
     </thead>
     <tbody>
         @foreach ($leads as $lead)
             <tr>
               <td>{{ $lead->id }}</td>
-              <td><a class="website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company }}</a></td>
               <td>
                 <a class="name" target="_blank" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a>
               </td>
+              <td><a class="website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company }}</a></td>
               <td>{{ $lead->company_website }}</td>
               <td>{{ $lead->email }}</td>
-              {{-- <td>{!! $lead->verified == 'true' ? '<i style="color: green;" class="fa-solid fa-circle-check"></i>' : '<i style="color: red;" class="fa-regular fa-circle-xmark"></i>' !!}</td> --}}
             </tr>
         @endforeach
     </tbody>

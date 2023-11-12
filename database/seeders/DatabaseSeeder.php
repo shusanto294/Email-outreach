@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('settings')->insert([
             'key' => 'ignore_replies_keywords',
-            'value' => 'cpanel, Mailer-Daemon, mailer-daemon, CK14RRD, 34N2J7J, HJQJV3V, B2FF62E, TH175DY',
+            'value' => 'Automatic reply, Undeliverable, cpanel, Mailer-Daemon, mailer-daemon, warmy.io, CK14RRD, 34N2J7J, HJQJV3V, B2FF62E, TH175DY',
         ]);
 
         /* Email accounts */

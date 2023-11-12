@@ -127,7 +127,7 @@ class MailboxController extends Controller
     
             echo 'Eails sent from: ' . $mailbox->mail_username;
             echo '<br><br>';
-            echo 'Eails sent to: ' . $cleanedString;
+            echo 'Emails sent to: ' . $emailAddresses->value;
         }else{
             echo 'No test emails set';
         }

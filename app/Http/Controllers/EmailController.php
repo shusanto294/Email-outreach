@@ -102,33 +102,6 @@ class EmailController extends Controller
 
     }
 
-    // public function testEmail($mailboxID){
-    //     $mailbox = Mailbox::find($mailboxID);
-
-    //     config(['mail.mailers.smtp.host' => $mailbox->mail_smtp_host ]);
-    //     config(['mail.mailers.smtp.port' => $mailbox->mail_smtp_port ]);
-    //     config(['mail.mailers.smtp.username' => $mailbox->mail_username ]);
-    //     config(['mail.mailers.smtp.password' => $mailbox->mail_password ]);
-    //     config(['mail.from.address' => $mailbox->mail_username ]);
-    //     config(['mail.from.name' => $mailbox->mail_from_name ]);
-        
-    //     $uniqueId = time() . mt_rand(1000, 9999);
-
-    //     $subject = 'Test email - '. $uniqueId;
-    //     $body = 'This is a test email generated from the outreach softwere to check the delivaribility - '. $uniqueId;
-
-    //     $testEmailAddress = Setting::where('key', 'send_test_emails_to')->first();
-    //     if($testEmailAddress){
-    //         $sendEmailTo = $testEmailAddress->value;
-    //         Mail::html($body, function (Message $message) use ($sendEmailTo, $subject) {
-    //             $message->to($sendEmailTo)->subject($subject);
-    //         });
-    //         return redirect()->back()->with('success', 'Test email sent successfully');
-    //     }else{
-    //         return redirect()->back()->with('error', 'No email address set to send test emails');
-    //     }
-    // }
-
     public function showSent($id){
         $emails = Email::where('campaign_id', $id)->latest()->paginate(20);
         return view('emails', [

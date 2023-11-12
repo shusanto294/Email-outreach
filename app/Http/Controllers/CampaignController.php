@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lead;
 use App\Models\Email;
 use App\Models\Campaign;
 use Illuminate\Http\Request;
@@ -93,6 +94,63 @@ class CampaignController extends Controller
         ]);
     }
 
+    public function duplicate($id){
+        $campaign = Campaign::find($id);
+        Campaign::create([
+            'name' => 'Copy of - ' . $campaign->name,
+            'subject' => $campaign->subject,
+            'body' => $campaign->body,
+        ]);
+
+        return redirect()->back()->with('success', 'Campaign duplicated successfully');
+    }
+
+    public function regerate_emails($id){
+
+        $campaign = Campaign::find($id);
+        //$leads = Lead::where('leadlist_id', $request->list_id)->where('subscribe', 1)->get();
+        $emails = Email::where('campaign_id', $id)->get();
+        $count = 0;
+
+        foreach($emails as $email){
+            if($email->sent == null){
+                $lead = Lead::find($email->lead_id);
+
+                $subject = $campaign->subject;
+                $body = $campaign->body;
+    
+                $fullName = $lead->name;
+                $nameParts = explode(" ", $fullName);
+    
+                $firstName = $nameParts[0] ? $nameParts[0] : '';
+                $company = $lead->company ? $lead->company : '';
+                $personalizedLine = $lead->personalized_line ? $lead->personalized_line : '';
+                $website = $lead->company_website;
+    
+                $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $subject);
+                $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $body);
+                
+                $uniqueId = uniqid(rand(), true);
+                $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
+                $finalUniqueId = $prefix . $uniqueId;
+    
+                $email->subject = $dynamicSubject;
+                $email->body = $dynamicBody;
+                $email->save();
+
+                $count += 1;
+            }
+        }
+        return redirect()->back()->with('success', $count . ' emails regenerated !');
+        
+    }
+
+    public function delete($id){
+        $campaign = Campaign::find($id);
+        $campaign->delete();
+
+        return redirect()->back()->with('error', 'Campaign deleted successfully');
+    }
 
 
 }

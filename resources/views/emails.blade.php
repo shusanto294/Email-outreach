@@ -193,9 +193,9 @@ form#sendEmailsForm p {
     <thead>
       <tr>
         <th scope="col">#ID</i></th>
-        <th scope="col">To</i></th>
+        {{-- <th scope="col">Person</i></th> --}}
+        <th scope="col">Company</i></th>
         <th scope="col">Subject</i></th>
-        {{-- <th scope="col">Delete</i></th> --}}
         <th scope="col">Sent</i></th>
         <th scope="col" style="text-align: center;">Opened</i></th>
       </tr>
@@ -204,18 +204,18 @@ form#sendEmailsForm p {
         @foreach ($emails as $email)
             <tr>
               <td>{{ $email->id }}</td>
-              <td>
-                @php
+              @php
                     $lead = App\Models\Lead::find($email->lead_id);
-                @endphp
+              @endphp
+              {{-- <td>
                 <a href="{{ route('lead.show', $email->lead_id) }}">{{ $lead->name }}</a>
+              </td> --}}
+              <td>
+                <a target="_blank" href="{{ $lead->company_website }}">{{ $lead->company }}</a>
               </td>
               <td>
                 <a href="{{ route('email.single', $email->id) }}">{{ $email->subject }}</a>
               </td>
-              {{-- <td>
-                <a style="color: red;" href="{{ route('email.delete', $email->id) }}">Delete</a>
-              </td> --}}
               <td>
                 {!! $email->sent ? \Carbon\Carbon::parse($email->sent)->format('h:i A') : ''  !!}
               </td>
