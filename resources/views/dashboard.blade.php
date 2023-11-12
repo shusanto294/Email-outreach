@@ -103,7 +103,7 @@
                 <div class="number">{{ $totalLeadCount }}</div>
                 <div class="text">Total Leads</div>
             </div>
-        </div>
+        </div>  --}}
         <div class="col-lg-3">
             <div class="info-box">
                 @php
@@ -112,7 +112,7 @@
                 <div class="number">{{ $totalEmailNotSentCount }}</div>
                 <div class="text">Emails to be sent</div>
             </div>
-        </div> --}}
+        </div>
         <div class="col-lg-3">
             <div class="info-box">
                 @php
@@ -135,18 +135,10 @@
             <div class="info-box">
                 @php
                     $totalReplyCount = App\Models\Reply::count();
-                @endphp
-                <div class="number">{{ $totalReplyCount }}</div>
-                <div class="text">Replies</div>
-            </div>
-        </div>
-        <div class="col-lg-3">
-            <div class="info-box">
-                @php
                     $totalNewReplyCount = App\Models\Reply::where('seen', '0')->count();
                 @endphp
-                <div class="number">{{ $totalEmailsOpened }}</div>
-                <div class="text">New replies</div>
+                <div class="number">{{ $totalReplyCount }}</div>
+                <div class="text">{{ $totalNewReplyCount != 0 ? "($totalNewReplyCount)" : ""; }} Replies</div>
             </div>
         </div>
     </div>
