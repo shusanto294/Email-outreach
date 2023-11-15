@@ -70,7 +70,6 @@ class CampaignController extends Controller
         return redirect()->back();
     }
 
-    //Show leads on this campaign
     public function showEmails($id){
         $emails = Email::where('campaign_id', $id)->orderBy('id', 'desc')->paginate(20);
         return view('emails', [
@@ -78,7 +77,6 @@ class CampaignController extends Controller
         ]);
     }
 
-    //Show sent leads on this campaign
     public function showSent($id){
         $emails = Email::where('campaign_id', $id)->where('sent', '>', 0)->orderBy('id', 'desc')->paginate(20);
         return view('emails', [
@@ -86,12 +84,36 @@ class CampaignController extends Controller
         ]);
     }
 
-    //Show email opened leads on this campaign
+    public function showNotSent($id){
+        $emails = Email::where('campaign_id', $id)->where('sent', '=', null)->orderBy('id', 'desc')->paginate(20);
+        return view('emails', [
+            'emails' => $emails
+        ]);
+    }
+
     public function showOpened($id){
-        $emails = Email::where('campaign_id', $id)->where('opened', '>', 0)->orderBy('id', 'desc')->paginate(20);
+        $emails = Email::where('campaign_id', $id)->where('opened', '!=', null)->orderBy('opened_count', 'desc')->paginate(20);
         return view('emails', [
           'emails' => $emails
         ]);
+    }
+
+    public function showNotOpened($id){
+        $emails = Email::where('campaign_id', $id)->where('sent', '!=', null)->where('opened', '=', null)->orderBy('id', 'desc')->paginate(20);
+        return view('emails', [
+            'emails' => $emails
+        ]);
+    }
+
+    public function moveNotOpened($id, Request $request){
+        $emails = Email::where('campaign_id', $id)->where('sent', '!=', null)->where('opened', '=', null)->orderBy('id', 'desc')->get();
+        foreach($emails as $email){
+            $leadID = $email->lead_id;
+            $lead = Lead::find($leadID);
+            $lead->leadlist_id = $request->list_id;
+            $lead->save();
+        }
+        return redirect()->back()->with('success', 'Leads moved successfully');
     }
 
     public function duplicate($id){
@@ -108,7 +130,6 @@ class CampaignController extends Controller
     public function regerate_emails($id){
 
         $campaign = Campaign::find($id);
-        //$leads = Lead::where('leadlist_id', $request->list_id)->where('subscribe', 1)->get();
         $emails = Email::where('campaign_id', $id)->get();
         $count = 0;
 

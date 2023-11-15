@@ -46,34 +46,43 @@ table a:hover{
         <th scope="col">Name</th>
         <th scope="col">Emails</th>
         <th scope="col">Sent</th>
+        <th scope="col">Not Sent</th>
         <th scope="col">Opened</th>
+        <th scope="col">Not Opened</th>
         <th scope="col">Opene Rate</th>
         <th scope="col" style="text-align: right">Actions</th>
       </tr>
     </thead>
     <tbody>
         @foreach ($campaigns as $campaign)
+          @php
+            $emailCount = App\Models\Email::where('campaign_id', $campaign->id)->count();
+            $sentCount = App\Models\Email::where('campaign_id', $campaign->id)->where('sent', '>' , 0)->count();
+            $notSentCount = App\Models\Email::where('campaign_id', $campaign->id)->where('sent', '=' , null)->count();
+            $openedCount = App\Models\Email::where('campaign_id', $campaign->id)->where('opened','>', 0)->count();
+            $notOpenedCount = App\Models\Email::where('campaign_id', $campaign->id)->where('sent', '!=', null)->where('opened', '=', null)->count();
+          @endphp
             <tr>
                 <td>{{ $campaign->id }}</td>
                 <td><a href="{{ route('campaign.single', $campaign->id) }}">{{ $campaign->name }}</a></td>
+                <td><a href="{{ route('campaign.show.emails', $campaign->id) }}">{{ $emailCount == 0 ? 'n/a' : $emailCount; }}</a></td>
+
                 <td>
-                  @php
-                    $emailCount = App\Models\Email::where('campaign_id', $campaign->id)->count();
-                  @endphp
-                  <a href="{{ route('campaign.show.emails', $campaign->id) }}">{{ $emailCount }}</a>
+                  <a href="{{ route('campaign.sent', $campaign->id) }}">{{ $sentCount == 0 ? 'n/a' : $sentCount; }}</a>
                 </td>
+
                 <td>
-                  @php
-                    $sentCount = App\Models\Email::where('campaign_id', $campaign->id)->where('sent', '>' , 0)->count();
-                  @endphp
-                  <a href="{{ route('campaign.sent', $campaign->id) }}">{{ $sentCount }}</a>
+                  <a href="{{ route('campaign.not_sent', $campaign->id) }}">{{ $notSentCount == 0 ? 'n/a' : $notSentCount; }}</a>
                 </td>
+
                 <td>
-                  @php
-                    $openedCount = App\Models\Email::where('campaign_id', $campaign->id)->where('opened','>', 0)->count();
-                  @endphp
-                  <a href="{{ route('campaign.opened', $campaign->id) }}">{{ $openedCount }}</a>
+                  <a href="{{ route('campaign.opened', $campaign->id) }}">{{ $openedCount == 0 ? 'n/a' : $openedCount; }}</a>
                 </td>
+
+                <td>
+                  <a href="{{ route('campaign.not_opened', $campaign->id) }}">{{ $notOpenedCount == 0 ? 'n/a' : $notOpenedCount; }}</a>
+                </td>
+
                 <td>
                   @php  
                   

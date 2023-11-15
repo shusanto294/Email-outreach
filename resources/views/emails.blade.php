@@ -126,14 +126,15 @@
       transform: translateX(26px);
     }
     
-    /* Rounded sliders */
-    .slider.round {
-      border-radius: 34px;
-    }
-    
-    .slider.round:before {
-      border-radius: 50%;
-    }
+/* Rounded sliders */
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
 
 p.dynamic-variables span {
     padding: 5px;
@@ -155,45 +156,61 @@ form#sendEmailsForm p {
   display: flex;
   justify-content: center;
 }
-    </style>
+
+form.inline-form {
+    display: flex;
+    grid-gap: 20px;
+    margin-bottom: 30px;
+    align-items: center;
+}
+
+form.inline-form p{
+    text-wrap: nowrap;
+    margin-bottom: 0;
+}
+/* form.inline-form select{
+    width: 40%;
+}
+form.inline-form button{
+    width: 30%;
+} */
+</style>
 @endsection
 
 @section('content')
 
 @include('alerts')
 
-<div class="row">
-  <div class="col-lg-6 mb-3">
-    <p><b>Email sending on/off</b></p>
-  </div>
-  <div class="col-lg-6">
-    <form action="{{ route('settings.send-emails') }}" method="POST" class="email-switch" id="sendEmailsForm">
-      @csrf
-      {{-- <p>Send emails</p> --}}
-      <label class="switch">
-      @php
-          $sendEmailsSetting = App\Models\Setting::where('key', 'send_emails')->first();
-          $sendEmails = 'off';
-          if($sendEmailsSetting){
-              $sendEmails = $sendEmailsSetting->value;
-          }
-      @endphp
-      <input type="checkbox" name="send_emails" id="sendEmails" {{ $sendEmails == 'on' ? 'checked' : '' }}>
-      <span class="slider round"></span>
-      </label>
-  </form>
-  </div>
-
-</div>
-
 
 @if(count($emails) > 0 )
+
+@php
+    $lists = App\Models\Leadlist::orderBy('id', 'desc')->get();
+    $campaignID = 0;
+    foreach ($emails as $email) {
+      $campaignID = $email->campaign_id;
+      break;
+    }
+@endphp
+
+@if (Route::is('campaign.not_opened'))
+  <form class="inline-form" action="{{ route('campaign.move_not_opened', $campaignID ) }}" method="post" enctype="multipart/form-data">
+    @csrf
+    <p><b>Move leads to</b></p>
+    <select type="select" class="form-control" name="list_id">
+        @foreach($lists as $list)
+            <option value="{{ $list->id }}">{{ $list->name }}</option>
+        @endforeach
+    </select>
+    <input type="submit" value="Move Now" class="btn btn-secondary">
+  </form>
+@endif
 
 <table class="table table-striped">
     <thead>
       <tr>
         <th scope="col">#ID</i></th>
-        {{-- <th scope="col">Person</i></th> --}}
+        <th scope="col">To</i></th>
         <th scope="col">Company</i></th>
         <th scope="col">Subject</i></th>
         <th scope="col">Sent</i></th>
@@ -207,9 +224,9 @@ form#sendEmailsForm p {
               @php
                     $lead = App\Models\Lead::find($email->lead_id);
               @endphp
-              {{-- <td>
-                <a href="{{ route('lead.show', $email->lead_id) }}">{{ $lead->name }}</a>
-              </td> --}}
+              <td>
+                <a href="{{ route('lead.show', $email->lead_id) }}">{{ $lead->email }}</a>
+              </td>
               <td>
                 <a target="_blank" href="{{ $lead->company_website }}">{{ $lead->company }}</a>
               </td>

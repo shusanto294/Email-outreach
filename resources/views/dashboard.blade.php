@@ -95,15 +95,6 @@
 @section('content')
 
     <div class="row mb-5">
-        {{-- <div class="col-lg-3">
-            <div class="info-box">
-                @php
-                    $totalLeadCount = App\Models\Lead::count();
-                @endphp
-                <div class="number">{{ $totalLeadCount }}</div>
-                <div class="text">Total Leads</div>
-            </div>
-        </div>  --}}
         <div class="col-lg-3">
             <div class="info-box">
                 @php
@@ -140,6 +131,29 @@
                 <div class="number">{{ $totalReplyCount }}</div>
                 <div class="text">{{ $totalNewReplyCount != 0 ? "($totalNewReplyCount)" : ""; }} Replies</div>
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-3">
+          <p><b>Email sending on/off</b></p>
+        </div>
+        <div class="col-lg-6">
+          <form action="{{ route('settings.send-emails') }}" method="POST" class="email-switch" id="sendEmailsForm">
+            @csrf
+            {{-- <p>Send emails</p> --}}
+            <label class="switch">
+            @php
+                $sendEmailsSetting = App\Models\Setting::where('key', 'send_emails')->first();
+                $sendEmails = 'off';
+                if($sendEmailsSetting){
+                    $sendEmails = $sendEmailsSetting->value;
+                }
+            @endphp
+            <input type="checkbox" name="send_emails" id="sendEmails" {{ $sendEmails == 'on' ? 'checked' : '' }}>
+            <span class="slider round"></span>
+            </label>
+        </form>
         </div>
     </div>
 

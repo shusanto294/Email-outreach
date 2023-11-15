@@ -50,6 +50,7 @@ Route::post('/lead/{id}/update', [LeadController::class, 'update'])->middleware(
 Route::post('/lead/search', [LeadController::class, 'search'])->middleware(['auth', 'verified'])->name('lead.search');
 Route::get('/verify-lead', [LeadController::class, 'verify_lead'])->name('verify.lead');
 
+
 Route::get('/lists', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('lists.index');
 Route::post('/add-list', [LeadlistController::class, 'create'])->middleware(['auth', 'verified'])->name('add-list.post');
 Route::get('/list/{id}', [LeadlistController::class, 'show'])->middleware(['auth', 'verified'])->name('show.list');
@@ -67,7 +68,12 @@ Route::post('/update-campaign/{id}', [CampaignController::class, 'update'])->mid
 //Route::get('/campaign/{id}/leads', [CampaignController::class, 'showLeads'])->middleware(['auth', 'verified'])->name('campaign.leads');
 Route::get('/campaign/{id}/emails', [CampaignController::class, 'showEmails'])->middleware(['auth', 'verified'])->name('campaign.show.emails');
 Route::get('/campaign/{id}/sent', [CampaignController::class, 'showSent'])->middleware(['auth', 'verified'])->name('campaign.sent');
+Route::get('/campaign/{id}/not-sent', [CampaignController::class, 'showNotSent'])->middleware(['auth', 'verified'])->name('campaign.not_sent');
 Route::get('/campaign/{id}/opened', [CampaignController::class, 'showOpened'])->middleware(['auth', 'verified'])->name('campaign.opened');
+
+Route::get('/campaign/{id}/not-opened', [CampaignController::class, 'showNotOpened'])->middleware(['auth', 'verified'])->name('campaign.not_opened');
+Route::post('/campaign/{id}/move-not-opened', [CampaignController::class, 'moveNotOpened'])->middleware(['auth', 'verified'])->name('campaign.move_not_opened');
+
 Route::get('/campaign/{id}/delete', [CampaignController::class, 'delete'])->middleware(['auth', 'verified'])->name('campaign.delete');
 Route::get('/campaign/{id}/duplicate', [CampaignController::class, 'duplicate'])->middleware(['auth', 'verified'])->name('campaign.duplicate');
 Route::get('/campaign/{id}/regerate-emails', [CampaignController::class, 'regerate_emails'])->middleware(['auth', 'verified'])->name('campaign.regerate_emails');
