@@ -44,43 +44,41 @@ table a:hover{
       <tr>
         <th scope="col">#id</th>
         <th scope="col">Name</th>
-        <th scope="col">Emails</th>
+        <th scope="col">Leads</th>
         <th scope="col">Sent</th>
-        <th scope="col">Not Sent</th>
         <th scope="col">Opened</th>
-        <th scope="col">Not Opened</th>
-        <th scope="col">Opene Rate</th>
+        <th scope="col">Replied</th>
+        <th scope="col">Open Rate</th>
+        <th scope="col">Reply rate</th>
         <th scope="col" style="text-align: right">Actions</th>
       </tr>
     </thead>
     <tbody>
         @foreach ($campaigns as $campaign)
           @php
-            $emailCount = App\Models\Email::where('campaign_id', $campaign->id)->count();
-            $sentCount = App\Models\Email::where('campaign_id', $campaign->id)->where('sent', '>' , 0)->count();
-            $notSentCount = App\Models\Email::where('campaign_id', $campaign->id)->where('sent', '=' , null)->count();
-            $openedCount = App\Models\Email::where('campaign_id', $campaign->id)->where('opened','>', 0)->count();
-            $notOpenedCount = App\Models\Email::where('campaign_id', $campaign->id)->where('sent', '!=', null)->where('opened', '=', null)->count();
+            $leadsCount = App\Models\Lead::where('campaign_id', $campaign->id)->count();
+            $sentCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('sent', 1)->count();
+            $openedCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('opened', 1)->count();
+            $replyCount = App\Models\Lead::where('replied', 1)->count();
+
+            
           @endphp
             <tr>
                 <td>{{ $campaign->id }}</td>
                 <td><a href="{{ route('campaign.single', $campaign->id) }}">{{ $campaign->name }}</a></td>
-                <td><a href="{{ route('campaign.show.emails', $campaign->id) }}">{{ $emailCount == 0 ? 'n/a' : $emailCount; }}</a></td>
+                <td><a href="{{ route('campaign.show.leads', $campaign->id) }}">{{ $leadsCount == 0 ? 'n/a' : $leadsCount; }}</a></td>
 
                 <td>
-                  <a href="{{ route('campaign.sent', $campaign->id) }}">{{ $sentCount == 0 ? 'n/a' : $sentCount; }}</a>
+                  <a href="{{ route('campaign.sent', $campaign->id) }}">{{ $sentCount }}</a>
+                </td>
+
+
+                <td>
+                  <a href="{{ route('campaign.opened', $campaign->id) }}">{{ $openedCount }}</a>
                 </td>
 
                 <td>
-                  <a href="{{ route('campaign.not_sent', $campaign->id) }}">{{ $notSentCount == 0 ? 'n/a' : $notSentCount; }}</a>
-                </td>
-
-                <td>
-                  <a href="{{ route('campaign.opened', $campaign->id) }}">{{ $openedCount == 0 ? 'n/a' : $openedCount; }}</a>
-                </td>
-
-                <td>
-                  <a href="{{ route('campaign.not_opened', $campaign->id) }}">{{ $notOpenedCount == 0 ? 'n/a' : $notOpenedCount; }}</a>
+                  <a href="{{ route('campaign.replied', $campaign->id) }}">{{ $replyCount }}</a>
                 </td>
 
                 <td>
@@ -96,9 +94,20 @@ table a:hover{
                   @endphp
                 </td>
                 <td>
+                  @php  
+                  
+                    if($replyCount && $sentCount){
+                      $replyRate = ($replyCount / $sentCount) * 100;
+                      echo number_format($replyRate, 2).' %';
+                    }else{
+                      echo 'n/a';
+                    }
+                    
+                  @endphp
+                </td>
+                <td>
                   <div class="action-icons">
                     <a href="{{ route('campaign.duplicate', $campaign->id) }}"><i class="fa-regular fa-paste"></i></a>
-                    <a href="{{ route('campaign.regerate_emails', $campaign->id) }}"><i class="fa-regular fa-envelope"></i></a>
                     <a href="{{ route('campaign.delete',  $campaign->id) }}"><i class="fa-regular fa-trash-can"></i></a>
                   </div>
                   

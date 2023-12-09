@@ -104,8 +104,8 @@
               <td>
                 <a class="name" target="_blank" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a>
               </td>
-              <td><a class="website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company }}</a></td>
-              <td>{{ $lead->company_website }}</td>
+              <td>{{ $lead->company }}</td>
+              <td><a class="website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company_website }}</a> </td>
               <td>{{ $lead->email }}</td>
             </tr>
         @endforeach

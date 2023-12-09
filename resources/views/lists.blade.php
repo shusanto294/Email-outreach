@@ -32,14 +32,18 @@ table a:hover{
         <th scope="col">#id</th>
         <th scope="col">Name</th>
         <th scope="col">Total Leads</th>
-        <th scope="col">Verified</th>
-        <th scope="col">Unverified</th>
-        {{-- <th scope="col">NO PS</th> --}}
+        <th scope="col">Has PS</th>
+        <th scope="col">NO PS</th>
         <th scope="col" style="text-align: right;">Action</th>
       </tr>
     </thead>
     <tbody>
         @foreach ($lists as $list)
+          @php
+              $noPsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('personalized_line', null)->count();
+              $hasPsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('personalized_line', '!=' , null)->count();
+              $notAddedToCampaignCount = App\Models\Lead::where('leadlist_id', $list->id)->where('campaign_id', '=' , 0)->count();
+          @endphp
             <tr>
                 <td>{{ $list->id }}</td>
                 <td><a href="{{ route('show.list', $list->id) }}">{{ $list->name }}</a></td>
@@ -48,20 +52,9 @@ table a:hover{
                 @endphp
                 <td><a href="{{ route('show.list', $list->id) }}">{{ $leadsCount }}</a></td>
 
-                @php
-                $verifiedCount = App\Models\Lead::where('leadlist_id', $list->id)->where('verified', 'true')->count();
-                @endphp
-                <td><a href="{{ route('show.verified.list', $list->id) }}">{{ $verifiedCount }}</a></td>
-
-                @php
-                $unverifiedCount = App\Models\Lead::where('leadlist_id', $list->id)->where('verified', '!=' , 'true')->count();
-                @endphp
-                <td><a href="{{ route('show.not.verified.list', $list->id) }}">{{ $unverifiedCount }}</a></td>
-                {{-- @php
-                    $noPsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('personalized_line', null)->count();
-                @endphp
-                <td><a href="{{ route('show.no_ps.list', $list->id) }}">{{ $noPsleadsCount }}</a></td> --}}
-                <td style="text-align: right;"><a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign</a></td>
+                <td><a href="{{ route('show.has_ps.list', $list->id) }}">{{ $hasPsleadsCount }}</a></td>
+                <td><a href="{{ route('show.no_ps.list', $list->id) }}">{{ $noPsleadsCount }}</a></td>
+                <td style="text-align: right;"><a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign ({{ $notAddedToCampaignCount }})</a></td>
             </tr>
         @endforeach
     </tbody>

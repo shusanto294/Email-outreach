@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('settings')->insert([
             'key' => 'send_emails',
-            'value' => 'off',
+            'value' => 'on',
         ]);
 
         DB::table('settings')->insert([
@@ -60,7 +60,7 @@ class DatabaseSeeder extends Seeder
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
             'mail_username' => 'shusanto@akdiginova.tech',
-            'mail_password' => 'apple727354',
+            'mail_password' => 'akdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
         ]);
@@ -71,7 +71,7 @@ class DatabaseSeeder extends Seeder
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
             'mail_username' => 'shusanto@duidiginova.tech',
-            'mail_password' => 'apple727354',
+            'mail_password' => 'duidiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
         ]);
@@ -82,7 +82,7 @@ class DatabaseSeeder extends Seeder
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
             'mail_username' => 'shusanto@tindiginova.tech',
-            'mail_password' => 'apple727354',
+            'mail_password' => 'tindiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
         ]);
@@ -93,7 +93,7 @@ class DatabaseSeeder extends Seeder
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
             'mail_username' => 'shusanto@chardiginova.tech',
-            'mail_password' => 'apple727354',
+            'mail_password' => 'chardiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
         ]);
@@ -104,7 +104,7 @@ class DatabaseSeeder extends Seeder
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
             'mail_username' => 'shusanto@pachdiginova.tech',
-            'mail_password' => 'apple727354',
+            'mail_password' => 'pachdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
         ]);
@@ -115,7 +115,7 @@ class DatabaseSeeder extends Seeder
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
             'mail_username' => 'shusanto@choydiginova.tech',
-            'mail_password' => 'apple727354',
+            'mail_password' => 'choydiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
         ]);
@@ -126,7 +126,7 @@ class DatabaseSeeder extends Seeder
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
             'mail_username' => 'shusanto@satdiginova.tech',
-            'mail_password' => 'apple727354',
+            'mail_password' => 'satdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
         ]);
@@ -137,7 +137,7 @@ class DatabaseSeeder extends Seeder
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
             'mail_username' => 'shusanto@aatdiginova.tech',
-            'mail_password' => 'apple727354',
+            'mail_password' => 'aatdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
         ]);
@@ -148,7 +148,7 @@ class DatabaseSeeder extends Seeder
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
             'mail_username' => 'shusanto@noydiginova.tech',
-            'mail_password' => 'apple727354',
+            'mail_password' => 'noydiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
         ]);
@@ -159,7 +159,7 @@ class DatabaseSeeder extends Seeder
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
             'mail_username' => 'shusanto@doshdiginova.tech',
-            'mail_password' => 'apple727354',
+            'mail_password' => 'doshdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
         ]);
@@ -167,15 +167,15 @@ class DatabaseSeeder extends Seeder
         // Lists
 
         DB::table('leadlists')->insert([
-            'name' => 'First list'
+            'name' => 'Bad Leads'
         ]);
 
         // Lists
 
         DB::table('campaigns')->insert([
             'name' => 'First campaign',
-            'subject' => 'Hello [firstname], I am Shusanto.',
-            'body' => '<p>Hi [firstname], I hope you are doing well. I recently discovered your website [website] and noticed there are a lot of areas you can improve to get more leads and clients through the website and make your website a valuable asset for your business.</p><p>Would you be interested in a quick conversation about it?</p><p>Shusanto <br> Freelance web developer.</p>'
+            'subject' => 'Hey [firstname], how are you doing now ?',
+            'body' => '<p>[firstname], just checking how your company: [company] is doing now.</p>'
         ]);
         
     }

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreLeadlistRequest;
 use App\Http\Requests\UpdateLeadlistRequest;
+use OpenAI\Laravel\Facades\OpenAI;
 
 class LeadlistController extends Controller
 {
@@ -71,6 +72,14 @@ class LeadlistController extends Controller
         ]);
     }
 
+    public function show_has_ps($listId)
+    {
+        $leads = Lead::where('leadlist_id', $listId)->where('personalized_line', '!=' , null)->orderBy('id', 'desc')->paginate(20);
+        return view('leads', [
+          'leads' => $leads
+        ]);
+    }
+
     public function show_verified($listId)
     {
         $leads = Lead::where('leadlist_id', $listId)->where('verified', 'true')->orderBy('id', 'desc')->paginate(20);
@@ -93,44 +102,19 @@ class LeadlistController extends Controller
           'list' => $list
         ]);
     }
-    public function create_emails(Request $request){
-        //return $request->all();
-        $campaign = Campaign::find($request->campaign_id);
-        $leads = Lead::where('leadlist_id', $request->list_id)->where('subscribe', 1)->get();
+    public function leadlist_leads_change_campaign_id(Request $request){
+        $data = $request->all();
+        $listID = $data['list_id'];
+        $campaignID = $data['campaign_id'];
 
+        $leads = Lead::where('leadlist_id', $listID)->get();
         foreach($leads as $lead){
-            $existingEmail = Email::where('campaign_id', $campaign->id)->where('lead_id', $lead->id)->first();
-            if ($existingEmail === null) {
-                $subject = $campaign->subject;
-                $body = $campaign->body;
-
-                $fullName = $lead->name;
-                $nameParts = explode(" ", $fullName);
-
-                $firstName = $nameParts[0] ? $nameParts[0] : '';
-                $company = $lead->company ? $lead->company : '';
-                $personalizedLine = $lead->personalized_line ? $lead->personalized_line : '';
-                $website = $lead->company_website;
-
-                $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $subject);
-                $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $body);
-                
-                $uniqueId = uniqid(rand(), true);
-                $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
-                $finalUniqueId = $prefix . $uniqueId;
-
-                $email = Email::create([
-                    'subject' => $dynamicSubject,
-                    'body' => $dynamicBody,
-                    'campaign_id' => $campaign->id,
-                    'lead_id' => $lead->id,
-                    'uid' => $finalUniqueId
-                ]);
-                
-            }
-            
+            $lead->campaign_id = $campaignID;
+            $lead->save();
         }
-        return redirect()->back()->with('success', 'Complete');
         
+        return redirect('/lists')->with('success', 'Leads added to cammpaign successfully');
     }
+
+
 }

@@ -98,7 +98,7 @@
         <div class="col-lg-3">
             <div class="info-box">
                 @php
-                    $totalEmailNotSentCount = App\Models\Email::where('sent', '=' , null)->count();
+                    $totalEmailNotSentCount = App\Models\Lead::where('sent', 0)->where('campaign_id', '!=' , 0)->count();
                 @endphp
                 <div class="number">{{ $totalEmailNotSentCount }}</div>
                 <div class="text">Emails to be sent</div>

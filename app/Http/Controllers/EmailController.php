@@ -67,33 +67,61 @@ class EmailController extends Controller
             config(['mail.mailers.smtp.password' => $mailbox->mail_password ]);
             config(['mail.from.address' => $mailbox->mail_username ]);
             config(['mail.from.name' => $mailbox->mail_from_name ]);
-            
-            $email = Email::where('sent', null)->orderBy('id', 'asc')->first();
-            if($email){
-                $campaign = Campaign::find($email->campaign_id);
-                $lead = Lead::find($email->lead_id);
+
+            $lead = Lead::where('campaign_id', '!=' ,  0)->where('sent', 0)->orderBy('id', 'asc')->first();
+            // $email = Email::where('sent', null)->orderBy('id', 'asc')->first();
+
+            if($lead){
+                $campaign = Campaign::find($lead->campaign_id);
+
+                $subject = $campaign->subject;
+                $body = $campaign->body;
+
+                $fullName = $lead->name;
+                $nameParts = explode(" ", $fullName);
+                $firstName = $nameParts[0] ? $nameParts[0] : '';
+
+                $company = $lead->company ? $lead->company : '';
+                $personalizedLine = $lead->personalized_line ? $lead->personalized_line : '';
+                $website = $lead->company_website;
+
+                $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $subject);
+                $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $body);
+                
+                $uniqueId = uniqid(rand(), true);
+                $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
+                $finalUniqueId = $prefix . $uniqueId;
+
+                $email = Email::create([
+                    'subject' => $dynamicSubject,
+                    'body' => $dynamicBody,
+                    'campaign_id' => $campaign->id,
+                    'lead_id' => $lead->id,
+                    'uid' => $finalUniqueId
+                ]);
 
                 $email->sent = $currentTime;
                 $email->mailbox_id = $mailbox->id;
                 $email->sent_from = $mailbox->mail_username;
                 $email->save(); 
 
-                $subject = $email->subject;
-                $body = $email->body;
 
                 $trackingUrl = route('track.email', ['uid' => $email->uid]);
                 $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
 
-                $body .= $trackingPixel;
+                $dynamicBody .= $trackingPixel;
 
-                Mail::html($body, function (Message $message) use ($lead, $campaign, $subject) {
-                    $message->to($lead->email)->subject($subject);
+                Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
+                    $message->to($lead->email)->subject($dynamicSubject);
                 });
 
+                $lead->sent = 1;
+                $lead->save();
+
                 return $email;
-                //return $mailbox;
+
             }else{
-                echo 'No Emails to send'; 
+                echo 'No leads found !'; 
             }
 
         }else{
@@ -123,6 +151,10 @@ class EmailController extends Controller
             $email->opened = $currentTime;
             $email->opened_count += 1;
             $email->save();
+
+            $lead = Lead::find($email->lead_id);
+            $lead->opened = 1;
+            $lead->save();
     
             $trackingPixelPath = public_path('images/mypixel.png');
             $trackingPixelContents = file_get_contents($trackingPixelPath);

@@ -70,31 +70,31 @@ class CampaignController extends Controller
         return redirect()->back();
     }
 
-    public function showEmails($id){
-        $emails = Email::where('campaign_id', $id)->orderBy('id', 'desc')->paginate(20);
-        return view('emails', [
-          'emails' => $emails
+    public function showLeads($id){
+        $leads = Lead::where('campaign_id', $id)->orderBy('id', 'desc')->paginate(20);
+        return view('leads', [
+          'leads' => $leads
         ]);
     }
 
     public function showSent($id){
-        $emails = Email::where('campaign_id', $id)->where('sent', '>', 0)->orderBy('id', 'desc')->paginate(20);
-        return view('emails', [
-          'emails' => $emails
-        ]);
-    }
-
-    public function showNotSent($id){
-        $emails = Email::where('campaign_id', $id)->where('sent', '=', null)->orderBy('id', 'desc')->paginate(20);
-        return view('emails', [
-            'emails' => $emails
+        $leads = Lead::where('campaign_id', $id)->where('sent', 1)->orderBy('id', 'desc')->paginate(20);
+        return view('leads', [
+          'leads' => $leads
         ]);
     }
 
     public function showOpened($id){
-        $emails = Email::where('campaign_id', $id)->where('opened', '!=', null)->orderBy('opened_count', 'desc')->paginate(20);
-        return view('emails', [
-          'emails' => $emails
+        $leads = Lead::where('campaign_id', $id)->where('opened', 1)->orderBy('id', 'desc')->paginate(20);
+        return view('leads', [
+          'leads' => $leads
+        ]);
+    }
+
+    public function showReplied($id){
+        $leads = Lead::where('campaign_id', $id)->where('replied', 1)->orderBy('id', 'desc')->paginate(20);
+        return view('leads', [
+          'leads' => $leads
         ]);
     }
 
@@ -127,44 +127,6 @@ class CampaignController extends Controller
         return redirect()->back()->with('success', 'Campaign duplicated successfully');
     }
 
-    public function regerate_emails($id){
-
-        $campaign = Campaign::find($id);
-        $emails = Email::where('campaign_id', $id)->get();
-        $count = 0;
-
-        foreach($emails as $email){
-            if($email->sent == null){
-                $lead = Lead::find($email->lead_id);
-
-                $subject = $campaign->subject;
-                $body = $campaign->body;
-    
-                $fullName = $lead->name;
-                $nameParts = explode(" ", $fullName);
-    
-                $firstName = $nameParts[0] ? $nameParts[0] : '';
-                $company = $lead->company ? $lead->company : '';
-                $personalizedLine = $lead->personalized_line ? $lead->personalized_line : '';
-                $website = $lead->company_website;
-    
-                $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $subject);
-                $dynamicBody = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $body);
-                
-                $uniqueId = uniqid(rand(), true);
-                $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
-                $finalUniqueId = $prefix . $uniqueId;
-    
-                $email->subject = $dynamicSubject;
-                $email->body = $dynamicBody;
-                $email->save();
-
-                $count += 1;
-            }
-        }
-        return redirect()->back()->with('success', $count . ' emails regenerated !');
-        
-    }
 
     public function delete($id){
         $campaign = Campaign::find($id);
@@ -172,6 +134,27 @@ class CampaignController extends Controller
 
         return redirect()->back()->with('error', 'Campaign deleted successfully');
     }
+
+    // public function show_sent($id){
+    //     $leads = Lead::where('campaign_id', $id)->where('sent', 1)->orderBy('id', 'desc')->paginate(20);
+    //     return view('leads', [
+    //         'leads' => $leads
+    //     ]);
+    // }
+
+    // public function show_opened($id){
+    //     $leads = Lead::where('campaign_id', $id)->where('opened', 1)->orderBy('id', 'desc')->paginate(20);
+    //     return view('leads', [
+    //         'leads' => $leads
+    //     ]);
+    // }
+
+    // public function show_replied($id){
+    //     $leads = Lead::where('campaign_id', $id)->where('replied', 1)->orderBy('id', 'desc')->paginate(20);
+    //     return view('leads', [
+    //         'leads' => $leads
+    //     ]);
+    // }
 
 
 }
