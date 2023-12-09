@@ -160,6 +160,7 @@
     @php
         $testEmailsTo = App\Models\Setting::where('key', 'send_test_emails_to')->first();
         $ignoreRepliesKeywords = App\Models\Setting::where('key', 'ignore_replies_keywords')->first();
+        $openaiApiKey = App\Models\Setting::where('key', 'openai_api_key')->first();
     @endphp
     <form action="{{ route('update.settings') }}" method="POST" class="col-lg-12">
         @csrf
@@ -168,6 +169,10 @@
         
         <label for="ignore_replies_keywords" class="mb-2">Ignore replies which has these keywords :</label>
         <textarea rows="5" type="email" name="ignore_replies_keywords" id="ignore_replies_keywords" placeholder="Kyword1, keyword2" class="form-control mb-3">{{ $ignoreRepliesKeywords ? $ignoreRepliesKeywords->value : '' }}</textarea>
+
+        <label for="openai_api_key">Openai Api key</label>
+        <input type="text" class="form-control mb-3" id="openai_api_key" name="openai_api_key" value="{{ $openaiApiKey ? $openaiApiKey->value : '' }}">
+
         <button type="submit"  class="btn btn-secondary">Save Settings</button>
     </form>
 

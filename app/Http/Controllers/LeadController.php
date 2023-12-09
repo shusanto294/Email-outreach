@@ -2,27 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use HTMLPurifier;
 use App\Models\Lead;
 use App\Models\Email;
 use GuzzleHttp\Client;
+use App\Models\Setting;
 use App\Models\Leadlist;
+use HTMLPurifier_Config;
 use App\Imports\LeadsImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+// use Goutte\Client;
+// use Symfony\Component\HttpClient\HttpClient;
 use Illuminate\Support\Facades\DB;
 use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\Log;
-// use Goutte\Client;
-// use Symfony\Component\HttpClient\HttpClient;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreLeadRequest;
+
 use App\Http\Requests\UpdateLeadRequest;
 use Symfony\Component\DomCrawler\Crawler;
 use GuzzleHttp\Exception\RequestException;
-
-use HTMLPurifier;
-use HTMLPurifier_Config;
 
 class LeadController extends Controller
 {
@@ -179,6 +180,7 @@ class LeadController extends Controller
 
     public function personalize()
     {
+        
         $lead = Lead::where('personalized_line', null)->first();
     
         if (!$lead) {
@@ -209,8 +211,7 @@ class LeadController extends Controller
     
         try {
             // Make a GET request to the URL with headers
-            //$response = $client->get($lead->company_website);
-            $response = $client->get('https://sababafest.com/');
+            $response = $client->get($lead->company_website);
     
             // Check if the response status code is 200 (OK)
             if ($response->getStatusCode() == 200) {
@@ -223,6 +224,14 @@ class LeadController extends Controller
                 echo '<hr>';
     
                 if ($websiteContent) {
+
+                    $openaiApiKey = Setting::where('key', 'openai_api_key')->first();
+                    if($openaiApiKey){
+                        config(['openai.api_key' => $openaiApiKey->value ]);
+                    }else{
+                        dd('Open AI api key not found');
+                    }
+                    
                     $result = OpenAI::chat()->create([
                         'model' => 'gpt-3.5-turbo',
                         'messages' => [

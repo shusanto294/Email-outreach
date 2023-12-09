@@ -1,5 +1,7 @@
 <?php
 
+
+
 return [
 
     /*
@@ -12,8 +14,7 @@ return [
     | and organization on your OpenAI dashboard, at https://openai.com.
     */
 
-    'api_key' => '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',
-    // 'api_key' => env('OPENAI_API_KEY'),
+    'api_key' => env('OPENAI_API_KEY'),
     'organization' => env('OPENAI_ORGANIZATION'),
 
     /*
