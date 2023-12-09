@@ -198,8 +198,8 @@ class LeadController extends Controller
             return "Company website is empty.";
         }
     
-        echo "<a target='_blank' href='$lead->company_website'>$lead->company_website</a>";
-        echo '<hr>';
+        //echo "<a target='_blank' href='$lead->company_website'>$lead->company_website</a>";
+        //echo '<hr>';
     
         // Specify the headers
         $headers = [
@@ -220,8 +220,8 @@ class LeadController extends Controller
                 $paragraphs = $crawler->filter('p')->extract(array('_text'));
                 $websiteContent = implode(' ', $paragraphs);
     
-                echo $websiteContent;
-                echo '<hr>';
+                //echo $websiteContent;
+                //echo '<hr>';
     
                 if ($websiteContent) {
 
