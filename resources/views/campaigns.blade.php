@@ -59,7 +59,7 @@ table a:hover{
             $leadsCount = App\Models\Lead::where('campaign_id', $campaign->id)->count();
             $sentCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('sent', 1)->count();
             $openedCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('opened', 1)->count();
-            $replyCount = App\Models\Lead::where('replied', 1)->count();
+            $replyCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('replied', 1)->count();
 
             
           @endphp
