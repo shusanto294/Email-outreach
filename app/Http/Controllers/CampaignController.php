@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lead;
 use App\Models\Email;
+use App\Models\Reply;
 use App\Models\Campaign;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -85,16 +86,16 @@ class CampaignController extends Controller
     }
 
     public function showOpened($id){
-        $leads = Lead::where('campaign_id', $id)->where('opened', 1)->orderBy('id', 'desc')->paginate(20);
-        return view('leads', [
-          'leads' => $leads
+        $emails = Email::where('campaign_id', $id)->where('opened_count', '!=' , 0)->orderBy('opened_count', 'desc')->paginate(20);
+        return view('emails', [
+          'emails' => $emails
         ]);
     }
 
     public function showReplied($id){
-        $leads = Lead::where('campaign_id', $id)->where('replied', 1)->orderBy('id', 'desc')->paginate(20);
-        return view('leads', [
-          'leads' => $leads
+        $replies = Reply::where('campaign_id', $id)->orderBy('id', 'desc')->paginate(20);
+        return view('replies', [
+            'replies' => $replies
         ]);
     }
 

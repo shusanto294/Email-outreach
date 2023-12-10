@@ -75,8 +75,8 @@ Route::get('/campaign/{id}/sent', [CampaignController::class, 'showSent'])->midd
 Route::get('/campaign/{id}/opened', [CampaignController::class, 'showOpened'])->middleware(['auth', 'verified'])->name('campaign.opened');
 Route::get('/campaign/{id}/replied', [CampaignController::class, 'showReplied'])->middleware(['auth', 'verified'])->name('campaign.replied');
 
-Route::get('/campaign/{id}/not-opened', [CampaignController::class, 'showNotOpened'])->middleware(['auth', 'verified'])->name('campaign.not_opened');
-Route::post('/campaign/{id}/move-not-opened', [CampaignController::class, 'moveNotOpened'])->middleware(['auth', 'verified'])->name('campaign.move_not_opened');
+// Route::get('/campaign/{id}/not-opened', [CampaignController::class, 'showNotOpened'])->middleware(['auth', 'verified'])->name('campaign.not_opened');
+// Route::post('/campaign/{id}/move-not-opened', [CampaignController::class, 'moveNotOpened'])->middleware(['auth', 'verified'])->name('campaign.move_not_opened');
 
 Route::get('/campaign/{id}/delete', [CampaignController::class, 'delete'])->middleware(['auth', 'verified'])->name('campaign.delete');
 Route::get('/campaign/{id}/duplicate', [CampaignController::class, 'duplicate'])->middleware(['auth', 'verified'])->name('campaign.duplicate');
