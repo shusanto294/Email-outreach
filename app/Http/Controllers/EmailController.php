@@ -45,8 +45,6 @@ class EmailController extends Controller
 
     public function send(){
         $currentTime = Carbon::now();
-        //return $currentTime;
-
         $sendEmailsSetting = Setting::where('key', 'send_emails')->first();
 
         if($sendEmailsSetting->value == 'on'){
@@ -55,11 +53,13 @@ class EmailController extends Controller
             $mailbox = Mailbox::where('id', '>', $lastEmailSentFrom->value)->where('status', 'on')->first();
 
             if(!$mailbox){
-                $mailbox = Mailbox::orderBy('id', 'asc')->first();
+                $mailbox = Mailbox::where('status', 'on')->orderBy('id', 'asc')->first();
             }
 
             $lastEmailSentFrom->value = $mailbox->id;
             $lastEmailSentFrom->save();
+
+            //return $mailbox;
 
             config(['mail.mailers.smtp.host' => $mailbox->mail_smtp_host ]);
             config(['mail.mailers.smtp.port' => $mailbox->mail_smtp_port ]);
@@ -123,6 +123,7 @@ class EmailController extends Controller
             }else{
                 echo 'No leads found !'; 
             }
+
 
         }else{
             echo 'Emails sendings are off right now';
