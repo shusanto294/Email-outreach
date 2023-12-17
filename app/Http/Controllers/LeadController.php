@@ -181,7 +181,7 @@ class LeadController extends Controller
     public function personalize()
     {
         
-        $lead = Lead::where('personalized_line', null)->first();
+        $lead = Lead::where('website_content', null)->first();
     
         if (!$lead) {
             return "No lead found.";
@@ -193,7 +193,7 @@ class LeadController extends Controller
     
         if (empty($lead->company_website)) {
             // If the company_website is empty, mark personalized_line as 'n/a' and return an appropriate message
-            $lead->personalized_line = 'n/a';
+            $lead->website_content = 'n/a';
             $lead->save();
             return "Company website is empty.";
         }
@@ -241,19 +241,20 @@ class LeadController extends Controller
                     ]);
     
                     $personalizedLine =  $result->choices[0]->message->content;
-    
+                    
+                    $lead->website_content = $websiteContent;
                     $lead->personalized_line = $personalizedLine;
                     $lead->save();
     
                     echo $personalizedLine;
                 } else {
-                    $lead->personalized_line = 'n/a';
+                    $lead->website_content = 'n/a';
                     $lead->leadlist_id = 1;
                     $lead->campaign_id = 0;
                     $lead->save();
                 }
             } else {
-                $lead->personalized_line = 'n/a';
+                $lead->website_content = 'n/a';
                 $lead->leadlist_id = 1;
                 $lead->campaign_id = 0;
                 $lead->save();
@@ -261,7 +262,7 @@ class LeadController extends Controller
                 return "Failed to fetch the website content. Status code: " . $response->getStatusCode();
             }
         } catch (\GuzzleHttp\Exception\RequestException $e) {
-            $lead->personalized_line = 'n/a';
+            $lead->website_content = 'n/a';
             $lead->leadlist_id = 1;
             $lead->campaign_id = 0;
             $lead->save();
@@ -269,7 +270,7 @@ class LeadController extends Controller
             // An exception occurred, indicating that the link is invalid
             return "Failed to fetch the website content. Error: " . $e->getMessage();
         } catch (\Exception $e) {
-            $lead->personalized_line = 'n/a';
+            $lead->website_content = 'n/a';
             $lead->leadlist_id = 1;
             $lead->campaign_id = 0;
             $lead->save();
@@ -277,6 +278,11 @@ class LeadController extends Controller
             // Handle other exceptions here if needed
             return "An unexpected error occurred: " . $e->getMessage();
         }
+    }
+
+    public function get_lead_with_no_ps(){
+        $lead = Lead::where('personalized_line', null)->first();
+        return response()->json($lead);
     }
     
         

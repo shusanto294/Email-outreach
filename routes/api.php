@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::post('/upload-leads', [LeadController::class, 'upload_leads'])->name('upload.leads');
+Route::get('/get-lead-with-no-ps', [LeadController::class, 'get_lead_with_no_ps'])->name('get_lead_with_no_ps');
