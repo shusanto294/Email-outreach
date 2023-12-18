@@ -15,19 +15,19 @@ return new class extends Migration
     {
         Schema::create('leads', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->string('linkedin_profile')->nullable();
-            $table->string('title')->nullable();
-            $table->string('company');
-            $table->string('company_website')->nullable();
-            $table->string('location')->nullable();
-            $table->string('email');
+            $table->text('name');
+            $table->text('linkedin_profile')->nullable();
+            $table->text('title')->nullable();
+            $table->text('company');
+            $table->text('company_website')->nullable();
+            $table->text('location')->nullable();
+            $table->text('email');
             $table->boolean('leadlist_id')->default(0);
             $table->boolean('campaign_id')->default(0);
             $table->text('website_status')->nullable();
             $table->text('website_content')->default("");
             $table->text('personalized_line')->default("");
-            $table->string('verified')->nullable();
+            $table->text('verified')->nullable();
             $table->boolean('subscribe')->default(1);
             $table->boolean('sent')->default(0);
             $table->boolean('opened')->default(0);
