@@ -92,9 +92,11 @@
       <tr>
         <th scope="col">#ID</i></th>
         <th scope="col">Name</th>
-        <th scope="col">Company</th>
+        {{-- <th scope="col">Company</th> --}}
         <th scope="col">Website</th>
         <th scope="col">Email</th>
+        {{-- <th scope="col">WC</th> --}}
+        <th scope="col">PS</th>
       </tr>
     </thead>
     <tbody>
@@ -104,9 +106,11 @@
               <td>
                 <a class="name" target="_blank" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a>
               </td>
-              <td>{{ $lead->company }}</td>
+              {{-- <td>{{ $lead->company }}</td> --}}
               <td><a class="website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company_website }}</a> </td>
               <td>{{ $lead->email }}</td>
+              {{-- <td>{!! $lead->website_content ? "<span style='color: green;''>&#x2713;</span>" : "<span style='color: red;''>&#x2715;</span>" !!}</td> --}}
+              <td>{!! $lead->personalized_line ? "<span style='color: green;''>&#x2713;</span>" : "<span style='color: red;''>&#x2715;</span>" !!}</td>
             </tr>
         @endforeach
     </tbody>

@@ -25,9 +25,6 @@ use App\Http\Controllers\ListCampaignRelationshipController;
 |
 */
 
-// Route::get('/', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('home.index');
-// Route::get('/dashboard', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard.index');
-
 Route::get('/', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified']);
@@ -37,7 +34,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::post('/update-send-semails-setting', [SettingController::class, 'updateSendEmailsSetting'])->middleware(['auth', 'verified'])->name('settings.send-emails');
-
 
 Route::get('/import', function () {
     return view('import');
@@ -53,6 +49,10 @@ Route::get('/verify-lead', [LeadController::class, 'verify_lead'])->name('verify
 Route::get('/lists', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('lists.index');
 Route::post('/add-list', [LeadlistController::class, 'create'])->middleware(['auth', 'verified'])->name('add-list.post');
 Route::get('/list/{id}', [LeadlistController::class, 'show'])->middleware(['auth', 'verified'])->name('show.list');
+
+Route::get('/list/{id}/no-ws', [LeadlistController::class, 'show_no_ws'])->middleware(['auth', 'verified'])->name('show.no_ws.list');
+Route::get('/list/{id}/has-ws', [LeadlistController::class, 'show_has_ws'])->middleware(['auth', 'verified'])->name('show.has_ws.list');
+
 Route::get('/list/{id}/no-ps', [LeadlistController::class, 'show_no_ps'])->middleware(['auth', 'verified'])->name('show.no_ps.list');
 Route::get('/list/{id}/has-ps', [LeadlistController::class, 'show_has_ps'])->middleware(['auth', 'verified'])->name('show.has_ps.list');
 Route::get('/list/{id}/verified', [LeadlistController::class, 'show_verified'])->middleware(['auth', 'verified'])->name('show.verified.list');
@@ -60,30 +60,19 @@ Route::get('/list/{id}/not-verified', [LeadlistController::class, 'show_not_veri
 Route::get('/list/{id}/add-to-campaign', [LeadlistController::class, 'add_to_campaign'])->middleware(['auth', 'verified'])->name('add-to-campaign.list');
 Route::post('/add-to-campaign/{id}', [LeadlistController::class, 'leadlist_leads_change_campaign_id'])->middleware(['auth', 'verified'])->name('add-to-campaign.post');
 
-// Route::get('/campaign/{id}/sent', [CampaignController::class, 'show_sent'])->middleware(['auth', 'verified'])->name('campaign.show_sent');
-// Route::get('/campaign/{id}/opened', [CampaignController::class, 'show_opened'])->middleware(['auth', 'verified'])->name('campaign.show_opened');
-// Route::get('/campaign/{id}/replied', [CampaignController::class, 'show_replied'])->middleware(['auth', 'verified'])->name('campaign.show_replied');
-
 Route::get('/campaigns', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('campaigns.index');
 Route::post('/add-campaign', [CampaignController::class, 'create'])->middleware(['auth', 'verified'])->name('add-campaign.post');
 Route::get('/campaign/{id}', [CampaignController::class, 'show'])->middleware(['auth', 'verified'])->name('campaign.single');
 Route::post('/update-campaign/{id}', [CampaignController::class, 'update'])->middleware(['auth', 'verified'])->name('update-campaign.post');
 
-//Route::get('/campaign/{id}/leads', [CampaignController::class, 'showLeads'])->middleware(['auth', 'verified'])->name('campaign.leads');
 Route::get('/campaign/{id}/leads', [CampaignController::class, 'showLeads'])->middleware(['auth', 'verified'])->name('campaign.show.leads');
 Route::get('/campaign/{id}/sent', [CampaignController::class, 'showSent'])->middleware(['auth', 'verified'])->name('campaign.sent');
 Route::get('/campaign/{id}/opened', [CampaignController::class, 'showOpened'])->middleware(['auth', 'verified'])->name('campaign.opened');
 Route::get('/campaign/{id}/replied', [CampaignController::class, 'showReplied'])->middleware(['auth', 'verified'])->name('campaign.replied');
 
-// Route::get('/campaign/{id}/not-opened', [CampaignController::class, 'showNotOpened'])->middleware(['auth', 'verified'])->name('campaign.not_opened');
-// Route::post('/campaign/{id}/move-not-opened', [CampaignController::class, 'moveNotOpened'])->middleware(['auth', 'verified'])->name('campaign.move_not_opened');
-
 Route::get('/campaign/{id}/delete', [CampaignController::class, 'delete'])->middleware(['auth', 'verified'])->name('campaign.delete');
 Route::get('/campaign/{id}/duplicate', [CampaignController::class, 'duplicate'])->middleware(['auth', 'verified'])->name('campaign.duplicate');
 Route::get('/campaign/{id}/regerate-emails', [CampaignController::class, 'regerate_emails'])->middleware(['auth', 'verified'])->name('campaign.regerate_emails');
-
-// Route::get('/campaign/{id}/sent', [EmailController::class, 'showSent'])->middleware(['auth', 'verified'])->name('campaign.sent');
-// Route::get('/campaign/{id}/opened', [EmailController::class, 'showOpened'])->middleware(['auth', 'verified'])->name('campaign.opened');
 
 Route::get('/send-email', [EmailController::class, 'send']);
 Route::get('/test-email/{mailboxID}', [EmailController::class, 'testEmail'])->name('test.email');
@@ -103,7 +92,6 @@ Route::middleware('auth')->group(function () {
 
 //Settings
 Route::post('/update-settings', [SettingController::class, 'update'])->middleware(['auth', 'verified'])->name('update.settings');
-
 
 //Mailboxes
 Route::get('/mailboxes', [MailboxController::class, 'index'])->middleware(['auth', 'verified'])->name('mailbox.index');

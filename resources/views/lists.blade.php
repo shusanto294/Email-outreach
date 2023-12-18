@@ -32,6 +32,8 @@ table a:hover{
         <th scope="col">#id</th>
         <th scope="col">Name</th>
         <th scope="col">Total Leads</th>
+        {{-- <th scope="col">Has WC</th>
+        <th scope="col">No WC</th> --}}
         <th scope="col">Has PS</th>
         <th scope="col">NO PS</th>
         <th scope="col" style="text-align: right;">Action</th>
@@ -40,9 +42,14 @@ table a:hover{
     <tbody>
         @foreach ($lists as $list)
           @php
-              $noPsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('personalized_line', null)->count();
-              $hasPsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('personalized_line', '!=' , null)->count();
+
+
+              // $noWsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('website_content', "")->orwhere('website_content', "n/a")->count();
+              // $hasWsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('website_content', '!=' , "")->where('website_content', "!=" , "n/a")->count();
+              $noPsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('personalized_line', "")->count();
+              $hasPsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('personalized_line', '!=' , "")->count();
               $notAddedToCampaignCount = App\Models\Lead::where('leadlist_id', $list->id)->where('campaign_id', '=' , 0)->count();
+
           @endphp
             <tr>
                 <td>{{ $list->id }}</td>
@@ -51,6 +58,9 @@ table a:hover{
                   $leadsCount = App\Models\Lead::where('leadlist_id', $list->id)->count();
                 @endphp
                 <td><a href="{{ route('show.list', $list->id) }}">{{ $leadsCount }}</a></td>
+
+                {{-- <td><a href="{{ route('show.has_ws.list', $list->id) }}">{{ $hasWsleadsCount }}</a></td>
+                <td><a href="{{ route('show.no_ws.list', $list->id) }}">{{ $noWsleadsCount }}</a></td> --}}
 
                 <td><a href="{{ route('show.has_ps.list', $list->id) }}">{{ $hasPsleadsCount }}</a></td>
                 <td><a href="{{ route('show.no_ps.list', $list->id) }}">{{ $noPsleadsCount }}</a></td>

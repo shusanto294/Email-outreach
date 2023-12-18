@@ -118,9 +118,9 @@ class ReplyController extends Controller
     public function checkRepliesFromAllInbox(){
 
         $lastReplyCheckedFrom = Setting::where('key', 'last_reply_checked_from')->first();
-        $mailbox = Mailbox::where('id', '>', $lastReplyCheckedFrom->value)->orderBy('id', 'asc')->first();
+        $mailbox = Mailbox::where('id', '>', $lastReplyCheckedFrom->value)->where('status', 'on')->orderBy('id', 'asc')->first();
         if(!$mailbox){
-            $mailbox = Mailbox::orderBy('id', 'asc')->first();
+            $mailbox = Mailbox::where('status', 'on')->orderBy('id', 'asc')->first();
         }
 
         //Change the checked inbox information

@@ -77,7 +77,7 @@ class LeadController extends Controller
 
         $lead->subscribe = $request->subscribe;
         $lead->leadlist_id = $request->leadListID;
-        #$lead->personalized_line = $request->personalizedLine;
+        $lead->website_content = $request->websiteContent;
         $lead->personalized_line = str_replace(["[firstname]", "[company]", "[website]"], [$firstName, $lead->company, $lead->company_website], $request->personalizedLine);
 
 
@@ -176,30 +176,26 @@ class LeadController extends Controller
     }
     
 
-    
-
     public function personalize()
     {
         
-        $lead = Lead::where('website_content', null)->first();
+        $lead = Lead::where('website_content', "")->first();
     
         if (!$lead) {
             return "No lead found.";
         }
+
+        echo "<a href='$lead->company_website' target='blank'>$lead->company_website</a><hr>";
     
         $fullName = $lead->name;
         $nameParts = explode(" ", $fullName);
         $firstName = $nameParts[0] ? $nameParts[0] : '';
     
         if (empty($lead->company_website)) {
-            // If the company_website is empty, mark personalized_line as 'n/a' and return an appropriate message
             $lead->website_content = 'n/a';
             $lead->save();
             return "Company website is empty.";
         }
-    
-        //echo "<a target='_blank' href='$lead->company_website'>$lead->company_website</a>";
-        //echo '<hr>';
     
         // Specify the headers
         $headers = [
@@ -215,15 +211,37 @@ class LeadController extends Controller
     
             // Check if the response status code is 200 (OK)
             if ($response->getStatusCode() == 200) {
+                // $htmlContent = $response->getBody()->getContents();
+                // $crawler = new Crawler($htmlContent);
+                // $paragraphs = $crawler->filter('p')->extract(array('_text'));
+                // $websiteContent = implode(' ', $paragraphs);
+
                 $htmlContent = $response->getBody()->getContents();
                 $crawler = new Crawler($htmlContent);
-                $paragraphs = $crawler->filter('p')->extract(array('_text'));
-                $websiteContent = implode(' ', $paragraphs);
-    
-                //echo $websiteContent;
-                //echo '<hr>';
-    
+                
+                // Remove script and style tags along with their content
+                $crawler->filter('script, style')->each(function (Crawler $node) {
+                    $node->getNode(0)->parentNode->removeChild($node->getNode(0));
+                });
+                
+                // Extract only visible text content
+                $visibleText = $crawler->filter('body')->text();
+                
+                // Optionally, you can use the trim() function to remove leading and trailing whitespaces
+                $visibleText = trim($visibleText);
+                
+                // $visibleText now contains only the visible human-readable text content
+                $websiteContent = $visibleText;
+                
+                
+
                 if ($websiteContent) {
+                    if (strlen($websiteContent) > 10000) {
+                        // If yes, take the first 1000 characters
+                        $websiteContent = substr($websiteContent, 0, 10000);
+                    }
+
+                    echo "<p>$websiteContent</p><hr>";
 
                     $openaiApiKey = Setting::where('key', 'openai_api_key')->first();
                     if($openaiApiKey){
@@ -235,7 +253,7 @@ class LeadController extends Controller
                     $result = OpenAI::chat()->create([
                         'model' => 'gpt-3.5-turbo',
                         'messages' => [
-                            ["role" => "system", "content" => "You are a freelance web developer. You will be provided informations from peoples website and you will write a short sentence of compliment about their work based on their website content. Don't compliment on their webistes design, content, color, user friendlyness ect. Start with I love..."],
+                            ["role" => "system", "content" => "You are a freelance web developer. Your name is Shusanto. You will be provided information from $lead->company's website and you will write a short line for $firstName who is the owner of $lead->company saying what you love about their company and why you wanted to reach out. Also add how it can benifit their company. Dont't write any full email. Just write a single paragraph. Don't use they/their or gramatical 3rd person to refer to them, use you/your or gramatical 2nd person instead"],
                             ["role" => "user", "content" => $websiteContent]
                         ],
                     ]);
@@ -246,7 +264,7 @@ class LeadController extends Controller
                     $lead->personalized_line = $personalizedLine;
                     $lead->save();
     
-                    echo $personalizedLine;
+                    echo "<p>$personalizedLine</p>";
                 } else {
                     $lead->website_content = 'n/a';
                     $lead->leadlist_id = 1;

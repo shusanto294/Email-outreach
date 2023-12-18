@@ -2,9 +2,9 @@
 
 @section('head')
 <!-- include jquery and summernote css/js -->
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script> --}}
 
 <style>
     a.icon-link {
@@ -31,7 +31,7 @@
 
 @section('content')
     <h3>{{ $lead->name }}</h3>
-    <p class="mt-3"><b>Website : </b>{{ $lead->company_website }}</p>
+    <p class="mt-3"><b>Website : </b><a target="_blank" href="{{ $lead->company_website }}">{{ $lead->company_website }}</a></p>
     <p class="mt-3"><b>Linkedin Prodile : </b>{{ $lead->linkedin_profile }}</p>
     <p class="mt-3"><b>Title : </b>{{ $lead->title }}</p>
     <p><b>Company : </b>{{ $lead->company }}</p>
@@ -52,7 +52,11 @@
             <option value="1" {{ $lead->subscribe == 1 ? 'selected' : '' }}>Subscribe</option>
             <option value="0" {{ $lead->subscribe == 0 ? 'selected' : '' }}>Un Subscribe</option>
         </select>
-        <p class="dynamic-variables">Dynamic variables: <span>[firstname]</span> <span>[company]</span> <span>[website]</span></p>
+
+        <p class="dynamic-variables">Website content</p>
+        <textarea style="min-height: 200px;" id="summernote" name="websiteContent" class="form-control mb-3" placeholder="Website content">{{ $lead->website_content }}</textarea>
+
+        <p class="dynamic-variables">Personalized Line - Dynamic variables: <span>[firstname]</span> <span>[company]</span> <span>[website]</span></p>
         <textarea style="min-height: 100px;" id="summernote" name="personalizedLine" class="form-control mb-3" placeholder="Personalized Line">{{ $lead->personalized_line }}</textarea>
 
         <button type="submit" class="btn btn-secondary mt-3">Update Lead</button>

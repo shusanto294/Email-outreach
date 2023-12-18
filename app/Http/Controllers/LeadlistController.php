@@ -64,9 +64,33 @@ class LeadlistController extends Controller
         ]);
     }
 
+    public function show_no_ws($listId)
+    {
+        $leads = Lead::where('leadlist_id', $listId)->where('website_content', "")->where('website_content', "n/a")->orderBy('id', 'desc')->paginate(20);
+        return view('leads', [
+          'leads' => $leads
+        ]);
+    }
+
+    public function show_has_ws($listId)
+    {
+        $websiteContentFilters = ['', 'n/a'];
+        $leads = Lead::where('leadlist_id', $listId)
+                        ->whereNotIn('website_content', $websiteContentFilters)
+                        ->orderBy('id', 'desc')
+                        ->paginate(20);
+        return view('leads', [
+          'leads' => $leads
+        ]);
+    }
+
     public function show_no_ps($listId)
     {
-        $leads = Lead::where('leadlist_id', $listId)->where('personalized_line', null)->orderBy('id', 'desc')->paginate(20);
+        $websiteContentFilters = ['', 'n/a'];
+        $leads = Lead::where('leadlist_id', $listId)
+                        ->where('personalized_line', "")
+                        ->orderBy('id', 'desc')
+                        ->paginate(20);
         return view('leads', [
           'leads' => $leads
         ]);
@@ -74,7 +98,11 @@ class LeadlistController extends Controller
 
     public function show_has_ps($listId)
     {
-        $leads = Lead::where('leadlist_id', $listId)->where('personalized_line', '!=' , null)->orderBy('id', 'desc')->paginate(20);
+        $leads = Lead::where('leadlist_id', $listId)
+                        ->where('personalized_line', '!=', '')
+                        ->where('personalized_line', '!=', 'n/a')
+                        ->orderBy('id', 'desc')
+                        ->paginate(20);
         return view('leads', [
           'leads' => $leads
         ]);
