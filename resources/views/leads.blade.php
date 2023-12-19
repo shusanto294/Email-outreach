@@ -110,7 +110,7 @@
               <td><a class="website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company_website }}</a> </td>
               <td>{{ $lead->email }}</td>
               {{-- <td>{!! $lead->website_content ? "<span style='color: green;''>&#x2713;</span>" : "<span style='color: red;''>&#x2715;</span>" !!}</td> --}}
-              <td><a href="{{ route('lead.show', $lead->id) }}">{!! $lead->personalized_line ? $lead->personalized_line : "<span style='color: red;''>&#x2715;</span>" !!}</a></td>
+              <td><a target="_blank" href="{{ route('lead.show', $lead->id) }}">{!! $lead->personalized_line ? $lead->personalized_line : "<span style='color: red;''>&#x2715;</span>" !!}</a></td>
             </tr>
         @endforeach
     </tbody>

@@ -213,10 +213,6 @@ class LeadController extends Controller
     
             // Check if the response status code is 200 (OK)
             if ($response->getStatusCode() == 200) {
-                // $htmlContent = $response->getBody()->getContents();
-                // $crawler = new Crawler($htmlContent);
-                // $paragraphs = $crawler->filter('p')->extract(array('_text'));
-                // $websiteContent = implode(' ', $paragraphs);
 
                 $htmlContent = $response->getBody()->getContents();
                 $crawler = new Crawler($htmlContent);
@@ -255,7 +251,7 @@ class LeadController extends Controller
                     $result = OpenAI::chat()->create([
                         'model' => 'gpt-3.5-turbo',
                         'messages' => [
-                            ["role" => "system", "content" => "You are a freelance web developer. Your name is Shusanto. You will be provided information from $lead->company's website and you will write a short line for $firstName who is the owner of $lead->company saying what you love about their company and why you wanted to reach out. Also add how it can benifit their company. Dont't write any full email. Just write a single paragraph. Don't use they/their or gramatical 3rd person to refer to them, use you/your or gramatical 2nd person instead"],
+                            ["role" => "system", "content" => "You are a freelance web developer. Your name is Shusanto. You will be provided information from $lead->company's website and you will write a short line for $firstName who is the owner of $lead->company saying what you love about their company and why you wanted to reach out. Also add how it can benifit their company. Dont't write any full email. Just write a single paragraph. Don't use they/their or gramatical 3rd person to refer to them, use you/your or gramatical 2nd person instead. Don't write any email signature/regards, I will add that myself."],
                             ["role" => "user", "content" => $websiteContent]
                         ],
                     ]);
