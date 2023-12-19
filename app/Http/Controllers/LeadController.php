@@ -97,7 +97,7 @@ class LeadController extends Controller
             ->orWhere('email', 'like', '%' . $request->searchText . '%')
             ->orWhere('website_content', 'like', '%' . $request->searchText . '%')
             ->orWhere('personalized_line', 'like', '%' . $request->searchText . '%');
-        })->orderBy('created_at', 'desc')->paginate(10);
+        })->orderBy('created_at', 'desc')->paginate(25);
     
         return view('leads', [
             'leads' => $leads
@@ -187,7 +187,7 @@ class LeadController extends Controller
             return "No lead found.";
         }
 
-        echo "<a href='$lead->company_website' target='blank'>$lead->company_website</a><hr>";
+        //echo "<a href='$lead->company_website' target='blank'>$lead->company_website</a><hr>";
     
         $fullName = $lead->name;
         $nameParts = explode(" ", $fullName);
