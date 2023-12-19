@@ -59,7 +59,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'akdiginova.tech',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@akdiginova.tech',
+            'mail_username' => 'sm@akdiginova.tech',
             'mail_password' => 'akdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -70,7 +70,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'duidiginova.tech',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@duidiginova.tech',
+            'mail_username' => 'sm@duidiginova.tech',
             'mail_password' => 'duidiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -81,7 +81,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'tindiginova.tech',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@tindiginova.tech',
+            'mail_username' => 'sm@tindiginova.tech',
             'mail_password' => 'tindiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -92,7 +92,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'chardiginova.tech',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@chardiginova.tech',
+            'mail_username' => 'sm@chardiginova.tech',
             'mail_password' => 'chardiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -103,7 +103,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'pachdiginova.tech',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@pachdiginova.tech',
+            'mail_username' => 'sm@pachdiginova.tech',
             'mail_password' => 'pachdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -114,7 +114,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'choydiginova.tech',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@choydiginova.tech',
+            'mail_username' => 'sm@choydiginova.tech',
             'mail_password' => 'choydiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -125,7 +125,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'satdiginova.tech',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@satdiginova.tech',
+            'mail_username' => 'sm@satdiginova.tech',
             'mail_password' => 'satdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -136,7 +136,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'aatdiginova.tech',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@aatdiginova.tech',
+            'mail_username' => 'sm@aatdiginova.tech',
             'mail_password' => 'aatdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -147,7 +147,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'noydiginova.tech',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@noydiginova.tech',
+            'mail_username' => 'sm@noydiginova.tech',
             'mail_password' => 'noydiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -158,7 +158,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'doshdiginova.tech',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@doshdiginova.tech',
+            'mail_username' => 'sm@doshdiginova.tech',
             'mail_password' => 'doshdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -169,7 +169,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@agarodiginova.tech',
+            'mail_username' => 'sm@agarodiginova.tech',
             'mail_password' => 'agarodiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -180,7 +180,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@barodiginova.tech',
+            'mail_username' => 'sm@barodiginova.tech',
             'mail_password' => 'barodiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -191,7 +191,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@terodiginova.tech',
+            'mail_username' => 'sm@terodiginova.tech',
             'mail_password' => 'terodiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -202,7 +202,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@choddodiginova.tech',
+            'mail_username' => 'sm@choddodiginova.tech',
             'mail_password' => 'choddodiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -213,7 +213,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@ponerodiginova.tech',
+            'mail_username' => 'sm@ponerodiginova.tech',
             'mail_password' => 'ponerodiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -224,7 +224,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@sholodiginova.tech',
+            'mail_username' => 'sm@sholodiginova.tech',
             'mail_password' => 'sholodiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -235,7 +235,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@soterodiginova.tech',
+            'mail_username' => 'sm@soterodiginova.tech',
             'mail_password' => 'soterodiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -246,7 +246,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@atharodiginova.tech',
+            'mail_username' => 'sm@atharodiginova.tech',
             'mail_password' => 'atharodiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -257,7 +257,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@unishdiginova.tech',
+            'mail_username' => 'sm@unishdiginova.tech',
             'mail_password' => 'unishdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -268,7 +268,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@bishdiginova.tech',
+            'mail_username' => 'sm@bishdiginova.tech',
             'mail_password' => 'bishdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -279,7 +279,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@ekushdiginova.tech',
+            'mail_username' => 'sm@ekushdiginova.tech',
             'mail_password' => 'ekushdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -290,7 +290,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@baishdiginova.tech',
+            'mail_username' => 'sm@baishdiginova.tech',
             'mail_password' => 'baishdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -301,7 +301,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@teishdiginova.tech',
+            'mail_username' => 'sm@teishdiginova.tech',
             'mail_password' => 'teishdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -312,7 +312,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@chobbishdiginova.tech',
+            'mail_username' => 'sm@chobbishdiginova.tech',
             'mail_password' => 'chobbishdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -345,7 +345,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@satashdiginova.tech',
+            'mail_username' => 'sm@satashdiginova.tech',
             'mail_password' => 'satashdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -356,7 +356,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@atashdiginova.tech',
+            'mail_username' => 'sm@atashdiginova.tech',
             'mail_password' => 'atashdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -367,7 +367,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@untrishdiginova.tech',
+            'mail_username' => 'sm@untrishdiginova.tech',
             'mail_password' => 'untrishdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -378,7 +378,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@trishdiginova.techh',
+            'mail_username' => 'sm@trishdiginova.techh',
             'mail_password' => 'trishdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -389,7 +389,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@aktrishdiginova.tech',
+            'mail_username' => 'sm@aktrishdiginova.tech',
             'mail_password' => 'aktrishdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -400,7 +400,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@botrishdiginova.tech',
+            'mail_username' => 'sm@botrishdiginova.tech',
             'mail_password' => 'botrishdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -411,7 +411,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@tetrishdiginova.tech',
+            'mail_username' => 'sm@tetrishdiginova.tech',
             'mail_password' => 'tetrishdiginova.tech',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -422,7 +422,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@choutrishdiginova.online',
+            'mail_username' => 'sm@choutrishdiginova.online',
             'mail_password' => 'choutrishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -433,7 +433,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@poytrishdiginova.online',
+            'mail_username' => 'sm@poytrishdiginova.online',
             'mail_password' => 'poytrishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -444,7 +444,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@chotrishdiginova.online',
+            'mail_username' => 'sm@chotrishdiginova.online',
             'mail_password' => 'chotrishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -455,7 +455,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@saitrishdiginova.online',
+            'mail_username' => 'sm@saitrishdiginova.online',
             'mail_password' => 'saitrishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -466,7 +466,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@attrishdiginova.online',
+            'mail_username' => 'sm@attrishdiginova.online',
             'mail_password' => 'attrishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -477,7 +477,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@unochollishdiginova.online',
+            'mail_username' => 'sm@unochollishdiginova.online',
             'mail_password' => 'unochollishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -488,7 +488,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@chollishdiginova.online',
+            'mail_username' => 'sm@chollishdiginova.online',
             'mail_password' => 'chollishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -499,7 +499,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@akchollishdiginova.online',
+            'mail_username' => 'sm@akchollishdiginova.online',
             'mail_password' => 'akchollishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -510,7 +510,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@beyallishdiginova.online',
+            'mail_username' => 'sm@beyallishdiginova.online',
             'mail_password' => 'beyallishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -521,7 +521,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@tetallishdiginova.online',
+            'mail_username' => 'sm@tetallishdiginova.online',
             'mail_password' => 'tetallishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -532,7 +532,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@chuwallishdiginova.online',
+            'mail_username' => 'sm@chuwallishdiginova.online',
             'mail_password' => 'chuwallishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -543,7 +543,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@poychollishdiginova.online',
+            'mail_username' => 'sm@poychollishdiginova.online',
             'mail_password' => 'poychollishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -554,7 +554,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@choychollishdiginova.online',
+            'mail_username' => 'sm@choychollishdiginova.online',
             'mail_password' => 'choychollishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -565,7 +565,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@satchollishdiginova.online',
+            'mail_username' => 'sm@satchollishdiginova.online',
             'mail_password' => 'satchollishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -576,7 +576,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@atchollishdiginova.online',
+            'mail_username' => 'sm@atchollishdiginova.online',
             'mail_password' => 'atchollishdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -587,7 +587,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@unoponchashdiginova.online',
+            'mail_username' => 'sm@unoponchashdiginova.online',
             'mail_password' => 'unoponchashdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
@@ -598,7 +598,7 @@ class DatabaseSeeder extends Seeder
             'mail_imap_host' => 'premium143.web-hosting.com',
             'mail_smtp_port' => '465',
             'mail_imap_port' => '993',
-            'mail_username' => 'shusanto@ponchashdiginova.online',
+            'mail_username' => 'sm@ponchashdiginova.online',
             'mail_password' => 'ponchashdiginova.online',
             'mail_from_name' => 'Shusanto Modak',
             'status' => 'on'
