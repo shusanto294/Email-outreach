@@ -75,7 +75,13 @@
   <div class="search-form">
     <form action="{{ route('lead.search') }}" method="POST" class="lead-search-form">
       @csrf
-      <input type="text" placeholder="Search text" class="form-control" name="searchText">
+      @php
+          $searchTest = "";
+          if(isset($_POST['searchText'])){
+            $searchTest = $_POST['searchText'];
+          }
+      @endphp
+      <input type="text" placeholder="Search text" class="form-control" name="searchText" value="{{ $searchTest ? $searchTest : "" }}">
       <button type="submit" class="btn btn-secondary">Search</button>
     </form>
   </div>
