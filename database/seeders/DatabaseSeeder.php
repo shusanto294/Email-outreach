@@ -625,7 +625,7 @@ class DatabaseSeeder extends Seeder
         DB::table('campaigns')->insert([
             'name' => 'Seeking collaboration with [company].',
             'subject' => 'Seeking collaboration with [company].',
-            'body' => '<p>[personalizedLine]</p> <p>Would you be interested in a quick chat?</p><p>Thanks and regards,<br>Shusanto Modak<br>Diginova Tech</p>'
+            'body' => '<p>[personalizedLine]</p> <p>Would you be interested in a quick chat?</p><p>Regards,<br>Shusanto Modak<br>Diginova Tech</p>'
         ]);
         
     }

@@ -249,8 +249,14 @@ class LeadController extends Controller
                     
                     $result = OpenAI::chat()->create([
                         'model' => 'gpt-3.5-turbo',
+
+                        // 'messages' => [
+                        //     ["role" => "system", "content" => "You are a freelance web developer. You will be provided information from $lead->company's website and you will write a short line for $firstName who is the owner of $lead->company saying what you love about their company and why you wanted to reach out. Also add how it can benifit their company. Dont't write any full email. Just write a very short paragraph. Don't use they/their or gramatical 3rd person to refer to them, use you/your or gramatical 2nd person instead. Please don't use any placeholder text."],
+                        //     ["role" => "user", "content" => $websiteContent]
+                        // ],
+
                         'messages' => [
-                            ["role" => "system", "content" => "You are a freelance web developer. You will be provided information from $lead->company's website and you will write a short line for $firstName who is the owner of $lead->company saying what you love about their company and why you wanted to reach out. Also add how it can benifit their company. Dont't write any full email. Just write a very short paragraph. Don't use they/their or gramatical 3rd person to refer to them, use you/your or gramatical 2nd person instead. Please don't use any placeholder text."],
+                            ["role" => "system", "content" => "You are a freelance web developer. Your name is Shusanto. You will be provided information from $lead->company's website and you will write a short paragraph for $firstName who is the owner of $lead->company saying what you love about their company, why you wanted to reach out and how you can help them with your service. Keep it short and sweet. Don't use they/their or gramatical 3rd person to refer to them, use you/your or gramatical 2nd person instead. Finish with a question about asking if they are interested."],
                             ["role" => "user", "content" => $websiteContent]
                         ],
                     ]);
