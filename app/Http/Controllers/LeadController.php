@@ -68,6 +68,12 @@ class LeadController extends Controller
         ]);
     }
 
+    public function delete(Request $request, $id){
+        $lead = Lead::find($id);
+        $lead->delete();
+        return redirect('/leads')->with('warning', "Lead deleted succesfully !");
+    }
+
     public function update(Request $request, $id){
         $lead = Lead::find($id);
 

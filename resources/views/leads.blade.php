@@ -71,6 +71,8 @@
 
 @section('content')
 
+@include('alerts')
+
 <div class="leads-header">
   <div class="search-form">
     <form action="{{ route('lead.search') }}" method="POST" class="lead-search-form">

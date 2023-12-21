@@ -60,6 +60,7 @@
         <textarea id="personalizedLine" style="min-height: 200px;" id="summernote" name="personalizedLine" class="form-control mb-3" placeholder="Personalized Line">{{ $lead->personalized_line }}</textarea>
 
         <button type="submit" class="btn btn-secondary mt-3">Update Lead</button>
+        <a class="btn btn-danger mt-3" href="{{ route('lead.delete', $lead->id) }}">Delete</a>
     </form>
 
     @if (count($emails) > 0)

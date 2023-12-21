@@ -178,6 +178,14 @@
         <button type="submit"  class="btn btn-secondary">Save Settings</button>
     </form>
 
+    @php
+        $lead = App\Models\Lead::where('website_content', "")->first();
+    @endphp
+
+    <p style="margin-top: 50px;"><b>Logs:</b></p>
+    <p>Next lead to personalize: <a href="{{ route('lead.show', $lead->id) }}">{{ $lead->email }}</a></p>
+
+
 @endsection
 
 
