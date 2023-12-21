@@ -257,7 +257,7 @@ class LeadController extends Controller
                         //'model' => 'gpt-3.5-turbo',   
                         'model' => 'gpt-3.5-turbo-1106',   
                         'messages' => [
-                            ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website and you will write a short email for $firstName who is the owner of $lead->company saying what you love about their company and why you wanted to reach out. Also add how it can benifit $lead->company's company. Don't use they/their or gramatical 3rd person to refer to $lead->company or their company, use you/your or gramatical 2nd person instead. Don't write any email subject line, the email should not be more than 100 words."],
+                            ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website and you will write a short email for $firstName who is the owner of $lead->company saying what you love about their company and why you wanted to reach out. Also add how it can benifit $lead->company's company. Don't use they/their or gramatical 3rd person to refer to $lead->company or their company, use you/your or gramatical 2nd person instead. Don't write any email subject line, the email should not be more than 100 words. The email signature Should be Warm regards,\n Shusano Modak \n Freelance Web Developer"],
                             ["role" => "user", "content" => $websiteContent]
                         ],
 
