@@ -2,9 +2,9 @@
 
 @section('head')
 <!-- include jquery and summernote css/js -->
-{{-- <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script> --}}
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
 <style>
     a.icon-link {
@@ -56,7 +56,7 @@
         <p class="dynamic-variables">Website content</p>
         <textarea style="min-height: 200px;" id="summernote" name="websiteContent" class="form-control mb-3" placeholder="Website content">{{ $lead->website_content }}</textarea>
 
-        <p class="dynamic-variables">Personalized Line - Dynamic variables: <span>[firstname]</span> <span>[company]</span> <span>[website]</span></p>
+        <p class="dynamic-variables mt-3">Personalized Line - Dynamic variables: <span>[firstname]</span> <span>[company]</span> <span>[website]</span></p>
         <textarea id="personalizedLine" style="min-height: 200px;" id="summernote" name="personalizedLine" class="form-control mb-3" placeholder="Personalized Line">{{ $lead->personalized_line }}</textarea>
 
         <button type="submit" class="btn btn-secondary mt-3">Update Lead</button>
@@ -78,7 +78,7 @@
 @section('footer')
 <script>
     $(document).ready(function() {
-    $('#summernote').summernote({
+    $('textarea').summernote({
         minHeight: 200
     });
     });

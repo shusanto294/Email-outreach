@@ -89,7 +89,7 @@
   </div>
   <div class="import-button">
     <a href="/import" class="btn btn-secondary">Import leads</a>
-    <button class="btn btn-secondary" id="openLinks" style="margin-left: 20px;">Edit all sites</button>
+    <button class="btn btn-secondary" id="openLinks" style="margin-left: 20px;">Edit all Leads</button>
   </div>
 </div>
 
@@ -118,7 +118,7 @@
               <td><a class="website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company_website }}</a> </td>
               <td>{{ $lead->email }}</td>
               {{-- <td>{!! $lead->website_content ? "<span style='color: green;''>&#x2713;</span>" : "<span style='color: red;''>&#x2715;</span>" !!}</td> --}}
-              <td><a class="lead" target="_blank" href="{{ route('lead.show', $lead->id) }}#personalizedLine">{!! $lead->personalized_line ? $lead->personalized_line : "<span style='color: red;''>&#x2715;</span>" !!}</a></td>
+              <td><a class="leadlink" target="_blank" href="{{ route('lead.show', $lead->id) }}#personalizedLine">{!! $lead->personalized_line ? $lead->personalized_line : "<span style='color: red;''>&#x2715;</span>" !!}</a></td>
             </tr>
         @endforeach
     </tbody>
@@ -144,7 +144,7 @@
 
         $("#openLinks").click(function() {
             // Select all anchor elements within an unordered list
-            $("a.lead").each(function() {
+            $("a.leadlink").each(function() {
                 // Get the href attribute of the anchor
                 var link = $(this).attr("href");
                 

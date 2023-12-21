@@ -254,27 +254,30 @@ class LeadController extends Controller
                     }
                     
                     $result = OpenAI::chat()->create([
-                        'model' => 'gpt-3.5-turbo',
-
-                        // 'messages' => [
-                        //     ["role" => "system", "content" => "You are a freelance web developer. You will be provided information from $lead->company's website and you will write a short line for $firstName who is the owner of $lead->company saying what you love about their company and why you wanted to reach out. Also add how it can benifit their company. Dont't write any full email. Just write a very short paragraph. Don't use they/their or gramatical 3rd person to refer to them, use you/your or gramatical 2nd person instead. Please don't use any placeholder text."],
-                        //     ["role" => "user", "content" => $websiteContent]
-                        // ],
-
+                        //'model' => 'gpt-3.5-turbo',   
+                        'model' => 'gpt-3.5-turbo-1106',   
                         'messages' => [
-                            ["role" => "system", "content" => "You are a freelance web developer. You will be provided information from $lead->company's website and you will write a short line for $firstName who is the owner of $lead->company saying what you love about their company and why you wanted to reach out. Also add how it can benifit their company. Just write a very short paragraph. Don't use they/their or gramatical 3rd person to refer to them, use you/your or gramatical 2nd person instead. Please don't use any placeholder text. and avoid using Sincerely/Warm regards/Best regards/ [Your Name] / Shusanto at the end"],
+                            ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website and you will write a short email for $firstName who is the owner of $lead->company saying what you love about their company and why you wanted to reach out. Also add how it can benifit $lead->company's company. Don't use they/their or gramatical 3rd person to refer to $lead->company or their company, use you/your or gramatical 2nd person instead. Don't write any email subject line, the email should not be more than 100 words."],
                             ["role" => "user", "content" => $websiteContent]
                         ],
 
+                        //'max_tokens' => 100,
+
                     ]);
-    
-                    $personalizedLine =  $result->choices[0]->message->content;
+
+                    $personalizedLine =  nl2br($result->choices[0]->message->content);
                     
                     $lead->website_content = $websiteContent;
                     $lead->personalized_line = $personalizedLine;
                     $lead->save();
     
                     echo $personalizedLine;
+
+                    echo '<hr>Usage<hr>';
+                    echo 'Prompt tokens :'. $result->usage->promptTokens .'<br>';
+                    echo 'Completion tokens :'. $result->usage->completionTokens .'<br>';
+                    echo 'Total tokens :'. $result->usage->totalTokens;
+
                 } else {
                     $lead->website_content = 'n/a';
                     $lead->leadlist_id = 1;
