@@ -72,6 +72,9 @@ class EmailController extends Controller
             // $email = Email::where('sent', null)->orderBy('id', 'asc')->first();
 
             if($lead){
+                $lead->sent = 1;
+                $lead->save();
+                
                 $campaign = Campaign::find($lead->campaign_id);
 
                 $subject = $campaign->subject;
@@ -114,9 +117,6 @@ class EmailController extends Controller
                 Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
                     $message->to($lead->email)->subject($dynamicSubject);
                 });
-
-                $lead->sent = 1;
-                $lead->save();
 
                 return $email;
 

@@ -190,8 +190,8 @@
     @endif
 
     @if ($nextLeadToSendEmail)
-    <p>Next lead to send email: <a href="{{ route('lead.show', $nextLeadToSendEmail->id) }}">{{ $nextLeadToSendEmail->email }}</a></p>
-@endif
+        <p>Next lead to send email: <a href="{{ route('lead.show', $nextLeadToSendEmail->id) }}">{{ $nextLeadToSendEmail->email }}</a></p>
+    @endif
     
 
 
