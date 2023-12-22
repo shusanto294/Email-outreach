@@ -187,8 +187,11 @@
 
     @if ($nextLeadToPersonalize)
         <p>Next lead to personalize: <a href="{{ route('lead.show', $nextLeadToPersonalize->id) }}">{{ $nextLeadToPersonalize->email }}</a></p>
-        <p>Next lead to send email: <a href="{{ route('lead.show', $nextLeadToSendEmail->id) }}">{{ $nextLeadToSendEmail->email }}</a></p>
     @endif
+
+    @if ($nextLeadToSendEmail)
+    <p>Next lead to send email: <a href="{{ route('lead.show', $nextLeadToSendEmail->id) }}">{{ $nextLeadToSendEmail->email }}</a></p>
+@endif
     
 
 
