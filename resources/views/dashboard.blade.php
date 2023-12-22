@@ -180,12 +180,14 @@
 
     @php
         $nextLeadToPersonalize = App\Models\Lead::where('website_content', "")->first();
+        $nextLeadToSendEmail = App\Models\Lead::where('campaign_id', '!=' ,  0)->where('sent', 0)->orderBy('id', 'asc')->first();
     @endphp
 
     <p style="margin-top: 50px;"><b>Status:</b></p>
-    
+
     @if ($nextLeadToPersonalize)
         <p>Next lead to personalize: <a href="{{ route('lead.show', $nextLeadToPersonalize->id) }}">{{ $nextLeadToPersonalize->email }}</a></p>
+        <p>Next lead to send email: <a href="{{ route('lead.show', $nextLeadToSendEmail->id) }}">{{ $nextLeadToSendEmail->email }}</a></p>
     @endif
     
 
