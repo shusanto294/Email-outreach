@@ -179,11 +179,15 @@
     </form>
 
     @php
-        $lead = App\Models\Lead::where('website_content', "")->first();
+        $nextLeadToPersonalize = App\Models\Lead::where('website_content', "")->first();
     @endphp
 
-    <p style="margin-top: 50px;"><b>Logs:</b></p>
-    <p>Next lead to personalize: <a href="{{ route('lead.show', $lead->id) }}">{{ $lead->email }}</a></p>
+    <p style="margin-top: 50px;"><b>Status:</b></p>
+    
+    @if ($nextLeadToPersonalize)
+        <p>Next lead to personalize: <a href="{{ route('lead.show', $nextLeadToPersonalize->id) }}">{{ $nextLeadToPersonalize->email }}</a></p>
+    @endif
+    
 
 
 @endsection
