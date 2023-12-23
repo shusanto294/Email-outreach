@@ -6,6 +6,7 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreSettingRequest;
 use App\Http\Requests\UpdateSettingRequest;
+use Illuminate\Support\Facades\Http;
 
 class SettingController extends Controller
 {
@@ -45,6 +46,30 @@ class SettingController extends Controller
             }
         }
         return redirect()->back()->with('message', 'Settings updated');
+    }
+
+    public function dashboard(){
+        $openaiApiKey = Setting::where('key', 'openai_api_key')->first();
+
+        if($openaiApiKey){
+            // Make the API request
+            $response = Http::withHeaders([
+                'Content-Type' => 'application/json',
+                'Authorization' => "Bearer $openaiApiKey->data", // Replace 'sess-xxxx' with your actual API key
+            ])->get('https://api.openai.com/dashboard/billing/credit_grants');
+
+            // Extract data from the API response
+            $responseData = $response->json();
+
+            return $responseData;
+
+            // Pass the data to the 'dashboard' view
+            //return view('dashboard', ['responseData' => $responseData]);
+        }else{
+            return view('dashboard');
+        }
+
+
     }
 
 }

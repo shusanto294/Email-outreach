@@ -14,6 +14,7 @@ use App\Http\Controllers\LeadlistController;
 use App\Http\Controllers\ListCampaignRelationshipController;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -32,6 +33,9 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::get('/', [SettingController::class, 'dashboard'])->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::post('/update-send-semails-setting', [SettingController::class, 'updateSendEmailsSetting'])->middleware(['auth', 'verified'])->name('settings.send-emails');
 

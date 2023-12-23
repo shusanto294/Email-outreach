@@ -141,10 +141,10 @@ class LeadController extends Controller
     }
 
     public function upload_leads(Request $request){
-        $currentDateTime = Carbon::now();
-        $formattedDateTime = $currentDateTime->format('d F Y - h:i A');
+        // $currentDateTime = Carbon::now();
+        // $formattedDateTime = $currentDateTime->format('d F Y - h:i A');
     
-        $leadList = Leadlist::create(['name' => $formattedDateTime]);
+        $leadList = Leadlist::orderBy('id', 'desc')->first();
     
         $data = $request->all();
         
@@ -177,7 +177,7 @@ class LeadController extends Controller
             }
         }
 
-        echo $newEntriesCount . ' - new leads entries added';
+        echo $newEntriesCount . ' - new leads added';
         // echo $skippedEntriesCount . ' - leads already exists in the database';
         
     }
