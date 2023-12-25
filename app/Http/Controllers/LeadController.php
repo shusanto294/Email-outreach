@@ -214,7 +214,7 @@ class LeadController extends Controller
     
         try {
             // Make a GET request to the URL with headers
-            $response = $client->get($lead->company_website, ['timeout' => 10]);
+            $response = $client->get($lead->company_website, ['timeout' => 30]);
     
             // Check if the response status code is 200 (OK)
             if ($response->getStatusCode() == 200) {
@@ -276,7 +276,6 @@ class LeadController extends Controller
                     ]);
 
                     $personalizedLine =  nl2br($result->choices[0]->message->content);
-                    
                     $lead->website_content = $websiteContent;
                     $lead->personalized_line = $personalizedLine;
                     $lead->save();
@@ -288,30 +287,43 @@ class LeadController extends Controller
                     echo 'Completion tokens :'. $result->usage->completionTokens .'<br>';
                     echo 'Total tokens :'. $result->usage->totalTokens;
                 }else{
+                    echo 'No visible text found';
                     $lead->website_content = 'n/a';
                     $lead->leadlist_id = 1;
                     $lead->campaign_id = 0;
                     $lead->save();
-                    echo 'No visible text found';
                 }
-
 
             } else {
                 $lead->website_content = 'n/a';
                 $lead->leadlist_id = 1;
                 $lead->campaign_id = 0;
                 $lead->save();
-    
-                return "Failed to fetch the website content. Status code: " . $response->getStatusCode();
+                echo "Failed to fetch the website content. Status code: " . $response->getStatusCode();
             }
         } catch (\GuzzleHttp\Exception\RequestException $e) {
             $lead->website_content = 'n/a';
             $lead->leadlist_id = 1;
             $lead->campaign_id = 0;
             $lead->save();
-    
-            // An exception occurred, indicating that the link is invalid
-            echo "Failed to fetch the website content. Error: " . $e->getMessage();
+        
+            if ($e->hasResponse()) {
+                echo "Failed to fetch the website content. Status code: " . $e->getResponse()->getStatusCode();
+            } else {
+                echo "Failed to fetch the website content. Error: " . $e->getMessage();
+            }
+        } catch (\GuzzleHttp\Exception\ConnectException $e) {
+            $lead->website_content = 'n/a';
+            $lead->leadlist_id = 1;
+            $lead->campaign_id = 0;
+            $lead->save();
+            echo "Connection failed. Error: " . $e->getMessage();
+        } catch (\GuzzleHttp\Exception\TransferException $e) {
+            $lead->website_content = 'n/a';
+            $lead->leadlist_id = 1;
+            $lead->campaign_id = 0;
+            $lead->save();
+            echo "Transfer error. Error: " . $e->getMessage();
         }
     }
 
@@ -320,8 +332,6 @@ class LeadController extends Controller
         return response()->json($lead);
     }
     
-        
-        
-
+    
 
     }
