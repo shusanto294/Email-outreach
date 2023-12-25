@@ -214,7 +214,7 @@ class LeadController extends Controller
     
         try {
             // Make a GET request to the URL with headers
-            $response = $client->get($lead->company_website);
+            $response = $client->get($lead->company_website, ['timeout' => 10]);
     
             // Check if the response status code is 200 (OK)
             if ($response->getStatusCode() == 200) {
@@ -255,9 +255,9 @@ class LeadController extends Controller
                     
                     $result = OpenAI::chat()->create([
                         //'model' => 'gpt-3.5-turbo',   
-                        'model' => 'gpt-3.5-turbo-1106',   
+                        'model' => 'gpt-3.5-turbo-1106',
                         'messages' => [
-                            ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website and you will write a short email for $firstName who is the owner of $lead->company saying what you love about their company and why you wanted to reach out. Also add how it can benifit $lead->company's company. Don't use they/their or gramatical 3rd person to refer to $lead->company or their company, use you/your or gramatical 2nd person instead. Don't write any email subject line, the email should not be more than 100 words. The email signature Should be Shusano Modak \n Freelance Web Developer"],
+                            ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website and you will write a short email to $firstName who is the owner of $lead->company to offer your website redesign service saying what you love about their company and why you wanted to reach out. Also add how your website redesign service can benifit $lead->company's company. Don't use they/their or gramatical 3rd person to refer to $lead->company or their company, use you/your or gramatical 2nd person instead. Don't write any email subject line, the email should not be more than 100 words. The email signature Should be Shusano Modak \n Freelance Web Developer"],
                             ["role" => "user", "content" => $websiteContent]
                         ],
 
@@ -300,14 +300,6 @@ class LeadController extends Controller
     
             // An exception occurred, indicating that the link is invalid
             return "Failed to fetch the website content. Error: " . $e->getMessage();
-        } catch (\Exception $e) {
-            $lead->website_content = 'n/a';
-            $lead->leadlist_id = 1;
-            $lead->campaign_id = 0;
-            $lead->save();
-    
-            // Handle other exceptions here if needed
-            return "An unexpected error occurred: " . $e->getMessage();
         }
     }
 
