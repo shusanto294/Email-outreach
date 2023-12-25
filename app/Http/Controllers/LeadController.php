@@ -226,19 +226,29 @@ class LeadController extends Controller
                 $crawler->filter('script, style')->each(function (Crawler $node) {
                     $node->getNode(0)->parentNode->removeChild($node->getNode(0));
                 });
-                
-                // Extract only visible text content
-                $visibleText = $crawler->filter('body')->text();
-                
-                // Optionally, you can use the trim() function to remove leading and trailing whitespaces
-                $visibleText = trim($visibleText);
-                
-                // $visibleText now contains only the visible human-readable text content
-                $websiteContent = $visibleText;
-                
+
+                $websiteContent = '';
                 
 
-                if ($websiteContent) {
+                try {
+                    $visibleText = $crawler->filter('body')->text();
+                    $websiteContent = $visibleText;
+        
+                    // Optionally, you can use the trim() function to remove leading and trailing whitespaces
+                    $visibleText = trim($visibleText);
+                } catch (\Exception $ex) {
+                    // Handle the case when no visible text is found
+                    $lead->website_content = 'n/a';
+                    $lead->leadlist_id = 1;
+                    $lead->campaign_id = 0;
+                    $lead->save();
+        
+                    echo 'No visible text found';
+                    return;
+                }
+                
+  
+                if ($websiteContent != '') {
                     if (strlen($websiteContent) > 10000) {
                         // If yes, take the first 1000 characters
                         $websiteContent = substr($websiteContent, 0, 10000);
@@ -277,13 +287,15 @@ class LeadController extends Controller
                     echo 'Prompt tokens :'. $result->usage->promptTokens .'<br>';
                     echo 'Completion tokens :'. $result->usage->completionTokens .'<br>';
                     echo 'Total tokens :'. $result->usage->totalTokens;
-
-                } else {
+                }else{
                     $lead->website_content = 'n/a';
                     $lead->leadlist_id = 1;
                     $lead->campaign_id = 0;
                     $lead->save();
+                    echo 'No visible text found';
                 }
+
+
             } else {
                 $lead->website_content = 'n/a';
                 $lead->leadlist_id = 1;
@@ -299,7 +311,7 @@ class LeadController extends Controller
             $lead->save();
     
             // An exception occurred, indicating that the link is invalid
-            return "Failed to fetch the website content. Error: " . $e->getMessage();
+            echo "Failed to fetch the website content. Error: " . $e->getMessage();
         }
     }
 
