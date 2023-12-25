@@ -114,6 +114,7 @@ Route::get('/delete-reply/{id}', [ReplyController::class, 'delete'])->middleware
 Route::get('/reply/{id}', [ReplyController::class, 'show'])->middleware(['auth', 'verified'])->name('show.reply');
 
 Route::get('/personalize', [LeadController::class, 'personalize'])->name('personalize');
+Route::get('/skip-lead-personalization', [LeadController::class, 'skip_lead_personalization'])->name('skip_lead_personalization');
 
 
 require __DIR__.'/auth.php';

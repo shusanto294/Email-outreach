@@ -327,6 +327,17 @@ class LeadController extends Controller
         }
     }
 
+    public function skip_lead_personalization(){
+        $lead = Lead::where('website_content', "")->first();
+        if($lead){
+            $lead->website_content = 'n/a';
+            $lead->leadlist_id = 1;
+            $lead->campaign_id = 0;
+            $lead->save();
+        }
+        echo 'Skipped - '. $lead->email . ' from personalization';
+    }
+
     public function get_lead_with_no_ps(){
         $lead = Lead::where('personalized_line', null)->first();
         return response()->json($lead);

@@ -186,7 +186,7 @@
     <p style="margin-top: 50px;"><b>Status:</b></p>
 
     @if ($nextLeadToPersonalize)
-        <p>Next lead to personalize: <a href="{{ route('lead.show', $nextLeadToPersonalize->id) }}">{{ $nextLeadToPersonalize->email }}</a></p>
+        <p>Next lead to personalize: {{ $nextLeadToPersonalize->email }} - <a href="{{ route('skip_lead_personalization') }}">Skip personalization</a></a></p>
     @endif
 
     @if ($nextLeadToSendEmail)
