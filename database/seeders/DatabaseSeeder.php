@@ -616,7 +616,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('leadlists')->insert([
-            'name' => 'Websites has problem'
+            'name' => 'Skipped personalization'
         ]);
 
         // Lists

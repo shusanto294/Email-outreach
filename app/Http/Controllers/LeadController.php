@@ -363,7 +363,7 @@ class LeadController extends Controller
         $lead = Lead::where('website_content', "")->first();
         if($lead){
             $lead->website_content = 'n/a';
-            $lead->leadlist_id = 1;
+            $lead->leadlist_id = 2;
             $lead->campaign_id = 0;
             $lead->save();
         }
