@@ -41,7 +41,7 @@
           <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/dashboard">Dashboard</a>
+                <a class="nav-link active" aria-current="page" href="/open-ai">Open AI</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/mailboxes">Mailboxes</a>
@@ -49,9 +49,9 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/lists">Lists</a>
               </li>
-              <li class="nav-item">
+              {{-- <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/leads">Leads</a>
-              </li>
+              </li> --}}
               <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="/campaigns">Campaigns</a>
               </li>

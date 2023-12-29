@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeadController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\ApikeyController;
 use App\Http\Controllers\MailboxController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SettingController;
@@ -116,5 +117,10 @@ Route::get('/reply/{id}', [ReplyController::class, 'show'])->middleware(['auth',
 Route::get('/personalize', [LeadController::class, 'personalize'])->name('personalize');
 Route::get('/skip-lead-personalization', [LeadController::class, 'skip_lead_personalization'])->name('skip_lead_personalization');
 
+// Open AI api keys
+
+Route::get('/open-ai', [ApikeyController::class, 'index'])->middleware(['auth', 'verified'])->name('openai.index');
+Route::post('/open-ai/add-new-key', [ApikeyController::class, 'add_new_key'])->middleware(['auth', 'verified'])->name('add_new_key');
+Route::get('/open-ai/delete-api-key/{id}', [ApikeyController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete_api_key');
 
 require __DIR__.'/auth.php';

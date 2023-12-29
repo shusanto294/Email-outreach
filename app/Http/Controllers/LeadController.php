@@ -5,22 +5,23 @@ namespace App\Http\Controllers;
 use HTMLPurifier;
 use App\Models\Lead;
 use App\Models\Email;
+use App\Models\Apikey;
 use GuzzleHttp\Client;
 use App\Models\Setting;
 use App\Models\Leadlist;
 use HTMLPurifier_Config;
 use App\Imports\LeadsImport;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 // use Goutte\Client;
 // use Symfony\Component\HttpClient\HttpClient;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Http\Requests\StoreLeadRequest;
 
+use App\Http\Requests\StoreLeadRequest;
 use App\Http\Requests\UpdateLeadRequest;
 use Symfony\Component\DomCrawler\Crawler;
 use GuzzleHttp\Exception\RequestException;
@@ -187,7 +188,7 @@ class LeadController extends Controller
     {
         
         $lead = Lead::where('website_content', "")->first();
-    
+
         if (!$lead) {
             return "No lead found.";
         }
@@ -254,11 +255,31 @@ class LeadController extends Controller
                         $websiteContent = substr($websiteContent, 0, 10000);
                     }
 
-                    //echo "<p>$websiteContent</p><hr>";
+                    $lastApiKeyUsed = Setting::where('key', 'last_api_key_used')->first();
 
-                    $openaiApiKey = Setting::where('key', 'openai_api_key')->first();
-                    if($openaiApiKey){
-                        config(['openai.api_key' => $openaiApiKey->value ]);
+                    if(!$lastApiKeyUsed){
+                        Setting::create(array(
+                            'key' => 'last_api_key_used',
+                            'value' => 0
+                        ));
+            
+                        return 'Setting added';
+                    }
+            
+                    $apiKey = Apikey::where('id', '>', $lastApiKeyUsed->value)->first();
+            
+                    if(!$apiKey){
+                        $apiKey = Apikey::orderBy('id', 'asc')->first();
+                    }
+            
+                    $lastApiKeyUsed->value = $apiKey->id;
+                    $lastApiKeyUsed->save();
+            
+                    #return $apiKey;
+
+                    #$openaiApiKey = Setting::where('key', 'openai_api_key')->first();
+                    if($apiKey){
+                        config(['openai.api_key' => $apiKey->key ]);
                     }else{
                         dd('Open AI api key not found');
                     }
@@ -275,6 +296,15 @@ class LeadController extends Controller
 
                     ]);
 
+                    $input_tocken_before = intval($apiKey->input_tocken);
+                    $apiKey->input_tocken = $input_tocken_before + $result->usage->promptTokens;
+
+                    $output_tocken_before = intval($apiKey->output_tocken);
+                    $apiKey->output_tocken = $output_tocken_before + $result->usage->completionTokens;
+
+                    $apiKey->save();
+
+
                     $personalizedLine =  nl2br($result->choices[0]->message->content);
                     $lead->website_content = $websiteContent;
                     $lead->personalized_line = $personalizedLine;
@@ -282,10 +312,12 @@ class LeadController extends Controller
     
                     echo $personalizedLine;
 
+                    
                     echo '<hr>Usage<hr>';
                     echo 'Prompt tokens :'. $result->usage->promptTokens .'<br>';
                     echo 'Completion tokens :'. $result->usage->completionTokens .'<br>';
                     echo 'Total tokens :'. $result->usage->totalTokens;
+
                 }else{
                     echo 'No visible text found';
                     $lead->website_content = 'n/a';

@@ -38,6 +38,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('settings')->insert([
+            'key' => 'last_api_key_used',
+            'value' => 0,
+        ]);
+
+        DB::table('settings')->insert([
             'key' => 'last_reply_checked_from',
             'value' => 0,
         ]);
