@@ -2,6 +2,11 @@
 
 @section('content')
 
+@php
+    $lead = App\Models\Lead::where('email', $reply->from_address)->first();
+@endphp
+
+<p>Website: <a target="_blank" href="{{ $lead->company_website }}">{{ $lead->company_website }}</a></p>
 <p>From: {{ $reply->from_name }}</p>
 <p>Email: {{ $reply->from_address }}</p>
 <p>To: {{ $reply->to }}</p>

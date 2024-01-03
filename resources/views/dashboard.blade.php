@@ -160,13 +160,13 @@
     @php
         $testEmailsTo = App\Models\Setting::where('key', 'send_test_emails_to')->first();
         // $ignoreRepliesKeywords = App\Models\Setting::where('key', 'ignore_replies_keywords')->first();
-        $openaiApiKey = App\Models\Setting::where('key', 'openai_api_key')->first();
+        //$openaiApiKey = App\Models\Setting::where('key', 'openai_api_key')->first();
     @endphp
     <form action="{{ route('update.settings') }}" method="POST" class="col-lg-12">
         @csrf
 
-        <label for="openai_api_key">Openai Api key</label>
-        <input type="text" class="form-control mb-3" id="openai_api_key" name="openai_api_key" value="{{ $openaiApiKey ? $openaiApiKey->value : '' }}">
+        {{-- <label for="openai_api_key">Openai Api key</label>
+        <input type="text" class="form-control mb-3" id="openai_api_key" name="openai_api_key" value="{{ $openaiApiKey ? $openaiApiKey->value : '' }}"> --}}
 
 
         <label for="send_test_emails_to" class="mb-2">Send test emails to :</label>
