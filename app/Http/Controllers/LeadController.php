@@ -5,22 +5,23 @@ namespace App\Http\Controllers;
 use HTMLPurifier;
 use App\Models\Lead;
 use App\Models\Email;
+use App\Models\Reply;
 use App\Models\Apikey;
 use GuzzleHttp\Client;
 use App\Models\Setting;
 use App\Models\Leadlist;
 use HTMLPurifier_Config;
 use App\Imports\LeadsImport;
-use Illuminate\Http\Request;
 // use Goutte\Client;
 // use Symfony\Component\HttpClient\HttpClient;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use OpenAI\Laravel\Facades\OpenAI;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
-use Maatwebsite\Excel\Facades\Excel;
 
+use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\StoreLeadRequest;
 use App\Http\Requests\UpdateLeadRequest;
 use Symfony\Component\DomCrawler\Crawler;
@@ -62,10 +63,15 @@ class LeadController extends Controller
         $emails = Email::where('lead_id', $lead->id)
                        ->latest()
                        ->get();
+
+        $replies = Reply::where('from_address', $lead->email)
+                        ->latest()
+                        ->get();
     
         return view('lead-single', [
             'lead' => $lead,
-            'emails' => $emails
+            'emails' => $emails,
+            'replies' => $replies
         ]);
     }
 

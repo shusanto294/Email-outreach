@@ -63,8 +63,20 @@
         {{-- <a class="btn btn-danger mt-3" href="{{ route('lead.delete', $lead->id) }}">Delete</a> --}}
     </form>
 
+    @if (count($replies) > 0)
+        <p style="font-weight: bold; margin-top: 50px;">Replies</p>
+    @endif
+
+    @foreach ($replies as $replies)
+        <div class="email">
+            <p><b>Subject:</b> {{ $replies->subject }}</p>
+            {!! $replies->body !!}
+            <!-- Add more fields as needed -->
+        </div>
+    @endforeach
+
     @if (count($emails) > 0)
-        <p style="font-weight: bold; margin-top: 50px;">Emails sent</p>
+        <p style="font-weight: bold; margin-top: 50px;">Emails</p>
     @endif
 
     @foreach ($emails as $email)

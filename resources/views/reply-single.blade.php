@@ -7,8 +7,9 @@
 @endphp
 
 <p>Website: <a target="_blank" href="{{ $lead->company_website }}">{{ $lead->company_website }}</a></p>
-<p>From: {{ $reply->from_name }}</p>
-<p>Email: {{ $reply->from_address }}</p>
+<p>Email: <a href="{{ route('lead.show', $lead->id) }}">{{ $reply->from_address }}</a></p>
+
+<p>Name: {{ $reply->from_name }}</p>
 <p>To: {{ $reply->to }}</p>
 
 <h3>{{  $reply->subject }}</h3>
