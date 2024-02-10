@@ -22,6 +22,12 @@ class EmailController extends Controller
         ]);
     }
 
+    public function responded(){
+        return view('emails', [
+            'emails' => DB::table('emails')->where('campaign_id', 0)->orderBy('id', 'desc')->paginate(20)
+        ]);
+    }
+
     public function show($id){
         $email = Email::find($id);
         return view('email-single', [

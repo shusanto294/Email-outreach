@@ -53,6 +53,7 @@ table a:hover{
                   @php
                       $inputCost = ($key->input_tocken / 1000) * 0.0010;
                       $outputCost = ($key->output_tocken / 1000) * 0.0020;
+
                       $cost = $inputCost + $outputCost;
                       echo '$'. number_format($cost, 2);
                   @endphp

@@ -58,11 +58,14 @@
               <li class="nav-item">
                 <a class="nav-link active" aria-current="page" href="/emails">Emails</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/replies">Replies</a>
+              </li>
               @php
                   $reliesNotSeen = App\Models\Reply::where('seen', '<', 1)->count();
               @endphp
               <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="/replies">Replies {{ $reliesNotSeen? '('.$reliesNotSeen.')' : '' }}</a>
+                <a class="nav-link active" aria-current="page" href="/inbox">Inbox {{ $reliesNotSeen? '('.$reliesNotSeen.')' : '' }}</a>
               </li>
 
             </ul>
