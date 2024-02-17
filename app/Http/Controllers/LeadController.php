@@ -222,6 +222,8 @@ class LeadController extends Controller
         try {
             // Make a GET request to the URL with headers
             $response = $client->get($lead->company_website, ['timeout' => 30]);
+            //$response = $client->get("diginovatech.com", ['timeout' => 30]);
+            // $response = $client->get("sababafest.com", ['timeout' => 30]);
     
             // Check if the response status code is 200 (OK)
             if ($response->getStatusCode() == 200) {
@@ -256,9 +258,9 @@ class LeadController extends Controller
                 
   
                 if ($websiteContent != '') {
-                    if (strlen($websiteContent) > 10000) {
+                    if (strlen($websiteContent) > 7000) {
                         // If yes, take the first 1000 characters
-                        $websiteContent = substr($websiteContent, 0, 10000);
+                        $websiteContent = substr($websiteContent, 0, 7000);
                     }
 
                     $lastApiKeyUsed = Setting::where('key', 'last_api_key_used')->first();
@@ -294,15 +296,15 @@ class LeadController extends Controller
                         'model' => 'gpt-3.5-turbo',   
                         //'model' => 'gpt-4-turbo',
                         //Website redesign Services
-                        'messages' => [
-                            ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website and you will write a short email to $firstName who is the owner of $lead->company to offer your website redesign service saying what you love about their company and why you wanted to reach out. Also add how your website redesign service can benifit $lead->company's company. Don't use they/their or gramatical 3rd person to refer to $lead->company or their company, use you/your or gramatical 2nd person instead. Don't write any email subject line, the email should not be more than 100 words. The email signature Should be Shusano Modak \n Freelance Web Developer"],
-                            ["role" => "user", "content" => $websiteContent]
-                        ],
-                        //Seeking collaboration
                         // 'messages' => [
-                        //     ["role" => "system", "content" => "You are Shusanto a freelance web developer, looking for part time or full time jobs. You will be provided information from $lead->company's website and you will write a short email for $firstName who is the owner of $lead->company, saying them your interest to contribute in their company. You will write what you love about their company, how you can conribcontribute to their company and why you wanted to reach out. You don't use they/their or gramatical 3rd person to refer to $firstName or $lead->company, you use you/your or gramatical 2nd person instead. You will ask them if they are interested in a quick chat. You don't write any email subject line, and the email will not be more than 100 words. The email signature Should be Shusano Modak \n Freelance Web Developer"],
+                        //     ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website and you will write a short email to $firstName who is the owner of $lead->company to offer your website redesign service saying what you love about their company and why you wanted to reach out. Also add how your website redesign service can benifit $lead->company's company. Don't use they/their or gramatical 3rd person to refer to $lead->company or their company, use you/your or gramatical 2nd person instead. Don't write any email subject line, the email should not be more than 100 words. The email signature Should be Shusano Modak \n Freelance Web Developer"],
                         //     ["role" => "user", "content" => $websiteContent]
-                        // ]
+                        // ],
+                        //Seeking collaboration with website design companies
+                        'messages' => [
+                            ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website which is a website design company and you will write a short email for $firstName who is the owner of $lead->company, asking them if there are any opportunity in their company for you as a web developer. You will write what you love about their company, how you can conribcontribute to their company and why you wanted to reach out. You don't use they/their or gramatical 3rd person to refer to $firstName or $lead->company, you use you/your or gramatical 2nd person instead. You will approch them to have a quick chat. You don't write any email subject line, and the email will not be more than 100 words. The email signature Should be Shusano Modak \n Freelance Web Developer"],
+                            ["role" => "user", "content" => $websiteContent]
+                        ]
 
                     ]);
 

@@ -22,7 +22,7 @@ class LeadlistController extends Controller
     public function index()
     {
         return view('lists', [
-            'lists' => DB::table('leadlists')->orderBy('id', 'desc')->paginate(20)
+            'lists' => DB::table('leadlists')->orderBy('id', 'desc')->paginate(5)
         ]);
     }
 
