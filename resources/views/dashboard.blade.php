@@ -97,37 +97,24 @@
     <div class="row mb-5">
         <div class="col-lg-3">
             <div class="info-box">
-                @php
-                    $totalEmailNotSentCount = App\Models\Lead::where('sent', 0)->where('campaign_id', '!=' , 0)->count();
-                @endphp
                 <div class="number">{{ $totalEmailNotSentCount }}</div>
                 <div class="text">Emails to be sent</div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="info-box">
-                @php
-                    $totalEmailSentCount = App\Models\Email::where('sent', '!=' , null)->count();
-                @endphp
                 <div class="number">{{ $totalEmailSentCount }}</div>
                 <div class="text">Emails sent</div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="info-box">
-                @php
-                    $totalEmailsOpened = App\Models\Email::where('opened', '!=', 0)->count();
-                @endphp
                 <div class="number">{{ $totalEmailsOpened }}</div>
                 <div class="text">Emails opened</div>
             </div>
         </div>
         <div class="col-lg-3">
             <div class="info-box">
-                @php
-                    $totalReplyCount = App\Models\Reply::count();
-                    $totalNewReplyCount = App\Models\Reply::where('seen', '0')->count();
-                @endphp
                 <div class="number">{{ $totalReplyCount }}</div>
                 <div class="text">{{ $totalNewReplyCount != 0 ? "($totalNewReplyCount)" : ""; }} Replies</div>
             </div>
@@ -159,21 +146,12 @@
 
     @php
         $testEmailsTo = App\Models\Setting::where('key', 'send_test_emails_to')->first();
-        // $ignoreRepliesKeywords = App\Models\Setting::where('key', 'ignore_replies_keywords')->first();
-        //$openaiApiKey = App\Models\Setting::where('key', 'openai_api_key')->first();
     @endphp
     <form action="{{ route('update.settings') }}" method="POST" class="col-lg-12">
         @csrf
 
-        {{-- <label for="openai_api_key">Openai Api key</label>
-        <input type="text" class="form-control mb-3" id="openai_api_key" name="openai_api_key" value="{{ $openaiApiKey ? $openaiApiKey->value : '' }}"> --}}
-
-
         <label for="send_test_emails_to" class="mb-2">Send test emails to :</label>
         <textarea rows="5" type="email" name="send_test_emails_to" id="send_test_emails_to" placeholder="user@example.com, user@example2.com" class="form-control mb-3">{{ $testEmailsTo ? $testEmailsTo->value : '' }}</textarea>
-        
-        {{-- <label for="ignore_replies_keywords" class="mb-2">Ignore replies which has these keywords :</label>
-        <textarea rows="5" type="email" name="ignore_replies_keywords" id="ignore_replies_keywords" placeholder="Kyword1, keyword2" class="form-control mb-3">{{ $ignoreRepliesKeywords ? $ignoreRepliesKeywords->value : '' }}</textarea> --}}
 
         <button type="submit"  class="btn btn-secondary">Save Settings</button>
     </form>

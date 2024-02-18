@@ -11,8 +11,7 @@ class Leadlist extends Model
     use HasFactory;
     protected $guarded = [];
 
-    // public function leads(): HasMany
-    // {
-    //     return $this->hasMany(Lead::class, 'leadlist_id', 'id');
-    // }
+    public function leads(){
+        return $this->hasMany(Lead::class, 'leadlist_id', 'id');
+    }
 }
