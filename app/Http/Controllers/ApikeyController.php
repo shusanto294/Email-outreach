@@ -18,7 +18,7 @@ class ApikeyController extends Controller
     public function index()
     {
         return view('openai', [
-            'apikeys' => DB::table('apikeys')->orderBy('id', 'desc')->paginate(30)
+            'apikeys' => DB::table('apikeys')->orderBy('id', 'desc')->paginate(50)
         ]);
     }
 
