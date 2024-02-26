@@ -225,7 +225,7 @@ class ReplyController extends Controller
     public function delete($id){
         $reply = Reply::find($id);
         $reply->delete();
-        return redirect('/replies')->with('error', 'Reply deleted successfully');
+        return redirect()->back()->with('error', 'Reply deleted successfully');
     }
 
     public function show($id){
