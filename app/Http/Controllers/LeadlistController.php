@@ -146,9 +146,11 @@ class LeadlistController extends Controller
 
     public function api_create_list(Request $request){
       $leadlist  = Leadlist::create([
-          'name' => $request['listName'],
+          'name' => $request->name,
       ]);
-      return $request . "- list created";
+      echo ("********************************* ");
+      echo ($request->name . " - list created");
+      echo (" *********************************");
     }
 
 
