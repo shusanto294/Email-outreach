@@ -144,5 +144,12 @@ class LeadlistController extends Controller
         return redirect('/lists')->with('success', 'Leads added to cammpaign successfully');
     }
 
+    public function api_create_list(Request $request){
+      $leadlist  = Leadlist::create([
+          'name' => $request['listName'],
+      ]);
+      return $request . "- list created";
+    }
+
 
 }
