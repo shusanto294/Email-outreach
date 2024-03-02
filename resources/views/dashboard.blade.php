@@ -97,8 +97,22 @@
         .infoboxes{
             grid-template-columns: 1fr;
         }
+
+        .email-switch{
+            text-align: left;
+        }
     }
 
+    @media(min-width: 500px){
+        .new-replies-count{
+            display: none;
+        }
+    }
+
+    .inline-space-between{
+        display: flex;
+        justify-content: space-between;
+    }
 
 
     </style>
@@ -106,7 +120,17 @@
 
 @section('content')
 
-    <p><b>This month</b></p>
+    @php
+    $reliesNotSeen = App\Models\Reply::where('seen', '<', 1)->count();
+    @endphp
+
+    <div class="inline-space-between">
+        <p><b>This month</b></p>
+        @if ($reliesNotSeen)
+            <a class="new-replies-count" style="color: #000;" href="/inbox">{{ $reliesNotSeen }} new {{ $reliesNotSeen > 1 ? "replies" : "reply" }}</a>
+        @endif
+        
+    </div>
 
     <div class="row infoboxes mb-5">
         <div class="column">
@@ -124,13 +148,13 @@
         <div class="column">
             <div class="info-box">
                 <div class="number">{{ number_format($totalEmailSentCount) }}</div>
-                <div class="text">Emails sent - {{ number_format(($totalEmailSentCount / $totalLeadsPersonalized) * 100, 2) }}%</div>
+                <div class="text">Sent - {{ number_format($totalEmailNotSentCount) }} not</div>
             </div>
         </div>
         <div class="column">
             <div class="info-box">
                 <div class="number">{{ number_format($totalEmailsOpened) }}</div>
-                <div class="text">Emails opened - {{ number_format(($totalEmailsOpened / $totalEmailSentCount) * 100, 2) }}%</div>
+                <div class="text">Opened - {{ number_format(($totalEmailsOpened / $totalEmailSentCount) * 100, 2) }}%</div>
             </div>
         </div>
         <div class="column">

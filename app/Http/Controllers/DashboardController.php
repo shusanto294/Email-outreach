@@ -20,6 +20,7 @@ class DashboardController extends Controller
         $totalLeadsAdded = Lead::whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
         $totalLeadsPersonalized = Lead::where('personalized_line', '!=', "")->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
         $totalEmailSentCount = Email::where('sent', '!=' , null)->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
+        $totalEmailNotSentCount = Lead::where('sent', '=' , 0)->where('campaign_id', '!=' , 0)->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
         $totalEmailsOpened = Email::where('opened', '!=', 0)->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
         $totalReplyCount = Reply::whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
         $totalNewReplyCount = Reply::where('seen', '0')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
@@ -28,6 +29,7 @@ class DashboardController extends Controller
             'totalLeadsAdded' => $totalLeadsAdded,
             'totalLeadsPersonalized' => $totalLeadsPersonalized,
             'totalEmailSentCount' => $totalEmailSentCount,
+            'totalEmailNotSentCount' => $totalEmailNotSentCount,
             'totalEmailsOpened' => $totalEmailsOpened,
             'totalReplyCount' => $totalReplyCount,
             'totalNewReplyCount' => $totalNewReplyCount,
