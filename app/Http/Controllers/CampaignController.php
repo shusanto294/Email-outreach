@@ -79,9 +79,9 @@ class CampaignController extends Controller
     }
 
     public function showSent($id){
-        $leads = Lead::where('campaign_id', $id)->where('sent', 1)->orderBy('id', 'desc')->paginate(20);
-        return view('leads', [
-          'leads' => $leads
+        $emails = Email::where('campaign_id', $id)->orderBy('id', 'desc')->paginate(20);
+        return view('emails', [
+          'emails' => $emails
         ]);
     }
 

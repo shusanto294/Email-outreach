@@ -32,10 +32,9 @@ foreach ($patterns as $pattern) {
 <form action="{{ route('send.reply', $reply->id) }}" method="POST">
     @csrf
     <input name="subject" type="text" class="form-control mb-3" value="{{  $reply->subject }}">
-    <textarea name="body" class="form-control">Thanks for your interest, please select your availability here: <a href='https://calendly.com/shusanto294/30-minutes-meeting'>https://calendly.com/shusanto294/30-minutes-meeting</a> for a meeting. 
-    
-    <blockquote class="gmail_quote" style="margin:50px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">{!!  $string !!}</blockquote>
-
+    <textarea name="body" class="form-control">
+        Thanks for your interest.<br>
+        <blockquote class="gmail_quote" style="margin:50px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">{!!  $string !!}</blockquote>
     </textarea>
 
     <button type="submit" class="btn btn-primary mt-3">Send Reply</button>

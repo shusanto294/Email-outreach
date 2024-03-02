@@ -210,8 +210,9 @@ form.inline-form button{
     <thead>
       <tr>
         <th scope="col">#ID</i></th>
+        <th scope="col">Check Inbox</i></th>
         <th scope="col">To</i></th>
-        <th scope="col">Company</i></th>
+        {{-- <th scope="col">Company</i></th> --}}
         <th scope="col">Subject</i></th>
         <th scope="col">Sent</i></th>
         <th scope="col" style="text-align: center;">Opened</i></th>
@@ -221,15 +222,16 @@ form.inline-form button{
         @foreach ($emails as $email)
             <tr>
               <td>{{ $email->id }}</td>
+              <td><a target="_blank" href="{{ route('replies.check', $email->mailbox_id) }}">Check Replies</a></td>
               @php
                     $lead = App\Models\Lead::find($email->lead_id);
               @endphp
               <td>
                 <a href="{{ route('lead.show', $email->lead_id) }}">{{ $lead->email }}</a>
               </td>
-              <td>
+              {{-- <td>
                 <a target="_blank" href="{{ $lead->company_website }}">{{ $lead->company }}</a>
-              </td>
+              </td> --}}
               <td>
                 <a href="{{ route('email.single', $email->id) }}">{{ $email->subject }}</a>
               </td>

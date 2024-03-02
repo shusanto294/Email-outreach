@@ -87,11 +87,11 @@ Route::get('/test-email/{mailboxID}', [EmailController::class, 'testEmail'])->na
 Route::get('/track-email/{uid}', [EmailController::class, 'trackEmail'])->name('track.email');
 
 Route::get('/emails', [EmailController::class, 'index'])->middleware(['auth', 'verified'])->name('emails.index');
-Route::get('/replies', [EmailController::class, 'responded'])->middleware(['auth', 'verified'])->name('emails.replies');
-Route::get('/email/{id}', [EmailController::class, 'show'])->middleware(['auth', 'verified'])->name('email.single');
-Route::get('/email/{id}/edit', [EmailController::class, 'edit'])->middleware(['auth', 'verified'])->name('email.edit');
-Route::post('/email/{id}/update', [EmailController::class, 'update'])->middleware(['auth', 'verified'])->name('email.update');
-Route::get('/email/delete/{id}', [EmailController::class, 'delete'])->middleware(['auth', 'verified'])->name('email.delete');
+Route::get('/sent', [EmailController::class, 'responded'])->middleware(['auth', 'verified'])->name('emails.replies');
+Route::get('/sent/{id}', [EmailController::class, 'show'])->middleware(['auth', 'verified'])->name('email.single');
+Route::get('/sent/{id}/edit', [EmailController::class, 'edit'])->middleware(['auth', 'verified'])->name('email.edit');
+Route::post('/sent/{id}/update', [EmailController::class, 'update'])->middleware(['auth', 'verified'])->name('email.update');
+Route::get('/sent/delete/{id}', [EmailController::class, 'delete'])->middleware(['auth', 'verified'])->name('email.delete');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

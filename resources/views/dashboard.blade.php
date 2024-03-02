@@ -118,7 +118,7 @@
         <div class="column">
             <div class="info-box">
                 <div class="number">{{ number_format($totalLeadsPersonalized) }}</div>
-                <div class="text">Personalized - {{ number_format(($totalLeadsPersonalized / $totalLeadsAdded) * 100, 2) }}%</div>
+                <div class="text">Personalized - {{ number_format($totalLeadsAdded - $totalLeadsPersonalized)}} not</div>
             </div>
         </div>
         <div class="column">
