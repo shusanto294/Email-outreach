@@ -80,6 +80,11 @@
         margin-bottom: 50px;
     }
 
+    .infoboxes{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+
     @media(max-width: 500px){
         .btn.btn-secondary{
             width: 100%;
@@ -88,35 +93,50 @@
         .info-box{
             margin-bottom: 20px;
         }
+
+        .infoboxes{
+            grid-template-columns: 1fr;
+        }
     }
+
+
+
     </style>
 @endsection
 
 @section('content')
 
-    <div class="row mb-5">
-        <div class="col-lg-3">
+    <p><b>This month</b></p>
+
+    <div class="row infoboxes mb-5">
+        <div class="column">
             <div class="info-box">
-                <div class="number">{{ $totalEmailNotSentCount }}</div>
-                <div class="text">Emails to be sent</div>
+                <div class="number">{{ number_format($totalLeadsAdded) }}</div>
+                <div class="text">Leads added</div>
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="column">
             <div class="info-box">
-                <div class="number">{{ $totalEmailSentCount }}</div>
-                <div class="text">Emails sent</div>
+                <div class="number">{{ number_format($totalLeadsPersonalized) }}</div>
+                <div class="text">Personalized - {{ number_format(($totalLeadsPersonalized / $totalLeadsAdded) * 100, 2) }}%</div>
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="column">
             <div class="info-box">
-                <div class="number">{{ $totalEmailsOpened }}</div>
-                <div class="text">Emails opened</div>
+                <div class="number">{{ number_format($totalEmailSentCount) }}</div>
+                <div class="text">Emails sent - {{ number_format(($totalEmailSentCount / $totalLeadsPersonalized) * 100, 2) }}%</div>
             </div>
         </div>
-        <div class="col-lg-3">
+        <div class="column">
             <div class="info-box">
-                <div class="number">{{ $totalReplyCount }}</div>
-                <div class="text">{{ $totalNewReplyCount != 0 ? "($totalNewReplyCount)" : ""; }} Replies</div>
+                <div class="number">{{ number_format($totalEmailsOpened) }}</div>
+                <div class="text">Emails opened - {{ number_format(($totalEmailsOpened / $totalEmailSentCount) * 100, 2) }}%</div>
+            </div>
+        </div>
+        <div class="column">
+            <div class="info-box">
+                <div class="number">{{ number_format($totalReplyCount) }}</div>
+                <div class="text">Replies - {{ number_format(($totalReplyCount / $totalEmailSentCount) * 100, 2) }}%</div>
             </div>
         </div>
     </div>
