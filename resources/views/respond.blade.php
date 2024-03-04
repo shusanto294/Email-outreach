@@ -33,7 +33,7 @@ foreach ($patterns as $pattern) {
     @csrf
     <input name="subject" type="text" class="form-control mb-3" value="{{  $reply->subject }}">
     <textarea name="body" class="form-control">
-        Thanks for your interest.<br>
+        Thanks for your response.
         <blockquote class="gmail_quote" style="margin:50px 0px 0px 0.8ex;border-left:1px solid rgb(204,204,204);padding-left:1ex">{!!  $string !!}</blockquote>
     </textarea>
 
