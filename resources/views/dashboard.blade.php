@@ -150,7 +150,7 @@
         </div>
         <div class="column">
             <div class="info-box">
-                <div class="info-box-error-count bg-secondary text-white">{{ number_format($personalizationFailed) }} failed</div>
+                <div class="info-box-error-count bg-danger text-white">{{ number_format($personalizationFailed) }}</div>
                 <div class="number">{{ number_format($totalLeadsPersonalized) }}</div>
                 <div class="text">Personalized - {{ number_format($totalLeadsNotPersonalized)}} left</div>
             </div>
