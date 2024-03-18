@@ -19,6 +19,8 @@ class DashboardController extends Controller
 
         $totalLeadsAdded = Lead::whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
         $totalLeadsPersonalized = Lead::where('personalized_line', '!=', "")->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
+        $totalLeadsNotPersonalized = Lead::where('website_content', "")->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
+        $personalizationFailed = Lead::where('website_content', "n/a")->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
         $totalEmailSentCount = Email::where('sent', '!=' , null)->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
         $totalEmailNotSentCount = Lead::where('sent', '=' , 0)->where('campaign_id', '!=' , 0)->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
         $totalEmailsOpened = Email::where('opened', '!=', 0)->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
@@ -28,6 +30,8 @@ class DashboardController extends Controller
         return view('dashboard', [
             'totalLeadsAdded' => $totalLeadsAdded,
             'totalLeadsPersonalized' => $totalLeadsPersonalized,
+            'totalLeadsNotPersonalized' => $totalLeadsNotPersonalized,
+            'personalizationFailed' => $personalizationFailed,
             'totalEmailSentCount' => $totalEmailSentCount,
             'totalEmailNotSentCount' => $totalEmailNotSentCount,
             'totalEmailsOpened' => $totalEmailsOpened,

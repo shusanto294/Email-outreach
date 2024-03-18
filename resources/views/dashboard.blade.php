@@ -68,7 +68,16 @@
     .info-box {
         border: 1px solid #ddd;
         padding: 20px;
-        border-radius: 20px;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
+    }
+    .info-box-error-count {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        padding: 5px;
+        border-radius: 5px;
     }
     .info-box .number {
         font-size: 40px;
@@ -141,14 +150,15 @@
         </div>
         <div class="column">
             <div class="info-box">
+                <div class="info-box-error-count bg-secondary text-white">{{ number_format($personalizationFailed) }} failed</div>
                 <div class="number">{{ number_format($totalLeadsPersonalized) }}</div>
-                <div class="text">Personalized - {{ number_format($totalLeadsAdded - $totalLeadsPersonalized)}} not</div>
+                <div class="text">Personalized - {{ number_format($totalLeadsNotPersonalized)}} left</div>
             </div>
         </div>
         <div class="column">
             <div class="info-box">
                 <div class="number">{{ number_format($totalEmailSentCount) }}</div>
-                <div class="text">Sent - {{ number_format($totalEmailNotSentCount) }} not</div>
+                <div class="text">Sent - {{ number_format($totalEmailNotSentCount) }} left</div>
             </div>
         </div>
         <div class="column">
