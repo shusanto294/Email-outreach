@@ -21,7 +21,7 @@ class CampaignController extends Controller
     public function index()
     {
         return view('campaigns', [
-            'campaigns' => DB::table('campaigns')->orderBy('id', 'desc')->paginate(10)
+            'campaigns' => DB::table('campaigns')->orderBy('id', 'desc')->paginate(5)
         ]);
     }
 
