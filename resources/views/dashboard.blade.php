@@ -164,13 +164,26 @@
         <div class="column">
             <div class="info-box">
                 <div class="number">{{ number_format($totalEmailsOpened) }}</div>
-                <div class="text">Opened - {{ number_format(($totalEmailsOpened / $totalEmailSentCount) * 100, 2) }}%</div>
+                <div class="text">
+                    @if($totalEmailSentCount > 0)
+                        Opened - {{ number_format(($totalEmailsOpened / $totalEmailSentCount) * 100, 2) }}%
+                    @else
+                        Opened - 0%
+                    @endif
+                </div>
             </div>
         </div>
         <div class="column">
             <div class="info-box">
                 <div class="number">{{ number_format($totalReplyCount) }}</div>
-                <div class="text">Replies - {{ number_format(($totalReplyCount / $totalEmailSentCount) * 100, 2) }}%</div>
+                <div class="text">
+                    @if($totalEmailSentCount > 0)
+                        Replies - {{ number_format(($totalReplyCount / $totalEmailSentCount) * 100, 2) }}%
+                    @else
+                        Replies - 0%
+                    @endif
+                </div>
+                
             </div>
         </div>
     </div>
