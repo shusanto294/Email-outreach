@@ -237,6 +237,29 @@
     @if ($nextLeadToSendEmail)
         <p>Next lead to send email: <a href="{{ route('lead.show', $nextLeadToSendEmail->id) }}">{{ $nextLeadToSendEmail->email }}</a></p>
     @endif
+
+    @php
+        $lastApiKeyUsed = App\Models\Setting::where('key', 'last_api_key_used')->first();
+
+        if(!$lastApiKeyUsed){
+            App\Models\Setting::create(array(
+                'key' => 'last_api_key_used',
+                'value' => 0
+            ));
+
+            return 'Setting added';
+        }
+
+        $apiKey = App\Models\Apikey::where('id', '>', $lastApiKeyUsed->value)->first();
+
+        if(!$apiKey){
+            $apiKey = App\Models\Apikey::orderBy('id', 'asc')->first();
+        }
+    @endphp
+
+    @if ($apiKey)
+        <p>Next api key to use: {{ $apiKey->id }} - {{  $apiKey->key}} </a></p>
+    @endif
     
 
 
