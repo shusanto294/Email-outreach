@@ -159,23 +159,33 @@ class LeadController extends Controller
         $skippedEntriesCount = 0;
     
         foreach($data as $lead){
-            $email = $lead[6];
+            $email = $lead['email'];
     
             // Check if the email already exists in the database
             $existingLead = Lead::where('email', $email)->first();
     
             if (!$existingLead) {
                 // Email doesn't exist, create a new entry
+                
+                $name = !blank($lead['name']) ? $lead['name'] : 'n/a';
+                $linkedin_profile = !blank($lead['linkedin_profile']) ? $lead['linkedin_profile'] : 'n/a';
+                $title = !blank($lead['title']) ? $lead['title'] : 'n/a';
+                $company = !blank($lead['company']) ? $lead['company'] : 'n/a';
+                $company_website = !blank($lead['company_website']) ? $lead['company_website'] : 'n/a';
+                $location = !blank($lead['location']) ? $lead['location'] : 'n/a';
+                $email = !blank($email) ? $email : 'n/a';
+                
                 Lead::create([
-                    'name' => $lead[0],
-                    'linkedin_profile' => $lead[1],
-                    'title' => $lead[2],
-                    'company' => $lead[3],
-                    'company_website' => $lead[4],
-                    'location' => $lead[5],
+                    'name' => $name,
+                    'linkedin_profile' => $linkedin_profile,
+                    'title' => $title,
+                    'company' => $company,
+                    'company_website' => $company_website,
+                    'location' => $location,
                     'email' => $email,
                     'leadlist_id' => $leadList->id
                 ]);
+                
                 
                 $newEntriesCount++;
             } else {
