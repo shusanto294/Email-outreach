@@ -22,8 +22,8 @@ return new class extends Migration
             $table->text('company_website')->nullable();
             $table->text('location')->nullable();
             $table->text('email');
-            $table->boolean('leadlist_id')->default(0);
-            $table->boolean('campaign_id')->default(0);
+            $table->integer('leadlist_id')->default(0);
+            $table->integer('campaign_id')->default(0);
             $table->text('website_status')->nullable();
             $table->text('website_content')->nullable()->default("");
             $table->text('personalized_line')->nullable()->default("");
