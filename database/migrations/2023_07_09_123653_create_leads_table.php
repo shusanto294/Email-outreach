@@ -25,8 +25,8 @@ return new class extends Migration
             $table->integer('leadlist_id')->default(0);
             $table->integer('campaign_id')->default(0);
             $table->text('website_status')->nullable();
-            $table->text('website_content')->nullable()->default("");
-            $table->text('personalized_line')->nullable()->default("");
+            $table->text('website_content')->nullable();
+            $table->text('personalized_line')->nullable();
             $table->text('verified')->nullable();
             $table->boolean('subscribe')->default(1);
             $table->boolean('sent')->default(0);
