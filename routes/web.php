@@ -60,6 +60,7 @@ Route::get('/list/{id}', [LeadlistController::class, 'show'])->middleware(['auth
 
 Route::get('/list/{id}/no-ws', [LeadlistController::class, 'show_no_ws'])->middleware(['auth', 'verified'])->name('show.no_ws.list');
 Route::get('/list/{id}/has-ws', [LeadlistController::class, 'show_has_ws'])->middleware(['auth', 'verified'])->name('show.has_ws.list');
+Route::get('/list/{id}/download', [LeadlistController::class, 'download'])->middleware(['auth', 'verified'])->name('download.list');
 
 Route::get('/list/{id}/no-ps', [LeadlistController::class, 'show_no_ps'])->middleware(['auth', 'verified'])->name('show.no_ps.list');
 Route::get('/list/{id}/has-ps', [LeadlistController::class, 'show_has_ps'])->middleware(['auth', 'verified'])->name('show.has_ps.list');
@@ -122,7 +123,7 @@ Route::get('/check-deliveribility/{id}', [MailboxController::class, 'checkDelive
 Route::get('/inbox', [ReplyController::class, 'index'])->middleware(['auth', 'verified'])->name('replies.index');
 Route::get('/check-replies', [ReplyController::class, 'checkRepliesFromAllInbox'])->name('replies.check.from.all.inboxes');
 Route::get('/check-replies/{mailboxID}', [ReplyController::class, 'checkReplies'])->name('replies.check');
-Route::get('/delete-reply/{id}', [ReplyController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete.reply');
+Route::get('/delete-reply/{id}', [ReplyController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete.reply'); 
 Route::get('/inbox/{id}', [ReplyController::class, 'show'])->middleware(['auth', 'verified'])->name('show.reply');
 Route::get('/inbox/{id}/respond', [ReplyController::class, 'respond'])->middleware(['auth', 'verified'])->name('show.respond');
 Route::post('/inbox/{id}/send-reply', [ReplyController::class, 'send_reply'])->middleware(['auth', 'verified'])->name('send.reply');

@@ -153,5 +153,52 @@ class LeadlistController extends Controller
       echo (" *********************************");
     }
 
+    public function download($id) {
+      // Find the LeadList instance by ID
+      $list = LeadList::find($id);
+  
+      // Fetch leads from the database
+      $leads = Lead::where('leadlist_id', $id)->orderBy('id', 'desc')->paginate(20);
+      
+      // Get the first lead to extract the column names
+      $firstLead = $leads->first();
+      
+      // Check if any leads were found
+      if (!$firstLead) {
+          return response('No leads found', 404);
+      }
+  
+      // Get the column names dynamically
+      $columnNames = array_keys($firstLead->getAttributes());
+  
+      // Open a temporary file in memory
+      $csvFile = fopen('php://temp', 'r+');
+  
+      // Add CSV header
+      fputcsv($csvFile, $columnNames);
+  
+      // Add CSV rows
+      foreach ($leads as $lead) {
+          fputcsv($csvFile, array_values($lead->getAttributes()));
+      }
+  
+      // Rewind the file pointer to the beginning of the file
+      rewind($csvFile);
+  
+      // Read the content of the file
+      $csvContent = stream_get_contents($csvFile);
+  
+      // Close the file
+      fclose($csvFile);
+  
+      // Create the response with the CSV content
+      return response($csvContent, 200)
+          ->header('Content-Type', 'text/csv')
+          ->header('Content-Disposition', 'attachment; filename="' . $list->name . '.csv"');
+  }
+  
+  
+  
+
 
 }

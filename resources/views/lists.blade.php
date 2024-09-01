@@ -36,6 +36,7 @@ table a:hover{
         <th scope="col">No WC</th> --}}
         <th scope="col">Has PS</th>
         <th scope="col">NO PS</th>
+        <th scope="col">Downlaod</th>
         <th scope="col" style="text-align: right;">Action</th>
       </tr>
     </thead>
@@ -63,6 +64,7 @@ table a:hover{
                 <td><a href="{{ route('show.list', $list->id) }}">{{ $leadsCount }}</a></td>
                 <td><a href="{{ route('show.has_ps.list', $list->id) }}">{{ $hasPsleadsCount }}</a></td>
                 <td><a href="{{ route('show.no_ps.list', $list->id) }}">{{ $noPsleadsCount }}</a></td>
+                <td><a href="{{ route('download.list', $list->id) }}">Download</a></td>
                 <td style="text-align: right;"><a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign ({{ $notAddedToCampaignCount }})</a></td>
             </tr>
         @endforeach

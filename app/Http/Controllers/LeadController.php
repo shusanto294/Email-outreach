@@ -395,7 +395,79 @@ class LeadController extends Controller
         $lead = Lead::where('personalized_line', null)->first();
         return response()->json($lead);
     }
+
+    public function ajax_lead_import(Request $request)
+    {
+        $listID = $request->input('list_id');
+        $leads = $request->input('data');
+    
+        $newEntriesCount = 0;
+        $skippedEntriesCount = 0;
+    
+        try {
+            foreach ($leads as $lead) {
+                $email = $lead['email'] ?? null;
+    
+                // Validate email before processing
+                if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                    // Skip if email is missing or invalid
+                    $skippedEntriesCount++;
+                    continue;
+                }
+    
+                // Check if the email already exists in the database
+                $existingLead = Lead::where('email', $email)->first();
+    
+                if (!$existingLead) {
+                    Lead::create([
+                        'name' => $lead['name'] ?? 'n/a',
+                        'linkedin_profile' => $lead['linkedin_profile'] ?? 'n/a',
+                        'title' => $lead['title'] ?? 'n/a',
+                        'company' => $lead['company'] ?? 'n/a',
+                        'company_website' => $lead['company_website'] ?? 'n/a',
+                        'location' => $lead['location'] ?? 'n/a',
+                        'email' => $email,
+                        'leadlist_id' => $listID,
+                        'campaign_id' => 0,
+                        'website_content' => $lead['website_content'] ?? 'n/a',
+                        'personalized_line' => $lead['personalized_line'] ?? 'n/a',
+                        'subscribe' => $lead['subscribe'] ?? 1,
+                        'sent' => $lead['sent'] ?? 0,
+                        'opened' => $lead['opened'] ?? 0,
+                        'replied' => $lead['replied'] ?? 0
+                    ]);
+    
+                    $newEntriesCount++;
+                } else {
+                    // Email already exists, skip the entry
+                    $skippedEntriesCount++;
+                }
+            }
+    
+            return response()->json([
+                'status' => 'success',
+                // 'message' => 'Leads imported successfully.',
+                'new_entries' => $newEntriesCount,
+                'skipped_entries' => $skippedEntriesCount
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error processing lead import: ' . $e->getMessage(), [
+                'list_id' => $listID,
+                'leads' => $leads,
+            ]);
+    
+            return response()->json([
+                'status' => 'error',
+                'message' => 'There was an error processing the data.'
+            ], 500);
+        }
+    }
+    
     
     
 
     }
+
+
+
+
