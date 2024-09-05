@@ -400,71 +400,44 @@ class LeadController extends Controller
     {
         $listID = $request->input('list_id');
         $leads = $request->input('data');
-    
-        $newEntriesCount = 0;
-        $skippedEntriesCount = 0;
-    
-        try {
-            foreach ($leads as $lead) {
-                $email = $lead['email'] ?? null;
-    
-                // Validate email before processing
-                if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                    // Skip if email is missing or invalid
-                    $skippedEntriesCount++;
-                    continue;
-                }
-    
-                // Check if the email already exists in the database
-                $existingLead = Lead::where('email', $email)->first();
-    
-                if (!$existingLead) {
-                    Lead::create([
-                        'name' => $lead['name'] ?? 'n/a',
-                        'linkedin_profile' => $lead['linkedin_profile'] ?? 'n/a',
-                        'title' => $lead['title'] ?? 'n/a',
-                        'company' => $lead['company'] ?? 'n/a',
-                        'company_website' => $lead['company_website'] ?? 'n/a',
-                        'location' => $lead['location'] ?? 'n/a',
-                        'email' => $email,
-                        'leadlist_id' => $listID,
-                        'campaign_id' => 0,
-                        'website_content' => $lead['website_content'] ?? 'n/a',
-                        'personalized_line' => $lead['personalized_line'] ?? 'n/a',
-                        'subscribe' => $lead['subscribe'] ?? 1,
-                        'sent' => $lead['sent'] ?? 0,
-                        'opened' => $lead['opened'] ?? 0,
-                        'replied' => $lead['replied'] ?? 0
-                    ]);
-    
-                    $newEntriesCount++;
-                } else {
-                    // Email already exists, skip the entry
-                    $skippedEntriesCount++;
-                }
-            }
-    
-            return response()->json([
-                'status' => 'success',
-                // 'message' => 'Leads imported successfully.',
-                'new_entries' => $newEntriesCount,
-                'skipped_entries' => $skippedEntriesCount
-            ]);
-        } catch (\Exception $e) {
-            Log::error('Error processing lead import: ' . $e->getMessage(), [
-                'list_id' => $listID,
-                'leads' => $leads,
-            ]);
-    
-            return response()->json([
-                'status' => 'error',
-                'message' => 'There was an error processing the data.'
-            ], 500);
-        }
+
+        // Do a single database query to check if any of the emails already exist in the database if yes skip it and if not add it to a array to insert it to the database
+        $existingLeads = Lead::whereIn('email', array_column($leads, 'email'))->get();
+        $existingEmails = $existingLeads->pluck('email')->toArray();
+        $newLeads = array_filter($leads, function($lead) use ($existingEmails) {
+            return !in_array($lead['email'], $existingEmails);
+        });
+
+        //Insert the new leads to the database in bulk createa a boilerplate for the leads if I need to specify the columns to insert
+        $newLeads = array_map(function($lead) use ($listID) {
+            return [
+                'leadlist_id' => $listID,
+                'name' => $lead['name'],
+                'linkedin_profile' => $lead['linkedin_profile'],
+                'title' => $lead['title'],
+                'company' => $lead['company'],
+                'company_website' => $lead['company_website'],
+                'location' => $lead['location'],
+                'email' => $lead['email'],
+                // 'website_content' => $lead['website_content'],
+                // 'personalized_line' => $lead['personalized_line'],
+                // 'subscribe' => $lead['subscribe'],
+                // 'sent' => $lead['sent'],
+                // 'opened' => $lead['opened'],
+                // 'replied' => $lead['replied']
+            ];
+ 
+        }, $newLeads);
+
+        Lead::insert($newLeads);
+        
+        // Return the number of leads that were imported AND the number of leads that were skipped
+        return response()->json([
+            'imported' => count($newLeads),
+            'skipped' => count($leads) - count($newLeads)
+        ]);
     }
-    
-    
-    
+
 
     }
 

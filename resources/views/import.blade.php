@@ -64,8 +64,13 @@ $leadCount = $leads->count();
 
             Papa.parse(file, {
                 header: true,
+                skipEmptyLines: true,  // Skip empty lines
                 complete: function(results) {
                     const data = results.data;
+                    if (data.length === 0) {
+                        alert('No data found in the CSV file');
+                        return;
+                    }
                     processInChunks(data, 1000, listId);  // Pass listId to processInChunks
                 }
             });
@@ -73,6 +78,7 @@ $leadCount = $leads->count();
 
         function processInChunks(data, chunkSize, listId) {
             let currentIndex = 0;
+            const totalRecords = data.length;  // Total records excluding header
 
             function processChunk() {
                 const chunk = data.slice(currentIndex, currentIndex + chunkSize);
@@ -94,9 +100,9 @@ $leadCount = $leads->count();
                         currentIndex += chunkSize;
 
                         // Update progress
-                        $('#progress').text(`Processed ${Math.min(currentIndex, data.length)} of ${data.length} records`);
+                        $('#progress').text(`Processed ${Math.min(currentIndex, totalRecords)} of ${totalRecords} records`);
 
-                        if (currentIndex < data.length) {
+                        if (currentIndex < totalRecords) {
                             setTimeout(processChunk, 1000);
                         }
                     },
