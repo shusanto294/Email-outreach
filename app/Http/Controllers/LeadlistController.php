@@ -153,6 +153,7 @@ class LeadlistController extends Controller
       echo (" *********************************");
     }
 
+  /*
     public function download($id) {
       // Find the LeadList instance by ID
       $list = LeadList::find($id);
@@ -197,8 +198,53 @@ class LeadlistController extends Controller
           ->header('Content-Disposition', 'attachment; filename="' . $list->name . '.csv"');
   }
   
+  */
   
-  
+  public function download($id) {
+    // Find the LeadList instance by ID
+    $list = LeadList::find($id);
+
+    // Fetch leads from the database
+    $leads = Lead::where('leadlist_id', $id)->orderBy('id', 'desc')->paginate(20);
+    
+    // Check if any leads were found
+    if ($leads->isEmpty()) {
+        return response('No leads found', 404);
+    }
+
+    // Specify the column names you want to include
+    $selectedColumns = ['name', 'linkedin_profile', 'title', 'company', 'company_website', 'location',  'email', 'personalized_line', 'subscribe', 'sent', 'opened', 'replied'];
+
+    // Open a temporary file in memory
+    $csvFile = fopen('php://temp', 'r+');
+
+    // Add CSV header
+    fputcsv($csvFile, $selectedColumns);
+
+    // Add CSV rows with only the selected columns
+    foreach ($leads as $lead) {
+        // Extract only the selected columns' values
+        $rowData = [];
+        foreach ($selectedColumns as $column) {
+            $rowData[] = $lead->$column;
+        }
+        fputcsv($csvFile, $rowData);
+    }
+
+    // Rewind the file pointer to the beginning of the file
+    rewind($csvFile);
+
+    // Read the content of the file
+    $csvContent = stream_get_contents($csvFile);
+
+    // Close the file
+    fclose($csvFile);
+
+    // Create the response with the CSV content
+    return response($csvContent, 200)
+        ->header('Content-Type', 'text/csv')
+        ->header('Content-Disposition', 'attachment; filename="' . $list->name . '.csv"');
+}
 
 
 }
