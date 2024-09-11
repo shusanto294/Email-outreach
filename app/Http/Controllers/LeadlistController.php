@@ -205,7 +205,7 @@ class LeadlistController extends Controller
     $list = LeadList::find($id);
 
     // Fetch leads from the database
-    $leads = Lead::where('leadlist_id', $id)->orderBy('id', 'desc')->paginate(20);
+    $leads = Lead::where('leadlist_id', $id)->orderBy('id', 'desc')->get();
     
     // Check if any leads were found
     if ($leads->isEmpty()) {
@@ -213,7 +213,8 @@ class LeadlistController extends Controller
     }
 
     // Specify the column names you want to include
-    $selectedColumns = ['name', 'linkedin_profile', 'title', 'company', 'company_website', 'location',  'email', 'personalized_line', 'subscribe', 'sent', 'opened', 'replied'];
+    //$selectedColumns = ['name', 'linkedin_profile', 'title', 'company', 'company_website', 'location',  'email', 'personalized_line', 'subscribe', 'sent', 'opened', 'replied'];
+    $selectedColumns = ['name', 'linkedin_profile', 'title', 'company', 'company_website', 'location',  'email', 'subscribe', 'sent', 'opened', 'replied'];
 
     // Open a temporary file in memory
     $csvFile = fopen('php://temp', 'r+');
