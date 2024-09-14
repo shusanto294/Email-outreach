@@ -2,13 +2,12 @@
 
 namespace App\Jobs;
 
-use GuzzleHttp\Client;
+use Goutte\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Symfony\Component\DomCrawler\Crawler;
 
 class FetchWebsiteContent implements ShouldQueue
 {
@@ -35,24 +34,15 @@ class FetchWebsiteContent implements ShouldQueue
      */
     public function handle()
     {
-        // Fetch the website content
-        $headers = [
-            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
-        ];
-
-        $client = new Client(['headers' => $headers]);
-        $response = $client->request('GET', $this->url);
-        $body = $response->getBody();
-        $content = $body->getContents();
-
-        // Load the content into Symfony DomCrawler
-        $crawler = new Crawler($content);
+        // Fetch the website content using Goutte
+        $client = new Client();
+        $crawler = $client->request('GET', $this->url);
 
         // Specify the tags you want to extract content from (e.g., h1, h2, p, div)
-        $tagsToExtract = 'h1, h2, h3, h4, h5, h6, p';
+        $tagsToExtract = 'body';
 
         // Filter the crawler to only include these tags
-        $extractedContent = $crawler->filter($tagsToExtract)->each(function (Crawler $node) {
+        $extractedContent = $crawler->filter($tagsToExtract)->each(function ($node) {
             return $node->text();
         });
 
