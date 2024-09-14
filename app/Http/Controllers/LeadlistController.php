@@ -6,11 +6,12 @@ use App\Models\Lead;
 use App\Models\Email;
 use App\Models\Campaign;
 use App\Models\Leadlist;
+use App\Jobs\VerifyEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use OpenAI\Laravel\Facades\OpenAI;
 use App\Http\Requests\StoreLeadlistRequest;
 use App\Http\Requests\UpdateLeadlistRequest;
-use OpenAI\Laravel\Facades\OpenAI;
 
 class LeadlistController extends Controller
 {
@@ -153,53 +154,6 @@ class LeadlistController extends Controller
       echo (" *********************************");
     }
 
-  /*
-    public function download($id) {
-      // Find the LeadList instance by ID
-      $list = LeadList::find($id);
-  
-      // Fetch leads from the database
-      $leads = Lead::where('leadlist_id', $id)->orderBy('id', 'desc')->paginate(20);
-      
-      // Get the first lead to extract the column names
-      $firstLead = $leads->first();
-      
-      // Check if any leads were found
-      if (!$firstLead) {
-          return response('No leads found', 404);
-      }
-  
-      // Get the column names dynamically
-      $columnNames = array_keys($firstLead->getAttributes());
-  
-      // Open a temporary file in memory
-      $csvFile = fopen('php://temp', 'r+');
-  
-      // Add CSV header
-      fputcsv($csvFile, $columnNames);
-  
-      // Add CSV rows
-      foreach ($leads as $lead) {
-          fputcsv($csvFile, array_values($lead->getAttributes()));
-      }
-  
-      // Rewind the file pointer to the beginning of the file
-      rewind($csvFile);
-  
-      // Read the content of the file
-      $csvContent = stream_get_contents($csvFile);
-  
-      // Close the file
-      fclose($csvFile);
-  
-      // Create the response with the CSV content
-      return response($csvContent, 200)
-          ->header('Content-Type', 'text/csv')
-          ->header('Content-Disposition', 'attachment; filename="' . $list->name . '.csv"');
-  }
-  
-  */
-  
   public function download($id) {
     // Find the LeadList instance by ID
     $list = LeadList::find($id);
@@ -246,6 +200,30 @@ class LeadlistController extends Controller
         ->header('Content-Type', 'text/csv')
         ->header('Content-Disposition', 'attachment; filename="' . $list->name . '.csv"');
 }
+
+public function verify_list($id){
+    $list = Leadlist::find($id);
+
+    //get unverified leads where verified=null
+    $leads = Lead::where('leadlist_id', $id)->where('verified', null)->get();
+    //Get unverified leads count
+    $leadsCount = Lead::where('leadlist_id', $id)->where('verified', null)->count();
+
+    foreach ($leads as $lead) {
+        $email = $lead->email;
+        $domain = substr(strrchr($email, "@"), 1);
+
+        VerifyEmail::dispatch($lead);
+    }
+
+    if($leadsCount > 0){
+        return redirect()->back()->with('success', $leadsCount . ' leads verification process has started');
+    }else{
+        return redirect()->back()->with('error', 'Nothing to verify');
+    }
+    
+}
+
 
 
 }

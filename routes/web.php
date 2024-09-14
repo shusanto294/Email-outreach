@@ -68,6 +68,7 @@ Route::get('/list/{id}/verified', [LeadlistController::class, 'show_verified'])-
 Route::get('/list/{id}/not-verified', [LeadlistController::class, 'show_not_verified'])->middleware(['auth', 'verified'])->name('show.not.verified.list');
 Route::get('/list/{id}/add-to-campaign', [LeadlistController::class, 'add_to_campaign'])->middleware(['auth', 'verified'])->name('add-to-campaign.list');
 Route::post('/add-to-campaign/{id}', [LeadlistController::class, 'leadlist_leads_change_campaign_id'])->middleware(['auth', 'verified'])->name('add-to-campaign.post');
+Route::get('/list/{id}/verify', [LeadlistController::class, 'verify_list'])->middleware(['auth', 'verified'])->name('verify.list');
 
 Route::get('/campaigns', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('campaigns.index');
 Route::post('/add-campaign', [CampaignController::class, 'create'])->middleware(['auth', 'verified'])->name('add-campaign.post');

@@ -17,6 +17,8 @@ table a:hover{
 
 @section('content')
 
+@include('alerts')
+
 <p style="text-align: right">
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -37,23 +39,24 @@ table a:hover{
         <th scope="col">Has PS</th>
         <th scope="col">NO PS</th>
         <th scope="col">Downlaod</th>
-        <th scope="col" style="text-align: right;">Action</th>
+        <th scope="col">Verified</th>
+        <th scope="col" style="text-align: right;">Actions</th>
       </tr>
     </thead>
     <tbody>
         @foreach ($lists as $list)
           @php
-
-              // $leadsCount = App\Models\Lead::where('leadlist_id', $list->id)->count();
-              // $noPsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('personalized_line', "")->count();
-              // $hasPsleadsCount = App\Models\Lead::where('leadlist_id', $list->id)->where('personalized_line', '!=' , "")->count();
-              // $notAddedToCampaignCount = App\Models\Lead::where('leadlist_id', $list->id)->where('campaign_id', '=' , 0)->count();
-
-              
+ 
               $leadsCount = $list->leads->count();
               $noPsleadsCount = $list->leads->where('personalized_line', '')->count();
               $hasPsleadsCount = $list->leads->where('personalized_line', '!=', '')->count();
               $notAddedToCampaignCount = $list->leads->where('campaign_id', 0)->count();
+              $verified = $list->leads->where('verified', 1)->count();
+              if($verified) {
+                $verifiedPersentage = ($verified / $leadsCount) * 100;
+              } else {
+                $verifiedPersentage = 0;
+              }
 
 
           @endphp
@@ -65,7 +68,12 @@ table a:hover{
                 <td><a href="{{ route('show.has_ps.list', $list->id) }}">{{ $hasPsleadsCount }}</a></td>
                 <td><a href="{{ route('show.no_ps.list', $list->id) }}">{{ $noPsleadsCount }}</a></td>
                 <td><a href="{{ route('download.list', $list->id) }}">Download</a></td>
-                <td style="text-align: right;"><a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign ({{ $notAddedToCampaignCount }})</a></td>
+               
+                <td><a href="{{ route('verify.list', $list->id) }}">{{ number_format($verifiedPersentage, 2) }}%</a></td>
+                <td style="text-align: right;">
+                  <a class="btn btn-secondary" href="{{ route('verify.list', $list->id) }}">Verify {{ $leadsCount - $verified}}</a>
+                  <a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign ({{ $notAddedToCampaignCount }})</a>
+                </td>
             </tr>
         @endforeach
     </tbody>
