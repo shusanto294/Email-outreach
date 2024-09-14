@@ -56,6 +56,7 @@ Route::get('/list/{id}/has-ws', [LeadlistController::class, 'show_has_ws'])->mid
 Route::get('/list/{id}/download', [LeadlistController::class, 'download'])->middleware(['auth', 'verified'])->name('download.list');
 Route::get('/list/{id}/upload', [LeadlistController::class, 'upload'])->middleware(['auth', 'verified'])->name('upload.list');
 Route::get('/list/{id}/fetch-website-content', [LeadlistController::class, 'fetch_website_content'])->middleware(['auth', 'verified'])->name('fetch.content');
+Route::get('/list/{id}/personalize', [LeadlistController::class, 'personalize_list'])->middleware(['auth', 'verified'])->name('personalize.list');
 
 Route::get('/list/{id}/no-ps', [LeadlistController::class, 'show_no_ps'])->middleware(['auth', 'verified'])->name('show.no_ps.list');
 Route::get('/list/{id}/has-ps', [LeadlistController::class, 'show_has_ps'])->middleware(['auth', 'verified'])->name('show.has_ps.list');

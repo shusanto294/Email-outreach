@@ -6,13 +6,15 @@ use App\Models\Lead;
 use App\Models\Email;
 use App\Models\Campaign;
 use App\Models\Leadlist;
-use App\Jobs\VerifyEmail;
 use Illuminate\Http\Request;
-use App\Jobs\FetchWebsiteContent;
 use Illuminate\Support\Facades\DB;
 use OpenAI\Laravel\Facades\OpenAI;
 use App\Http\Requests\StoreLeadlistRequest;
 use App\Http\Requests\UpdateLeadlistRequest;
+
+use App\Jobs\VerifyEmail;
+use App\Jobs\FetchWebsiteContent;
+use App\Jobs\PersonalizeLead;
 
 class LeadlistController extends Controller
 {
@@ -246,6 +248,25 @@ public function fetch_website_content($id){
     }else{
         return redirect()->back()->with('error', 'No website to fetch');
     }
+}
+
+public function personalize_list($id){
+    $list = Leadlist::find($id);
+    $leads = Lead::where('leadlist_id', $id)->where('website_content', '!=' , null)->where('personalized_line', null)->get();
+    $leadsCount = $leads->count();
+
+    foreach ($leads as $lead) {
+        PersonalizeLead::dispatch($lead);
+    }
+
+    if($leadsCount > 0){
+        return redirect()->back()->with('success', $leadsCount . ' leads personalization process has started');
+    }else{
+        return redirect()->back()->with('error', 'No lead to personalize');
+    }
+
+
+
 }
 
 

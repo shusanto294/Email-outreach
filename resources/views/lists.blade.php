@@ -63,6 +63,7 @@ table a:hover{
               $hasNoWebsiteContent = $list->leads->where('website_content', null)->count();
 
 
+
           @endphp
 
             <tr>
@@ -78,6 +79,7 @@ table a:hover{
                 <td style="text-align: right;">
                   <a class="btn btn-secondary" href="{{ route('verify.list', $list->id) }}">Verify {{ $leadsCount - $verified}}</a>
                   <a class="btn btn-secondary" href="{{ route('fetch.content', $list->id) }}">Fetch content {{ $hasNoWebsiteContent }}</a>
+                  <a class="btn btn-secondary" href="{{ route('personalize.list', $list->id) }}">Personalize</a>
                   <a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign ({{ $notAddedToCampaignCount }})</a>
                 </td>
             </tr>

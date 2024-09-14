@@ -269,7 +269,7 @@ class LeadController extends Controller
   
                 if ($websiteContent != '') {
                     if (strlen($websiteContent) > 7000) {
-                        // If yes, take the first 1000 characters
+                        // If yes, take the first 7000 characters
                         $websiteContent = substr($websiteContent, 0, 7000);
                     }
 
@@ -396,45 +396,6 @@ class LeadController extends Controller
         return response()->json($lead);
     }
 
-    // public function ajax_lead_import(Request $request)
-    // {
-    //     $listID = $request->input('list_id');
-    //     $leads = $request->input('data');
-
-    //     $existingLeads = Lead::whereIn('email', array_column($leads, 'email'))->get();
-    //     $existingEmails = $existingLeads->pluck('email')->toArray();
-    //     $newLeads = array_filter($leads, function($lead) use ($existingEmails) {
-    //         return !in_array($lead['email'], $existingEmails);
-    //     });
-
-    //     $newLeads = array_map(function($lead) use ($listID) {
-    //         return [
-    //             'leadlist_id' => $listID,
-    //             'name' => $lead['name'],
-    //             'linkedin_profile' => $lead['linkedin_profile'],
-    //             'title' => $lead['title'],
-    //             'company' => $lead['company'],
-    //             'company_website' => $lead['company_website'],
-    //             'location' => $lead['location'],
-    //             'email' => $lead['email'],
-    //             // 'website_content' => 'n/a',
-    //             'personalized_line' => $lead['personalized_line'],
-    //             'subscribe' => $lead['subscribe'],
-    //             'sent' => $lead['sent'],
-    //             'opened' => $lead['opened'],
-    //             'replied' => $lead['replied']
-    //         ];
- 
-    //     }, $newLeads);
-
-    //     Lead::insert($newLeads);
-        
-    //     // Return the number of leads that were imported AND the number of leads that were skipped
-    //     return response()->json([
-    //         'imported' => count($newLeads),
-    //         'skipped' => count($leads) - count($newLeads)
-    //     ]);
-    // }
 
     public function ajax_lead_import(Request $request)
     {
@@ -457,7 +418,7 @@ class LeadController extends Controller
                 'company_website' => $lead['company_website'] ?? '',
                 'location' => $lead['location'] ?? '',
                 'email' => $lead['email'],
-                'personalized_line' => $lead['personalized_line'] ?? '',
+                // 'personalized_line' => $lead['personalized_line'] ?? '',
                 'subscribe' => $lead['subscribe'] ?? 1,
                 'sent' => $lead['sent'] ?? 0,
                 'opened' => $lead['opened'] ?? 0,
