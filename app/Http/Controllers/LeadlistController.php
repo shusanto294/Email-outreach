@@ -8,6 +8,7 @@ use App\Models\Campaign;
 use App\Models\Leadlist;
 use App\Jobs\VerifyEmail;
 use Illuminate\Http\Request;
+use App\Jobs\FetchWebsiteContent;
 use Illuminate\Support\Facades\DB;
 use OpenAI\Laravel\Facades\OpenAI;
 use App\Http\Requests\StoreLeadlistRequest;
@@ -136,7 +137,7 @@ class LeadlistController extends Controller
         $listID = $data['list_id'];
         $campaignID = $data['campaign_id'];
 
-        $leads = Lead::where('leadlist_id', $listID)->get();
+        $leads = Lead::where('leadlist_id', $listID)->where('campaign_id', )->get();
         foreach($leads as $lead){
             $lead->campaign_id = $campaignID;
             $lead->save();
@@ -201,13 +202,20 @@ class LeadlistController extends Controller
         ->header('Content-Disposition', 'attachment; filename="' . $list->name . '.csv"');
 }
 
+public function upload($id){
+    return view('upload', [
+        'list_id' => $id
+    ]);
+
+}
+
 public function verify_list($id){
     $list = Leadlist::find($id);
 
     //get unverified leads where verified=null
     $leads = Lead::where('leadlist_id', $id)->where('verified', null)->get();
     //Get unverified leads count
-    $leadsCount = Lead::where('leadlist_id', $id)->where('verified', null)->count();
+    $leadsCount = $leads->count();
 
     foreach ($leads as $lead) {
         $email = $lead->email;
@@ -222,6 +230,22 @@ public function verify_list($id){
         return redirect()->back()->with('error', 'Nothing to verify');
     }
     
+}
+
+public function fetch_website_content($id){
+    $list = Leadlist::find($id);
+    $leads = Lead::where('leadlist_id', $id)->where('website_content', null)->get();
+    $leadsCount = $leads->count();
+
+    foreach ($leads as $lead) {
+        FetchWebsiteContent::dispatch($lead->company_website, $lead);
+    }
+
+    if($leadsCount > 0){
+        return redirect()->back()->with('success', $leadsCount . ' website content fetching process has started');
+    }else{
+        return redirect()->back()->with('error', 'No website to fetch');
+    }
 }
 
 

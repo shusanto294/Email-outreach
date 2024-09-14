@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('company_website')->nullable();
             $table->text('location')->nullable();
             $table->text('email');
-            $table->integer('leadlist_id')->default(0);
+            $table->integer('leadlist_id')->nullable();
             $table->integer('campaign_id')->default(0);
             $table->longText('website_content')->nullable();
             $table->longText('personalized_line')->nullable();

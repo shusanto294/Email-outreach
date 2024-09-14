@@ -28,13 +28,6 @@ use App\Http\Controllers\ListCampaignRelationshipController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified']);
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
@@ -61,6 +54,8 @@ Route::get('/list/{id}', [LeadlistController::class, 'show'])->middleware(['auth
 Route::get('/list/{id}/no-ws', [LeadlistController::class, 'show_no_ws'])->middleware(['auth', 'verified'])->name('show.no_ws.list');
 Route::get('/list/{id}/has-ws', [LeadlistController::class, 'show_has_ws'])->middleware(['auth', 'verified'])->name('show.has_ws.list');
 Route::get('/list/{id}/download', [LeadlistController::class, 'download'])->middleware(['auth', 'verified'])->name('download.list');
+Route::get('/list/{id}/upload', [LeadlistController::class, 'upload'])->middleware(['auth', 'verified'])->name('upload.list');
+Route::get('/list/{id}/fetch-website-content', [LeadlistController::class, 'fetch_website_content'])->middleware(['auth', 'verified'])->name('fetch.content');
 
 Route::get('/list/{id}/no-ps', [LeadlistController::class, 'show_no_ps'])->middleware(['auth', 'verified'])->name('show.no_ps.list');
 Route::get('/list/{id}/has-ps', [LeadlistController::class, 'show_has_ps'])->middleware(['auth', 'verified'])->name('show.has_ps.list');
@@ -113,13 +108,6 @@ Route::get('/mailbox/{id}/delete', [MailboxController::class, 'delete'])->middle
 Route::get('/check-deliveribility/{id}', [MailboxController::class, 'checkDeliveribility'])->name('mailbox.check.deliveribility');
 
 //Replies
-// Route::get('/replies', [ReplyController::class, 'index'])->middleware(['auth', 'verified'])->name('replies.index');
-// Route::get('/check-replies', [ReplyController::class, 'checkRepliesFromAllInbox'])->name('replies.check.from.all.inboxes');
-// Route::get('/check-replies/{mailboxID}', [ReplyController::class, 'checkReplies'])->name('replies.check');
-// Route::get('/delete-reply/{id}', [ReplyController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete.reply');
-// Route::get('/reply/{id}', [ReplyController::class, 'show'])->middleware(['auth', 'verified'])->name('show.reply');
-// Route::get('/reply/{id}/respond', [ReplyController::class, 'respond'])->middleware(['auth', 'verified'])->name('show.respond');
-// Route::post('/reply/{id}/send-reply', [ReplyController::class, 'send_reply'])->middleware(['auth', 'verified'])->name('send.reply');
 
 Route::get('/inbox', [ReplyController::class, 'index'])->middleware(['auth', 'verified'])->name('replies.index');
 Route::get('/check-replies', [ReplyController::class, 'checkRepliesFromAllInbox'])->name('replies.check.from.all.inboxes');
