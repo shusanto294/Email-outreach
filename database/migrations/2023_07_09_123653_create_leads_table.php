@@ -24,9 +24,12 @@ return new class extends Migration
             $table->text('email');
             $table->integer('leadlist_id')->nullable();
             $table->integer('campaign_id')->nullable();
+            $table->boolean('added_for_website_scraping')->nullable();
             $table->longText('website_content')->nullable();
-            $table->longText('personalized_line')->nullable();
-            $table->text('verified')->nullable();
+            $table->boolean('added_for_personalization')->nullable();
+            $table->longText('personalization')->nullable();
+            $table->boolean('added_for_verification')->nullable();
+            $table->boolean('verified')->nullable();
             $table->boolean('subscribe')->default(1);
             $table->boolean('sent')->default(0);
             $table->boolean('opened')->default(0);

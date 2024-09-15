@@ -418,7 +418,7 @@ class LeadController extends Controller
                 'company_website' => $lead['company_website'] ?? '',
                 'location' => $lead['location'] ?? '',
                 'email' => $lead['email'],
-                'personalized_line' => $lead['personalized_line'] ?? '',
+                'personalization' => $lead['personalization'] ?? '',
                 'subscribe' => $lead['subscribe'] ?? 1,
                 'sent' => $lead['sent'] ?? 0,
                 'opened' => $lead['opened'] ?? 0,

@@ -1,6 +1,7 @@
 @extends('theme')
 
 @section('head')
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <style>
 p.dynamic-variables span {
     padding: 5px;
@@ -25,6 +26,12 @@ table a:hover{
         Add New List
     </button>
 </p>
+
+<div class="progress mt-5 mb-5" style="display: none">
+  <div class="progress-bar" role="progressbar" style="width: 1%" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+
+<div id="alert"></div>
 
 @if(count($lists) > 0 )
 
@@ -80,10 +87,10 @@ table a:hover{
                
                 <td>{{ number_format($verifiedPersentage, 2) }}%</td>
                 <td style="text-align: right;">
-                  <a class="btn btn-secondary" href="{{ route('verify.list', $list->id) }}">Verify {{ $notVerified ? $notVerified : ""}}</a>
-                  <a class="btn btn-secondary" href="{{ route('fetch.content', $list->id) }}">Fetch content {{ $hasNoWebsiteContent ? $hasNoWebsiteContent : "" }}</a>
-                  <a class="btn btn-secondary" href="{{ route('personalize.list', $list->id) }}">Personalize {{ $isNotPersonalized ? $isNotPersonalized : "" }}</a>
-                  <a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign {{ $notAddedToCampaignCount ? $notAddedToCampaignCount : "" }}</a>
+                  <a class="btn btn-secondary action-ajax" data-total="{{ $notVerified }}" href="{{ route('verify.list', $list->id) }}">Verify {{ $notVerified ? $notVerified : ""}}</a>
+                  <a class="btn btn-secondary action-ajax" data-total="{{ $hasNoWebsiteContent }}" href="{{ route('fetch.content', $list->id) }}">Fetch content {{ $hasNoWebsiteContent ? $hasNoWebsiteContent : "" }}</a>
+                  <a class="btn btn-secondary action-ajax" data-total="{{ $isNotPersonalized }}" href="{{ route('personalize.list', $list->id) }}">Personalize {{ $isNotPersonalized ? $isNotPersonalized : "" }}</a>
+                  <a class="btn btn-secondary" data-total="{{ $notAddedToCampaignCount }}" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign {{ $notAddedToCampaignCount ? $notAddedToCampaignCount : "" }}</a>
                 </td>
             </tr>
         @endforeach
@@ -112,6 +119,41 @@ table a:hover{
     {{ $lists->links() }}
 </div>
 
+
+<script>
+  $(document).ready(function(){
+
+      $('.action-ajax').click(function(e){
+          e.preventDefault();
+          let total = $(this).data('total');
+          let processed = 0;
+          let href = $(this).attr('href');
+          let interval = setInterval(() => {
+              $.get(href, function(response){
+                  console.log(response.status);
+                  if(response.status == 'success'){
+                      $('#alert').hide();
+                      $('.progress').show();
+                      processed += response.processed;
+                      let percentage = (processed / total) * 100;
+                      //make the persentage varable a round figure
+                      percentage = Math.round(percentage);
+                      $('.progress-bar').css('width', percentage + '%');
+                      $('.progress-bar').html(percentage + '%');
+
+                  }
+                  if(response.status == 'stop'){
+                      clearInterval(interval);
+                      $('.progress').hide();
+                      $('#alert').show();
+                      $('#alert').html('<div class="alert alert-success">Added to queue</div>');
+                  }
+              });
+          }, 1000);
+      });
+
+  });
+</script>
 
 
 @endsection('content')

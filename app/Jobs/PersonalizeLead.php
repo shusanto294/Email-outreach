@@ -102,9 +102,9 @@ class PersonalizeLead implements ShouldQueue
         $apiKey->save();
 
 
-        $personalizedLine =  nl2br($result->choices[0]->message->content);
+        $personalization =  nl2br($result->choices[0]->message->content);
         $lead->website_content = $websiteContent;
-        $lead->personalized_line = $personalizedLine;
+        $lead->personalization = $personalization;
         $lead->save();
 
         
