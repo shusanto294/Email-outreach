@@ -1,0 +1,5 @@
+Check supervisor status
+sudo supervisorctl status
+
+Check cpu and memory usage
+htop
