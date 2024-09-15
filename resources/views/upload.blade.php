@@ -35,7 +35,7 @@
                         alert('No data found in the CSV file');
                         return;
                     }
-                    processInChunks(data, 250, listId);  // Pass listId to processInChunks
+                    processInChunks(data, 100, listId);  // Pass listId to processInChunks
                 }
             });
         });
