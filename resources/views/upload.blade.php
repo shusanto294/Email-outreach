@@ -3,6 +3,12 @@
 
 @section('content')
 
+<style>
+div#progress {
+    margin-top: 20px;
+}
+</style>
+
 
 <form id="uploadForm" enctype="multipart/form-data">
     <input type="hidden" name="list_id" value="{{ $list_id }}">
@@ -31,11 +37,11 @@
                 skipEmptyLines: true,  // Skip empty lines
                 complete: function(results) {
                     const data = results.data;
-                    if (data.length === 0) {
+                    if (data.length === 0) { 
                         alert('No data found in the CSV file');
                         return;
                     }
-                    processInChunks(data, 100, listId);  // Pass listId to processInChunks
+                    processInChunks(data, 1000, listId);  // Pass listId to processInChunks
                 }
             });
         });

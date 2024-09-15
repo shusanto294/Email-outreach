@@ -53,3 +53,7 @@ $response = $kernel->handle(
 )->send();
 
 $kernel->terminate($request, $response);
+
+
+ini_set('memory_limit', '256M');
+
