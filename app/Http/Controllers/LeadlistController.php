@@ -92,7 +92,7 @@ class LeadlistController extends Controller
     {
         $websiteContentFilters = ['', 'n/a'];
         $leads = Lead::where('leadlist_id', $listId)
-                        ->where('personalized_line', "")
+                        ->where('personalization', "")
                         ->orderBy('id', 'desc')
                         ->paginate(20);
         return view('leads', [
@@ -103,8 +103,8 @@ class LeadlistController extends Controller
     public function show_has_ps($listId)
     {
         $leads = Lead::where('leadlist_id', $listId)
-                        ->where('personalized_line', '!=', '')
-                        ->where('personalized_line', '!=', 'n/a')
+                        ->where('personalization', '!=', '')
+                        ->where('personalization', '!=', 'n/a')
                         ->orderBy('id', 'desc')
                         ->paginate(20);
         return view('leads', [
@@ -170,7 +170,7 @@ class LeadlistController extends Controller
     }
 
     // Specify the column names you want to include
-    //$selectedColumns = ['name', 'linkedin_profile', 'title', 'company', 'company_website', 'location',  'email', 'personalized_line', 'subscribe', 'sent', 'opened', 'replied'];
+    //$selectedColumns = ['name', 'linkedin_profile', 'title', 'company', 'company_website', 'location',  'email', 'personalization', 'subscribe', 'sent', 'opened', 'replied'];
     $selectedColumns = ['name', 'linkedin_profile', 'title', 'company', 'company_website', 'location',  'email', 'subscribe', 'sent', 'opened', 'replied'];
 
     // Open a temporary file in memory
@@ -247,7 +247,7 @@ public function verify_list($id){
 
 public function fetch_website_content($id){
     $list = Leadlist::find($id);
-    $leads = Lead::where('leadlist_id', $id)->where('verified', 1)->where('website_content', null)->paginate(1000);
+    $leads = Lead::where('leadlist_id', $id)->where('verified', 1)->where('added_for_website_scraping', null)->paginate(1000);
     $leadsCount = $leads->count();
 
     foreach ($leads as $lead) {
@@ -273,7 +273,7 @@ public function fetch_website_content($id){
 
 public function personalize_list($id){
     $list = Leadlist::find($id);
-    $leads = Lead::where('leadlist_id', $id)->where('verified', 1)->where('website_content', '!=' , null)->where('personalized_line', null)->paginate(1000);
+    $leads = Lead::where('leadlist_id', $id)->where('verified', 1)->where('added_for_personalization', null)->paginate(1000);
     $leadsCount = $leads->count();
 
     foreach ($leads as $lead) {
@@ -296,9 +296,8 @@ public function personalize_list($id){
         ];
     }
 
-
-
 }
+
 
 
 

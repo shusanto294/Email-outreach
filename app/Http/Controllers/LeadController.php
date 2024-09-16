@@ -91,7 +91,7 @@ class LeadController extends Controller
         $lead->subscribe = $request->subscribe;
         $lead->leadlist_id = $request->leadListID;
         $lead->website_content = $request->websiteContent;
-        $lead->personalized_line = str_replace(["[firstname]", "[company]", "[website]"], [$firstName, $lead->company, $lead->company_website], $request->personalizedLine);
+        $lead->personalization = str_replace(["[firstname]", "[company]", "[website]"], [$firstName, $lead->company, $lead->company_website], $request->personalizedLine);
 
 
         $lead->save();
@@ -108,7 +108,7 @@ class LeadController extends Controller
             ->orWhere('company_website', 'like', '%' . $request->searchText . '%')
             ->orWhere('location', 'like', '%' . $request->searchText . '%')
             ->orWhere('email', 'like', '%' . $request->searchText . '%')
-            ->orWhere('personalized_line', 'like', '%' . $request->searchText . '%');
+            ->orWhere('personalization', 'like', '%' . $request->searchText . '%');
         })->orderBy('created_at', 'desc')->paginate(25);
     
         return view('leads', [
@@ -328,7 +328,7 @@ class LeadController extends Controller
 
                     $personalizedLine =  nl2br($result->choices[0]->message->content);
                     $lead->website_content = $websiteContent;
-                    $lead->personalized_line = $personalizedLine;
+                    $lead->personalization = $personalizedLine;
                     $lead->save();
     
                     echo $personalizedLine;
@@ -392,7 +392,7 @@ class LeadController extends Controller
     }
 
     public function get_lead_with_no_ps(){
-        $lead = Lead::where('personalized_line', null)->first();
+        $lead = Lead::where('personalization', null)->first();
         return response()->json($lead);
     }
 

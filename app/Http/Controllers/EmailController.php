@@ -91,7 +91,7 @@ class EmailController extends Controller
                 $firstName = $nameParts[0] ? $nameParts[0] : '';
 
                 $company = $lead->company ? $lead->company : '';
-                $personalizedLine = $lead->personalized_line ? $lead->personalized_line : '';
+                $personalizedLine = $lead->personalization ? $lead->personalization : '';
                 $website = $lead->company_website;
 
                 $dynamicSubject = str_replace(["[firstname]", "[company]", "[personalizedLine]", "[website]"], [$firstName, $company, $personalizedLine, $website], $subject);

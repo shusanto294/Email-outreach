@@ -57,7 +57,7 @@
         <textarea style="min-height: 200px;" id="summernote" name="websiteContent" class="form-control mb-3" placeholder="Website content">{{ $lead->website_content }}</textarea>
 
         <p class="dynamic-variables mt-3">Personalized Line - Dynamic variables: <span>[firstname]</span> <span>[company]</span> <span>[website]</span></p>
-        <textarea id="personalizedLine" style="min-height: 200px;" id="summernote" name="personalizedLine" class="form-control mb-3" placeholder="Personalized Line">{{ $lead->personalized_line }}</textarea>
+        <textarea id="personalizedLine" style="min-height: 200px;" id="summernote" name="personalizedLine" class="form-control mb-3" placeholder="Personalized Line">{{ $lead->personalization }}</textarea>
 
         <button type="submit" class="btn btn-secondary mt-3">Update Lead</button>
         {{-- <a class="btn btn-danger mt-3" href="{{ route('lead.delete', $lead->id) }}">Delete</a> --}}

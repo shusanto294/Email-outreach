@@ -118,7 +118,7 @@
               <td><a class="website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company_website }}</a> </td>
               <td>{{ $lead->email }}</td>
               {{-- <td>{!! $lead->website_content ? "<span style='color: green;''>&#x2713;</span>" : "<span style='color: red;''>&#x2715;</span>" !!}</td> --}}
-              <td><a class="leadlink" target="_blank" href="{{ route('lead.show', $lead->id) }}#personalizedLine">{!! $lead->personalized_line ? $lead->personalized_line : "<span style='color: red;''>&#x2715;</span>" !!}</a></td>
+              <td><a class="leadlink" target="_blank" href="{{ route('lead.show', $lead->id) }}#personalizedLine">{!! $lead->personalization ? $lead->personalization : "<span style='color: red;''>&#x2715;</span>" !!}</a></td>
             </tr>
         @endforeach
     </tbody>

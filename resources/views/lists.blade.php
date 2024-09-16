@@ -56,8 +56,8 @@ table a:hover{
           @php
  
               $leadsCount = $list->leads->count();
-              // $noPsleadsCount = $list->leads->where('personalized_line', '')->count();
-              // $hasPsleadsCount = $list->leads->where('personalized_line', '!=', '')->count();
+              // $noPsleadsCount = $list->leads->where('personalization', '')->count();
+              // $hasPsleadsCount = $list->leads->where('personalization', '!=', '')->count();
               
               $verified = $list->leads->where('verified', 1)->count();
               $notVerified = $leadsCount - $verified;
@@ -69,7 +69,7 @@ table a:hover{
               }
 
               $hasNoWebsiteContent = $list->leads->where('website_content', null)->where('verified', 1)->count();
-              $isNotPersonalized = $list->leads->where('personalized_line', null)->where('verified', 1)->count();
+              $isNotPersonalized = $list->leads->where('personalization', null)->where('verified', 1)->count();
               $notAddedToCampaignCount = $list->leads->where('campaign_id', null)->where('verified', 1)->count();
 
 
