@@ -68,9 +68,11 @@ table a:hover{
                 $verifiedPersentage = 0;
               }
 
-              $hasNoWebsiteContent = $list->leads->where('website_content', null)->where('verified', 1)->count();
-              $isNotPersonalized = $list->leads->where('personalization', null)->where('verified', 1)->count();
+              // $hasNoWebsiteContent = $list->leads->where('website_content', null)->where('verified', 1)->count();
+              // $isNotPersonalized = $list->leads->where('personalization', null)->where('verified', 1)->count();
+              
               $notAddedToCampaignCount = $list->leads->where('campaign_id', null)->where('verified', 1)->count();
+              $notPreparedYet = $list->leads->where('added_to_queue', null)->count();
 
 
 
@@ -87,9 +89,10 @@ table a:hover{
                
                 <td>{{ number_format($verifiedPersentage, 2) }}%</td>
                 <td style="text-align: right;">
-                  <a class="btn btn-secondary action-ajax" data-total="{{ $notVerified }}" href="{{ route('verify.list', $list->id) }}">Verify {{ $notVerified ? $notVerified : ""}}</a>
+                  {{-- <a class="btn btn-secondary action-ajax" data-total="{{ $notVerified }}" href="{{ route('verify.list', $list->id) }}">Verify {{ $notVerified ? $notVerified : ""}}</a>
                   <a class="btn btn-secondary action-ajax" data-total="{{ $hasNoWebsiteContent }}" href="{{ route('fetch.content', $list->id) }}">Fetch content {{ $hasNoWebsiteContent ? $hasNoWebsiteContent : "" }}</a>
-                  <a class="btn btn-secondary action-ajax" data-total="{{ $isNotPersonalized }}" href="{{ route('personalize.list', $list->id) }}">Personalize {{ $isNotPersonalized ? $isNotPersonalized : "" }}</a>
+                  <a class="btn btn-secondary action-ajax" data-total="{{ $isNotPersonalized }}" href="{{ route('personalize.list', $list->id) }}">Personalize {{ $isNotPersonalized ? $isNotPersonalized : "" }}</a> --}}
+                  <a class="btn btn-secondary action-ajax" data-total="{{ $notPreparedYet }}" href="{{ route('prepare.list', $list->id) }}">Prepare Leads {{ $notPreparedYet ? $notPreparedYet : "" }}</a>
                   <a class="btn btn-secondary" data-total="{{ $notAddedToCampaignCount }}" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign {{ $notAddedToCampaignCount ? $notAddedToCampaignCount : "" }}</a>
                 </td>
             </tr>

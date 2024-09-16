@@ -298,6 +298,36 @@ public function personalize_list($id){
 
 }
 
+//New method to combine verify, fetch content and personize together
+
+public function prepare_list($id){
+    $list = Leadlist::find($id);
+    $leads = Lead::where('leadlist_id', $id)->where('added_to_queue', null)->paginate(1000);
+    $leadsCount = $leads->count();
+
+    foreach ($leads as $lead) {
+        VerifyEmail::dispatch($lead);
+        FetchWebsiteContent::dispatch($lead->company_website, $lead);
+        PersonalizeLead::dispatch($lead);
+
+        $lead->added_to_queue = true;
+        $lead->save();
+    }
+
+    if($leadsCount > 0){
+        return [
+            'status' => 'success',
+            'processed' => $leadsCount
+        ];
+    }else{
+        return [
+            'status' => 'stop',
+            'processed' => $leadsCount
+        ];
+    }
+
+}
+
 
 
 

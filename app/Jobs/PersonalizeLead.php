@@ -42,6 +42,8 @@ class PersonalizeLead implements ShouldQueue
         $firstName = $nameParts[0] ? $nameParts[0] : '';
         $websiteContent = $lead->website_content;
 
+        /*
+
         if (strlen($websiteContent) > 5000) {
             // If yes, take the first 5000 characters
             $websiteContent = substr($websiteContent, 0, 5000);
@@ -93,6 +95,7 @@ class PersonalizeLead implements ShouldQueue
 
         ]);
 
+
         $input_tocken_before = intval($apiKey->input_tocken);
         $apiKey->input_tocken = $input_tocken_before + $result->usage->promptTokens;
 
@@ -105,6 +108,11 @@ class PersonalizeLead implements ShouldQueue
         $personalization =  nl2br($result->choices[0]->message->content);
         $lead->website_content = $websiteContent;
         $lead->personalization = $personalization;
+        $lead->save();
+
+        */
+
+        $lead->personalization = "Personalized";
         $lead->save();
 
         
