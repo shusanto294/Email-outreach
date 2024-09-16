@@ -302,7 +302,7 @@ public function personalize_list($id){
 
 public function prepare_list($id){
     $list = Leadlist::find($id);
-    $leads = Lead::where('leadlist_id', $id)->where('added_to_queue', null)->paginate(1000);
+    $leads = Lead::where('leadlist_id', $id)->where('added_to_queue', null)->paginate(300);
     $leadsCount = $leads->count();
 
     foreach ($leads as $lead) {
