@@ -197,7 +197,7 @@ table a:hover{
                   }
                   
               });
-          }, 1000); // Poll the server every 1 second
+          }, 2000); // Poll the server every 1 second
       });
 
   });
