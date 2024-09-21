@@ -34,7 +34,6 @@ return new class extends Migration
             $table->boolean('sent')->default(0);
             $table->boolean('opened')->default(0);
             $table->boolean('replied')->default(0);
-            $table->boolean('added_to_queue')->nullable();
             $table->timestamps();
         });
     }

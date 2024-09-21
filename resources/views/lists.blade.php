@@ -129,7 +129,7 @@ table a:hover{
           let href = $(this).attr('href');
           let interval = setInterval(() => {
               $.get(href, function(response){
-                  console.log(response.status);
+                  console.log(response);
                   if(response.status == 'success'){
                       $('#alert').hide();
                       $('.progress').show();
