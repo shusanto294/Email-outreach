@@ -211,179 +211,98 @@ public function upload($id){
 
 }
 
-// public function verify_list($id){
-//     $list = Leadlist::find($id);
+public function verify_list($id){
+    $list = Leadlist::find($id);
 
-//     $leads = Lead::where('leadlist_id', $id)->where('added_for_verification', null)->paginate(1000);
-//     $leadsCount = $leads->count();
+    $leads = Lead::where('leadlist_id', $id)->where('added_for_verification', null)->paginate(1000);
+    $leadsCount = $leads->count();
 
-//     foreach ($leads as $lead) {
-//         $email = $lead->email;
-//         $domain = substr(strrchr($email, "@"), 1);
+    foreach ($leads as $lead) {
+        $email = $lead->email;
+        $domain = substr(strrchr($email, "@"), 1);
 
-//         VerifyEmail::dispatch($lead);
-//         $lead->added_for_verification = true;
-//         $lead->save();
-//     }
+        VerifyEmail::dispatch($lead);
+    }
 
-//     if($leadsCount > 0){
-//         return [
-//             'status' => 'success',
-//             'processed' => $leadsCount
-//         ];
-//     }else{
-//         return [
-//             'status' => 'stop',
-//             'processed' => $leadsCount
-//         ];
-//     }
+    // Bulk update 'added_for_verification' field for fetched leads
+    Lead::whereIn('id', $leads->pluck('id'))
+        ->update(['added_for_verification' => true]);  
+
+    if($leadsCount > 0){
+        return [
+            'status' => 'success',
+            'processed' => Lead::where('leadlist_id', $id)
+            ->whereNotNull('added_for_verification')->count()
+        ];
+    }else{
+        return [
+            'status' => 'stop',
+            'processed' => Lead::where('leadlist_id', $id)
+            ->whereNotNull('added_for_verification')->count()
+        ];
+    }
     
-// }
+}
 
-public function verify_list($id)
-{
+public function fetch_website_content($id){
     $list = Leadlist::find($id);
+    $leads = Lead::where('leadlist_id', $id)->where('added_for_website_scraping', null)->paginate(1000);
+    $leadsCount = $leads->count();
 
-    // Chunk the leads to process in batches of 1000
-    Lead::where('leadlist_id', $id)
-        ->whereNull('added_for_verification')
-        ->chunkById(1000, function ($leads) {
-            $leadIds = [];
+    foreach ($leads as $lead) {
+        FetchWebsiteContent::dispatch($lead->company_website, $lead);
+    }
 
-            foreach ($leads as $lead) {
-                $email = $lead->email;
-                $domain = substr(strrchr($email, "@"), 1);
+    // Bulk update 'added_for_website_scraping' field for fetched leads
+    Lead::whereIn('id', $leads->pluck('id'))
+        ->update(['added_for_website_scraping' => true]);  
 
-                // Collect IDs for bulk update
-                $leadIds[] = $lead->id;
-
-                // Dispatch the job for each lead
-                VerifyEmail::dispatch($lead);
-            }
-
-            // Bulk update all leads at once
-            Lead::whereIn('id', $leadIds)->update(['added_for_verification' => true]);
-        });
-
-    return [
-        'status' => 'success',
-        'processed' => Lead::where('leadlist_id', $id)
-                          ->whereNotNull('added_for_verification')->count()
-    ];
+    if($leadsCount > 0){
+        return [
+            'status' => 'success',
+            'processed' => Lead::where('leadlist_id', $id)
+            ->whereNotNull('added_for_website_scraping')->count()
+        ];
+    }else{
+        return [
+            'status' => 'stop',
+            'processed' => Lead::where('leadlist_id', $id)
+            ->whereNotNull('added_for_website_scraping')->count()
+        ];
+    }
 }
 
 
-// public function fetch_website_content($id){
-//     $list = Leadlist::find($id);
-//     $leads = Lead::where('leadlist_id', $id)->where('added_for_website_scraping', null)->paginate(1000);
-//     $leadsCount = $leads->count();
 
-//     foreach ($leads as $lead) {
-//         FetchWebsiteContent::dispatch($lead->company_website, $lead);
-//         $lead->added_for_website_scraping = true;
-//         $lead->save();
-//     }
-
-//     if($leadsCount > 0){
-//         // return redirect()->back()->with('success', $leadsCount . ' website content fetching process has started');
-//         return [
-//             'status' => 'success',
-//             'processed' => $leadsCount
-//         ];
-//     }else{
-//         // return redirect()->back()->with('error', 'No website to fetch');
-//         return [
-//             'status' => 'stop',
-//             'processed' => $leadsCount
-//         ];
-//     }
-// }
-
-public function fetch_website_content($id)
-{
+public function personalize_list($id){
     $list = Leadlist::find($id);
+    $leads = Lead::where('leadlist_id', $id)->where('added_for_personalization', null)->paginate(1000);
+    $leadsCount = $leads->count();
 
-    // Chunk the leads to process in batches of 1000
-    Lead::where('leadlist_id', $id)
-        ->whereNull('added_for_website_scraping')
-        ->chunkById(1000, function ($leads) {
-            $leadIds = [];
+    foreach ($leads as $lead) {
+        PersonalizeLead::dispatch($lead);
+    }
 
-            foreach ($leads as $lead) {
-                // Dispatch the job to fetch website content
-                FetchWebsiteContent::dispatch($lead->company_website, $lead);
+    // Bulk update 'added_for_personalization' field for fetched leads
+    Lead::whereIn('id', $leads->pluck('id'))
+        ->update(['added_for_personalization' => true]);  
 
-                // Collect lead IDs for bulk update
-                $leadIds[] = $lead->id;
-            }
+    if($leadsCount > 0){
+        return [
+            'status' => 'success',
+            'processed' => Lead::where('leadlist_id', $id)
+            ->whereNotNull('added_for_personalization')->count()
+        ];
+    }else{
+        return [
+            'status' => 'stop',
+            'processed' => Lead::where('leadlist_id', $id)
+            ->whereNotNull('added_for_personalization')->count()
+        ];
+    }
 
-            // Bulk update all leads at once
-            Lead::whereIn('id', $leadIds)->update(['added_for_website_scraping' => true]);
-        });
-
-    return [
-        'status' => 'success',
-        'processed' => Lead::where('leadlist_id', $id)
-                          ->whereNotNull('added_for_website_scraping')->count()
-    ];
 }
 
-
-// public function personalize_list($id){
-//     $list = Leadlist::find($id);
-//     $leads = Lead::where('leadlist_id', $id)->where('added_for_personalization', null)->paginate(1000);
-//     $leadsCount = $leads->count();
-
-//     foreach ($leads as $lead) {
-//         PersonalizeLead::dispatch($lead);
-//         $lead->added_for_personalization = true;
-//         $lead->save();
-//     }
-
-//     if($leadsCount > 0){
-//         // return redirect()->back()->with('success', $leadsCount . ' leads personalization process has started');
-//         return [
-//             'status' => 'success',
-//             'processed' => $leadsCount
-//         ];
-//     }else{
-//         // return redirect()->back()->with('error', 'No lead to personalize');
-//         return [
-//             'status' => 'stop',
-//             'processed' => $leadsCount
-//         ];
-//     }
-
-// }
-
-public function personalize_list($id)
-{
-    $list = Leadlist::find($id);
-
-    // Chunk the leads to process in batches of 1000
-    Lead::where('leadlist_id', $id)
-        ->whereNull('added_for_personalization')
-        ->chunkById(1000, function ($leads) {
-            $leadIds = [];
-
-            foreach ($leads as $lead) {
-                // Dispatch the job to personalize the lead
-                PersonalizeLead::dispatch($lead);
-
-                // Collect lead IDs for bulk update
-                $leadIds[] = $lead->id;
-            }
-
-            // Bulk update all leads at once
-            Lead::whereIn('id', $leadIds)->update(['added_for_personalization' => true]);
-        });
-
-    return [
-        'status' => 'success',
-        'processed' => Lead::where('leadlist_id', $id)
-                          ->whereNotNull('added_for_personalization')->count()
-    ];
-}
 
 
 
