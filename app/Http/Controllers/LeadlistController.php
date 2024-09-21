@@ -247,7 +247,7 @@ public function verify_list($id){
 
 public function fetch_website_content($id){
     $list = Leadlist::find($id);
-    $leads = Lead::where('leadlist_id', $id)->where('verified', 1)->where('added_for_website_scraping', null)->paginate(1000);
+    $leads = Lead::where('leadlist_id', $id)->where('added_for_website_scraping', null)->paginate(1000);
     $leadsCount = $leads->count();
 
     foreach ($leads as $lead) {
@@ -273,7 +273,7 @@ public function fetch_website_content($id){
 
 public function personalize_list($id){
     $list = Leadlist::find($id);
-    $leads = Lead::where('leadlist_id', $id)->where('verified', 1)->where('added_for_personalization', null)->paginate(1000);
+    $leads = Lead::where('leadlist_id', $id)->where('added_for_personalization', null)->paginate(1000);
     $leadsCount = $leads->count();
 
     foreach ($leads as $lead) {
