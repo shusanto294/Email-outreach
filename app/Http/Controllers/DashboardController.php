@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Lead;
 use App\Models\Email;
 use App\Models\Reply;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -27,6 +28,11 @@ class DashboardController extends Controller
         $totalReplyCount = Reply::whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
         $totalNewReplyCount = Reply::where('seen', '0')->whereDate('created_at', '>=', $startDate)->whereDate('created_at', '<=', $endDate)->count();
 
+
+        $totalJobs = DB::table('jobs')->count();
+        $totalFailedJobs = DB::table('failed_jobs')->count();
+    
+
         return view('dashboard', [
             'totalLeadsAdded' => $totalLeadsAdded,
             'totalLeadsPersonalized' => $totalLeadsPersonalized,
@@ -37,6 +43,9 @@ class DashboardController extends Controller
             'totalEmailsOpened' => $totalEmailsOpened,
             'totalReplyCount' => $totalReplyCount,
             'totalNewReplyCount' => $totalNewReplyCount,
+            'totalJobs' => $totalJobs,
+            'totalFailedJobs' => $totalFailedJobs
+            
         ]);
     }
 }

@@ -188,6 +188,21 @@
         </div>
     </div>
 
+
+    <div class="mb-5">
+        <p style="margin-top: 50px;"><b>Jobs:</b></p>
+
+        @if ($totalJobs)
+            <p>{{ $totalJobs }} Jobs are in waiting to perform background operations</p>
+        @endif
+    
+        @if ($totalFailedJobs)
+            <p class="text-danger">{{ $totalFailedJobs }} Jobs failed their operation</p>
+        @endif
+    </div>
+
+
+
     <div class="row">
         <div class="col-lg-6 mb-3">
           <p><b>Email sending on/off</b></p>
@@ -223,43 +238,12 @@
         <button type="submit"  class="btn btn-secondary">Save Settings</button>
     </form>
 
-    @php
-        $nextLeadToPersonalize = App\Models\Lead::where('website_content', "")->first();
-        $nextLeadToSendEmail = App\Models\Lead::where('campaign_id', '!=' ,  0)->where('sent', 0)->orderBy('id', 'asc')->first();
-    @endphp
 
-    <p style="margin-top: 50px;"><b>Status:</b></p>
 
-    @if ($nextLeadToPersonalize)
-        <p>Next lead to personalize: {{ $nextLeadToPersonalize->email }} - <a href="{{ route('skip_lead_personalization') }}">Skip personalization</a></a></p>
-    @endif
+   
+    
 
-    @if ($nextLeadToSendEmail)
-        <p>Next lead to send email: <a href="{{ route('lead.show', $nextLeadToSendEmail->id) }}">{{ $nextLeadToSendEmail->email }}</a></p>
-    @endif
 
-    @php
-        $lastApiKeyUsed = App\Models\Setting::where('key', 'last_api_key_used')->first();
-
-        if(!$lastApiKeyUsed){
-            App\Models\Setting::create(array(
-                'key' => 'last_api_key_used',
-                'value' => 0
-            ));
-
-            return 'Setting added';
-        }
-
-        $apiKey = App\Models\Apikey::where('id', '>', $lastApiKeyUsed->value)->first();
-
-        if(!$apiKey){
-            $apiKey = App\Models\Apikey::orderBy('id', 'asc')->first();
-        }
-    @endphp
-
-    @if ($apiKey)
-        <p>Next api key to use: {{ $apiKey->id }} - {{  $apiKey->key}} </a></p>
-    @endif
     
 
 
