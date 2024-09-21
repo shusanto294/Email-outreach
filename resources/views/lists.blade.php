@@ -116,7 +116,7 @@ table a:hover{
 </div>
 
 
-<script>
+{{-- <script>
   $(document).ready(function(){
 
       $('.action-ajax').click(function(e){
@@ -151,7 +151,58 @@ table a:hover{
       });
 
   });
+</script> --}}
+
+<script>
+  $(document).ready(function(){
+
+      $('.action-ajax').click(function(e){
+          e.preventDefault();
+          
+          // Get the total number of leads from the button data attribute
+          let total = $(this).data('total');
+          let processed = 0;
+          let href = $(this).attr('href');
+          
+          // Set an interval to periodically poll the server
+          let interval = setInterval(() => {
+              $.get(href, function(response){
+                  
+                  console.log(response);
+
+                  // If the status is success, update the progress
+                  if(total > processed){
+                      $('#alert').hide();
+                      $('.progress').show();
+                      
+                      // Accumulate the number of processed leads
+                      processed = response.processed;
+                      
+                      // Calculate the percentage of progress and round it
+                      let percentage = (processed / total) * 100;
+                      percentage = Math.round(percentage);
+                      
+                      // Update the progress bar width and text
+                      $('.progress-bar').css('width', percentage + '%');
+                      $('.progress-bar').html(percentage + '%');
+
+                      console.log('Processed: ' + processed + '/' + total);
+                  }else{
+                      clearInterval(interval);  // Stop polling the server
+                      
+                      // Hide the progress bar and show a success alert
+                      $('.progress').hide();
+                      $('#alert').show();
+                      $('#alert').html('<div class="alert alert-success">All leads have been processed and added to the queue.</div>');
+                  }
+                  
+              });
+          }, 1000); // Poll the server every 1 second
+      });
+
+  });
 </script>
+
 
 
 @endsection('content')
