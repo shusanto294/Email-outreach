@@ -39,30 +39,35 @@ class AddQueue extends Command
      *
      * @return int
      */
+    // public function handle()
+    // {
+    //     // Use cursor for better memory efficiency
+    //     $leads = Lead::where('added_to_queue', null)->cursor();
+    
+    //     foreach ($leads as $lead) {
+    //         try {
+    //             VerifyEmail::dispatch($lead);
+    //             FetchWebsiteContent::dispatch($lead->company_website, $lead);
+    //             PersonalizeLead::dispatch($lead);
+                
+    //             // Update the lead to mark it as added to the queue
+    //             $lead->update(['added_to_queue' => true]);
+    
+    //             $this->info("Job has been added to the queue for lead {$lead->id}.");
+    //         } catch (\Exception $e) {
+    //             \Log::error("Failed to process lead {$lead->id}: {$e->getMessage()}");
+    //         }
+    //     }
+        
+    //     // Optionally, you can check if you want to sleep
+    //     if ($leads->isEmpty()) {
+    //         sleep(60); // Sleep for 60 seconds if no leads are found
+    //     }
+    // }
+
     public function handle()
     {
-        // Use cursor for better memory efficiency
-        $leads = Lead::where('added_to_queue', null)->cursor();
-    
-        foreach ($leads as $lead) {
-            try {
-                VerifyEmail::dispatch($lead);
-                FetchWebsiteContent::dispatch($lead->company_website, $lead);
-                PersonalizeLead::dispatch($lead);
-                
-                // Update the lead to mark it as added to the queue
-                $lead->update(['added_to_queue' => true]);
-    
-                $this->info("Job has been added to the queue for lead {$lead->id}.");
-            } catch (\Exception $e) {
-                \Log::error("Failed to process lead {$lead->id}: {$e->getMessage()}");
-            }
-        }
-        
-        // Optionally, you can check if you want to sleep
-        if ($leads->isEmpty()) {
-            sleep(60); // Sleep for 60 seconds if no leads are found
-        }
+        $this->info("Success");
     }
     
 }
