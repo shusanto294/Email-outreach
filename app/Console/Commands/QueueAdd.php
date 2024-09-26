@@ -64,7 +64,5 @@ class QueueAdd extends Command
 
             $this->info(count($leads) . ' Job has been added to the queue successfully!');
         }
-
-        return 0;
     }
 }
