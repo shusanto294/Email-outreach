@@ -8,14 +8,14 @@ use App\Jobs\PersonalizeLead;
 use Illuminate\Console\Command;
 use App\Jobs\FetchWebsiteContent;
 
-class QueueAdd extends Command
+class AddQueue extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'queue:add';
+    protected $signature = 'add:queue';
 
     /**
      * The console command description.

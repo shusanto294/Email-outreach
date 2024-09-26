@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
 
     protected $commands = [
-        Commands\QueueAdd::class,
+        Commands\AddQueue::class,
     ];
 
 

@@ -97,9 +97,9 @@ table a:hover{
       <tr>
         <th scope="col">#id</th>
         <th scope="col">Name</th>
-        <th scope="col">Leads</th>
-        <th scope="col">Download</th>
         <th scope="col">Upload</th>
+        <th scope="col">Download</th>
+        <th scope="col">Leads</th>
         <th scope="col">Verified</th>
         <th scope="col">WC</th>
         <th scope="col">Personalized</th>
@@ -117,8 +117,9 @@ table a:hover{
               $fetchedWebsiteContent = $list->leads()->whereNotNull('website_content')->count();
               $fetchedWebsiteContentPercentage = $leadsCount > 0 ? ($fetchedWebsiteContent / $leadsCount) * 100 : 0;
 
-              $personalized = $list->leads()->whereNotNull('personalization')->count();
+              $personalized = $list->leads()->where('personalization', '!=' , '')->count();
               $personalizedPercentage = $leadsCount > 0 ? ($personalized / $leadsCount) * 100 : 0;
+
 
               $notAddedToCampaign = $list->leads()
                 ->whereNull('campaign_id')
@@ -130,14 +131,15 @@ table a:hover{
             <tr>
                 <td>{{ $list->id }}</td>
                 <td><a href="{{ route('show.list', $list->id) }}">{{ $list->name }}</a></td>
-                <td><a href="{{ route('show.list', $list->id) }}">{{ $leadsCount }}</a></td>
-                <td><a href="{{ route('download.list', $list->id) }}">Download</a></td>
+                
                 <td><a href="{{ route('upload.list', $list->id) }}">Upload</a></td>
-               
+                <td><a href="{{ route('download.list', $list->id) }}">Download</a></td>
+                
+                <td><a href="{{ route('show.list', $list->id) }}">{{ $leadsCount }}</a></td>
                 <td>{{ number_format($verifiedPercentage, 2) }}%</td>
                 <td>{{ number_format($fetchedWebsiteContentPercentage, 2) }}%</td>
                 <td>{{ number_format($personalizedPercentage, 2) }}%</td>
-                
+
                 <td style="text-align: right;">
                   {{-- <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForVerification }}" href="{{ route('verify.list', $list->id) }}">Verify {{ $notAddedForVerification ? $notAddedForVerification : ""}}</a>
                   <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForFetchContent }}" href="{{ route('fetch.content', $list->id) }}">Fetch content {{ $notAddedForFetchContent ? $notAddedForFetchContent : "" }}</a>
