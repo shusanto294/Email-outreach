@@ -33,7 +33,7 @@ table a:hover{
 
 <div id="alert"></div>
 
-@if(count($lists) > 0 )
+{{-- @if(count($lists) > 0 )
 
 <table class="table table-striped">
     <thead>
@@ -41,10 +41,6 @@ table a:hover{
         <th scope="col">#id</th>
         <th scope="col">Name</th>
         <th scope="col">Leads</th>
-        {{-- <th scope="col">Has WC</th>
-        <th scope="col">No WC</th> --}}
-        {{-- <th scope="col">Has PS</th>
-        <th scope="col">NO PS</th> --}}
         <th scope="col">Downlaod</th>
         <th scope="col">Upload</th>
         <th scope="col">Verified</th>
@@ -76,8 +72,6 @@ table a:hover{
                 <td>{{ $list->id }}</td>
                 <td><a href="{{ route('show.list', $list->id) }}">{{ $list->name }}</a></td>
                 <td><a href="{{ route('show.list', $list->id) }}">{{ $leadsCount }}</a></td>
-                {{-- <td><a href="{{ route('show.has_ps.list', $list->id) }}">{{ $hasPsleadsCount }}</a></td>
-                <td><a href="{{ route('show.no_ps.list', $list->id) }}">{{ $noPsleadsCount }}</a></td> --}}
                 <td><a href="{{ route('download.list', $list->id) }}">Download</a></td>
                 <td><a href="{{ route('upload.list', $list->id) }}">Upload</a></td>
                
@@ -93,7 +87,63 @@ table a:hover{
     </tbody>
   </table>
 
+@endif --}}
+
+
+@if(count($lists) > 0)
+
+<table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Leads</th>
+        <th scope="col">Download</th>
+        <th scope="col">Upload</th>
+        <th scope="col">Verified</th>
+        <th scope="col" style="text-align: right;">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+        @foreach ($lists as $list)
+          @php
+              // Using direct count queries to reduce memory consumption
+              $leadsCount = $list->leads()->count();
+              $verified = $list->leads()->where('verified', 1)->count();
+              $verifiedPercentage = $leadsCount > 0 ? ($verified / $leadsCount) * 100 : 0;
+
+              // Using null condition in queries to offload processing to the database
+              $notAddedForVerification = $list->leads()->whereNull('added_for_verification')->count();
+              $notAddedForFetchContent = $list->leads()->whereNull('added_for_website_scraping')->count();
+              $notAddedForPersonalization = $list->leads()->whereNull('added_for_personalization')->count();
+              $notAddedToCampaign = $list->leads()
+                ->whereNull('campaign_id')
+                ->where('verified', 1)
+                ->whereNotNull('personalization')
+                ->count();
+          @endphp
+
+            <tr>
+                <td>{{ $list->id }}</td>
+                <td><a href="{{ route('show.list', $list->id) }}">{{ $list->name }}</a></td>
+                <td><a href="{{ route('show.list', $list->id) }}">{{ $leadsCount }}</a></td>
+                <td><a href="{{ route('download.list', $list->id) }}">Download</a></td>
+                <td><a href="{{ route('upload.list', $list->id) }}">Upload</a></td>
+               
+                <td>{{ number_format($verifiedPercentage, 2) }}%</td>
+                <td style="text-align: right;">
+                  <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForVerification }}" href="{{ route('verify.list', $list->id) }}">Verify {{ $notAddedForVerification ? $notAddedForVerification : ""}}</a>
+                  <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForFetchContent }}" href="{{ route('fetch.content', $list->id) }}">Fetch content {{ $notAddedForFetchContent ? $notAddedForFetchContent : "" }}</a>
+                  <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForPersonalization }}" href="{{ route('personalize.list', $list->id) }}">Personalize {{ $notAddedForPersonalization ? $notAddedForPersonalization : "" }}</a>
+                  <a class="btn btn-secondary" data-total="{{ $notAddedToCampaign }}" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign {{ $notAddedToCampaign ? $notAddedToCampaign : "" }}</a>
+                </td>
+            </tr>
+        @endforeach
+    </tbody>
+  </table>
+
 @endif
+
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -116,42 +166,6 @@ table a:hover{
 </div>
 
 
-{{-- <script>
-  $(document).ready(function(){
-
-      $('.action-ajax').click(function(e){
-          e.preventDefault();
-          let total = $(this).data('total');
-          let processed = 0;
-          let href = $(this).attr('href');
-          let interval = setInterval(() => {
-              $.get(href, function(response){
-                  console.log(response);
-                  if(response.status == 'success'){
-                      $('#alert').hide();
-                      $('.progress').show();
-                      processed += response.processed;
-                      let percentage = (processed / total) * 100;
-                      //make the persentage varable a round figure
-                      percentage = Math.round(percentage);
-                      $('.progress-bar').css('width', percentage + '%');
-                      $('.progress-bar').html(percentage + '%');
-
-                      console.log('Processed: ' + processed + '/' + total);
-
-                  }
-                  if(response.status == 'stop'){
-                      clearInterval(interval);
-                      $('.progress').hide();
-                      $('#alert').show();
-                      $('#alert').html('<div class="alert alert-success">Added to queue</div>');
-                  }
-              });
-          }, 1000);
-      });
-
-  });
-</script> --}}
 
 <script>
   $(document).ready(function(){
