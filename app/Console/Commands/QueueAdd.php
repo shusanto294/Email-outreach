@@ -42,7 +42,7 @@ class QueueAdd extends Command
     public function handle()
     {
         while (true) {
-            $leads = Lead::where('added_to_queue', null)->paginate(1000);
+            $leads = Lead::where('added_to_queue', null)->paginate(100);
             $leadsCount = $leads->count();
 
             foreach ($leads as $lead) {
