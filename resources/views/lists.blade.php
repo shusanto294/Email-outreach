@@ -101,6 +101,8 @@ table a:hover{
         <th scope="col">Download</th>
         <th scope="col">Upload</th>
         <th scope="col">Verified</th>
+        <th scope="col">WC</th>
+        <th scope="col">Personalized</th>
         <th scope="col" style="text-align: right;">Actions</th>
       </tr>
     </thead>
@@ -131,10 +133,12 @@ table a:hover{
                 <td><a href="{{ route('upload.list', $list->id) }}">Upload</a></td>
                
                 <td>{{ number_format($verifiedPercentage, 2) }}%</td>
+                <td>{{ number_format($verifiedPercentage, 2) }}%</td>
+                <td>{{ number_format($verifiedPercentage, 2) }}%</td>
                 <td style="text-align: right;">
-                  <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForVerification }}" href="{{ route('verify.list', $list->id) }}">Verify {{ $notAddedForVerification ? $notAddedForVerification : ""}}</a>
+                  {{-- <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForVerification }}" href="{{ route('verify.list', $list->id) }}">Verify {{ $notAddedForVerification ? $notAddedForVerification : ""}}</a>
                   <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForFetchContent }}" href="{{ route('fetch.content', $list->id) }}">Fetch content {{ $notAddedForFetchContent ? $notAddedForFetchContent : "" }}</a>
-                  <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForPersonalization }}" href="{{ route('personalize.list', $list->id) }}">Personalize {{ $notAddedForPersonalization ? $notAddedForPersonalization : "" }}</a>
+                  <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForPersonalization }}" href="{{ route('personalize.list', $list->id) }}">Personalize {{ $notAddedForPersonalization ? $notAddedForPersonalization : "" }}</a> --}}
                   <a class="btn btn-secondary" data-total="{{ $notAddedToCampaign }}" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign {{ $notAddedToCampaign ? $notAddedToCampaign : "" }}</a>
                 </td>
             </tr>
