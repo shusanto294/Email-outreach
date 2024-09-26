@@ -41,28 +41,28 @@ class QueueAdd extends Command
      */
     public function handle()
     {
-        while (true) {
-            $leads = Lead::where('added_to_queue', null)->paginate(100);
-            $leadsCount = $leads->count();
-
-            foreach ($leads as $lead) {
-                $email = $lead->email;
-                $domain = substr(strrchr($email, "@"), 1);
-
+        // Use cursor for better memory efficiency
+        $leads = Lead::where('added_to_queue', null)->cursor();
+    
+        foreach ($leads as $lead) {
+            try {
                 VerifyEmail::dispatch($lead);
                 FetchWebsiteContent::dispatch($lead->company_website, $lead);
                 PersonalizeLead::dispatch($lead);
-
+                
                 // Update the lead to mark it as added to the queue
                 $lead->update(['added_to_queue' => true]);
+    
+                $this->info("Job has been added to the queue for lead {$lead->id}.");
+            } catch (\Exception $e) {
+                \Log::error("Failed to process lead {$lead->id}: {$e->getMessage()}");
             }
-
-            if ($leadsCount == 0) {
-                // Sleep for a certain period before checking again
-                sleep(60); // Sleep for 60 seconds
-            }
-
-            $this->info(count($leads) . ' Job has been added to the queue successfully!');
+        }
+        
+        // Optionally, you can check if you want to sleep
+        if ($leads->isEmpty()) {
+            sleep(60); // Sleep for 60 seconds if no leads are found
         }
     }
+    
 }
