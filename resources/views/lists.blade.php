@@ -1,7 +1,7 @@
 @extends('theme')
 
 @section('head')
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> --}}
 <style>
 p.dynamic-variables span {
     padding: 5px;
@@ -32,63 +32,6 @@ table a:hover{
 </div>
 
 <div id="alert"></div>
-
-{{-- @if(count($lists) > 0 )
-
-<table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#id</th>
-        <th scope="col">Name</th>
-        <th scope="col">Leads</th>
-        <th scope="col">Downlaod</th>
-        <th scope="col">Upload</th>
-        <th scope="col">Verified</th>
-        <th scope="col" style="text-align: right;">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-        @foreach ($lists as $list)
-          @php
- 
-              $leadsCount = $list->leads->count();
-              $verified = $list->leads->where('verified', 1)->count();
-              $notVerified = $leadsCount - $verified;
-
-              if($verified) {
-                $verifiedPersentage = ($verified / $leadsCount) * 100;
-              } else {
-                $verifiedPersentage = 0;
-              }
-
-              $notAddedForVerification = $list->leads->where('added_for_verification', null)->count();
-              $notAddedForFetchContent = $list->leads->where('added_for_website_scraping', null)->count();
-              $notAddedForPersonalization = $list->leads->where('added_for_personalization', null)->count();
-              $notAddedToCampaign = $list->leads->where('campaign_id', null)->where('verified', 1)->where('personalization', '!=', null)->count();
-
-          @endphp
-
-            <tr>
-                <td>{{ $list->id }}</td>
-                <td><a href="{{ route('show.list', $list->id) }}">{{ $list->name }}</a></td>
-                <td><a href="{{ route('show.list', $list->id) }}">{{ $leadsCount }}</a></td>
-                <td><a href="{{ route('download.list', $list->id) }}">Download</a></td>
-                <td><a href="{{ route('upload.list', $list->id) }}">Upload</a></td>
-               
-                <td>{{ number_format($verifiedPersentage, 2) }}%</td>
-                <td style="text-align: right;">
-                  <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForVerification }}" href="{{ route('verify.list', $list->id) }}">Verify {{ $notAddedForVerification ? $notAddedForVerification : ""}}</a>
-                  <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForFetchContent }}" href="{{ route('fetch.content', $list->id) }}">Fetch content {{ $notAddedForFetchContent ? $notAddedForFetchContent : "" }}</a>
-                  <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForPersonalization }}" href="{{ route('personalize.list', $list->id) }}">Personalize {{ $notAddedForPersonalization ? $notAddedForPersonalization : "" }}</a>
-                  <a class="btn btn-secondary" data-total="{{ $notAddedToCampaign }}" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign {{ $notAddedToCampaign ? $notAddedToCampaign : "" }}</a>
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-  </table>
-
-@endif --}}
-
 
 @if(count($lists) > 0)
 
@@ -141,10 +84,10 @@ table a:hover{
                 <td>{{ number_format($personalizedPercentage, 2) }}%</td>
 
                 <td style="text-align: right;">
-                  {{-- <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForVerification }}" href="{{ route('verify.list', $list->id) }}">Verify {{ $notAddedForVerification ? $notAddedForVerification : ""}}</a>
-                  <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForFetchContent }}" href="{{ route('fetch.content', $list->id) }}">Fetch content {{ $notAddedForFetchContent ? $notAddedForFetchContent : "" }}</a>
-                  <a class="btn btn-secondary action-ajax" data-total="{{ $notAddedForPersonalization }}" href="{{ route('personalize.list', $list->id) }}">Personalize {{ $notAddedForPersonalization ? $notAddedForPersonalization : "" }}</a> --}}
-                  <a class="btn btn-secondary" data-total="{{ $notAddedToCampaign }}" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign {{ $notAddedToCampaign ? $notAddedToCampaign : "" }}</a>
+                  <a class="btn btn-secondary action-ajax" href="{{ route('verify.list', $list->id) }}">Verify</a>
+                  <a class="btn btn-secondary action-ajax" href="{{ route('fetch.content', $list->id) }}">Fetch content</a>
+                  <a class="btn btn-secondary action-ajax" href="{{ route('personalize.list', $list->id) }}">Personalize</a>
+                  <a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign</a>
                 </td>
             </tr>
         @endforeach
@@ -176,7 +119,7 @@ table a:hover{
 
 
 
-<script>
+{{-- <script>
   $(document).ready(function(){
 
       $('.action-ajax').click(function(e){
@@ -224,7 +167,7 @@ table a:hover{
       });
 
   });
-</script>
+</script> --}}
 
 
 

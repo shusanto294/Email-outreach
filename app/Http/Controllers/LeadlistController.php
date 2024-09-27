@@ -4,17 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Lead;
 use App\Models\Email;
+use App\Jobs\VerifyList;
 use App\Models\Campaign;
 use App\Models\Leadlist;
+use App\Jobs\VerifyEmail;
 use Illuminate\Http\Request;
+use App\Jobs\PersonalizeLead;
+use App\Jobs\FetchWebsiteContent;
+
+use App\Jobs\PersonalizeLeadList;
 use Illuminate\Support\Facades\DB;
 use OpenAI\Laravel\Facades\OpenAI;
+use App\Jobs\FetchWebsiteContentList;
 use App\Http\Requests\StoreLeadlistRequest;
 use App\Http\Requests\UpdateLeadlistRequest;
-
-use App\Jobs\VerifyEmail;
-use App\Jobs\FetchWebsiteContent;
-use App\Jobs\PersonalizeLead;
 
 class LeadlistController extends Controller
 {
@@ -212,6 +215,7 @@ public function upload($id){
 }
 
 public function verify_list($id){
+    /*
     $list = Leadlist::find($id);
 
     $leads = Lead::where('leadlist_id', $id)->where('added_for_verification', null)->paginate(1000);
@@ -241,11 +245,16 @@ public function verify_list($id){
             ->whereNotNull('added_for_verification')->count()
         ];
     }
+    */
+    
+    VerifyList::dispatch($id);
+    return redirect()->back()->with('success', 'List verification started');
     
 }
 
 
 public function fetch_website_content($id){
+    /*
     $list = Leadlist::find($id);
     $leads = Lead::where('leadlist_id', $id)->where('added_for_website_scraping', null)->paginate(1000);
     $leadsCount = $leads->count();
@@ -271,10 +280,15 @@ public function fetch_website_content($id){
             ->whereNotNull('added_for_website_scraping')->count()
         ];
     }
+        */
+
+    FetchWebsiteContentList::dispatch($id);
+    return redirect()->back()->with('success', 'List website content fetching started');
 }
 
 
 public function personalize_list($id){
+    /*
     $list = Leadlist::find($id);
     $leads = Lead::where('leadlist_id', $id)->where('added_for_personalization', null)->paginate(1000);
     $leadsCount = $leads->count();
@@ -300,6 +314,9 @@ public function personalize_list($id){
             ->whereNotNull('added_for_personalization')->count()
         ];
     }
+        */
+    PersonalizeLeadList::dispatch($id);
+    return redirect()->back()->with('success', 'List personalization started');
 
 }
 
