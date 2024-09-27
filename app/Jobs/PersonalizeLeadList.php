@@ -7,8 +7,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Lead; // Ensure this import is correct
-use Illuminate\Support\Facades\Log; // Import the Log facade
+use App\Models\Lead;
+use Illuminate\Support\Facades\Log;
 
 class PersonalizeLeadList implements ShouldQueue
 {

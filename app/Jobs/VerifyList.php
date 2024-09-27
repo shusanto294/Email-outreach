@@ -7,9 +7,9 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use App\Models\Lead; // Ensure this import is correct
-use App\Jobs\VerifyEmail; // Ensure this import is correct
-use Illuminate\Support\Facades\Log; // Import the Log facade
+use App\Models\Lead;
+use App\Jobs\VerifyEmail;
+use Illuminate\Support\Facades\Log;
 
 class VerifyList implements ShouldQueue
 {

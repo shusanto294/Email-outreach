@@ -2,13 +2,14 @@
 
 namespace App\Jobs;
 
+use App\Models\Lead;
 use Illuminate\Bus\Queueable;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
-use App\Models\WebsiteContent; // Ensure this import is correct
-use Illuminate\Support\Facades\Log; // Import the Log facade
+use Illuminate\Support\Facades\Log;
+use App\Models\WebsiteContent;
 
 
 class FetchWebsiteContentList implements ShouldQueue
