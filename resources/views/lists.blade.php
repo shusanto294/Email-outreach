@@ -40,55 +40,19 @@ table a:hover{
       <tr>
         <th scope="col">#id</th>
         <th scope="col">Name</th>
-        <th scope="col">Upload</th>
-        <th scope="col">Download</th>
         <th scope="col">Leads</th>
-        <th scope="col">Verified</th>
-        <th scope="col">WC</th>
-        <th scope="col">Personalized</th>
-        <th scope="col" style="text-align: right;">Actions</th>
       </tr>
     </thead>
     <tbody>
         @foreach ($lists as $list)
           @php
-              // Using direct count queries to reduce memory consumption
               $leadsCount = $list->leads()->count();
-              $verified = $list->leads()->where('verified', 1)->count();
-              $verifiedPercentage = $leadsCount > 0 ? ($verified / $leadsCount) * 100 : 0;
-
-              $fetchedWebsiteContent = $list->leads()->whereNotNull('website_content')->count();
-              $fetchedWebsiteContentPercentage = $leadsCount > 0 ? ($fetchedWebsiteContent / $leadsCount) * 100 : 0;
-
-              $personalized = $list->leads()->where('personalization', '!=' , '')->count();
-              $personalizedPercentage = $leadsCount > 0 ? ($personalized / $leadsCount) * 100 : 0;
-
-
-              $notAddedToCampaign = $list->leads()
-                ->whereNull('campaign_id')
-                ->where('verified', 1)
-                ->whereNotNull('personalization')
-                ->count();
           @endphp
 
             <tr>
                 <td>{{ $list->id }}</td>
                 <td><a href="{{ route('show.list', $list->id) }}">{{ $list->name }}</a></td>
-                
-                <td><a href="{{ route('upload.list', $list->id) }}">Upload</a></td>
-                <td><a href="{{ route('download.list', $list->id) }}">Download</a></td>
-                
-                <td><a href="{{ route('show.list', $list->id) }}">{{ $leadsCount }}</a></td>
-                <td>{{ number_format($verifiedPercentage, 2) }}%</td>
-                <td>{{ number_format($fetchedWebsiteContentPercentage, 2) }}%</td>
-                <td>{{ number_format($personalizedPercentage, 2) }}%</td>
-
-                <td style="text-align: right;">
-                  <a class="btn btn-secondary action-ajax" href="{{ route('verify.list', $list->id) }}">Verify</a>
-                  <a class="btn btn-secondary action-ajax" href="{{ route('fetch.content', $list->id) }}">Fetch content</a>
-                  <a class="btn btn-secondary action-ajax" href="{{ route('personalize.list', $list->id) }}">Personalize</a>
-                  <a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $list->id) }}">Add to campaign</a>
-                </td>
+                <td>{{ number_format($leadsCount) }}</td>
             </tr>
         @endforeach
     </tbody>
@@ -116,59 +80,5 @@ table a:hover{
 <div class="mt-5">
     {{ $lists->links() }}
 </div>
-
-
-
-{{-- <script>
-  $(document).ready(function(){
-
-      $('.action-ajax').click(function(e){
-          e.preventDefault();
-          
-          // Get the total number of leads from the button data attribute
-          let total = $(this).data('total');
-          let processed = 0;
-          let href = $(this).attr('href');
-          
-          // Set an interval to periodically poll the server
-          let interval = setInterval(() => {
-              $.get(href, function(response){
-                  
-                  console.log(response);
-
-                  // If the status is success, update the progress
-                  if(total > processed){
-                      $('#alert').hide();
-                      $('.progress').show();
-                      
-                      // Accumulate the number of processed leads
-                      processed = response.processed;
-                      
-                      // Calculate the percentage of progress and round it
-                      let percentage = (processed / total) * 100;
-                      percentage = Math.round(percentage);
-                      
-                      // Update the progress bar width and text
-                      $('.progress-bar').css('width', percentage + '%');
-                      $('.progress-bar').html(percentage + '%');
-
-                      console.log('Processed: ' + processed + '/' + total);
-                  }else{
-                      clearInterval(interval);  // Stop polling the server
-                      
-                      // Hide the progress bar and show a success alert
-                      $('.progress').hide();
-                      $('#alert').show();
-                      $('#alert').html('<div class="alert alert-success">All leads have been processed and added to the queue.</div>');
-                  }
-                  
-              });
-          }, 2000); // Poll the server every 1 second
-      });
-
-  });
-</script> --}}
-
-
 
 @endsection('content')

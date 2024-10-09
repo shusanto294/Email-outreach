@@ -28,6 +28,64 @@
       .disabled>.page-link, .page-link.disabled {
         border-color: #333;
       }
+
+      .info-box {
+        border: 1px solid #ddd;
+        padding: 20px;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
+    }
+    .info-box-error-count {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+        padding: 5px;
+        border-radius: 5px;
+    }
+    .info-box .number {
+        font-size: 40px;
+        margin: 0;
+        font-weight: 700;
+    }
+    .email-switch{
+        text-align: right;
+        margin-bottom: 50px;
+    }
+
+    .infoboxes{
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    }
+
+    @media(max-width: 500px){
+        .btn.btn-secondary{
+            width: 100%;
+            margin-top: 20px;
+        }
+        .info-box{
+            margin-bottom: 20px;
+        }
+
+        .infoboxes{
+            grid-template-columns: 1fr;
+        }
+
+        .email-switch{
+            text-align: left;
+        }
+    }
+
+    @media(min-width: 500px){
+        .new-replies-count{
+            display: none;
+        }
+    }
+
+    .inline-space-between{
+        display: flex;
+        justify-content: space-between;
+    }
     </style>
     @yield('head')
   </head>

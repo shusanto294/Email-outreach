@@ -65,9 +65,28 @@ class LeadlistController extends Controller
      */
     public function show($listId)
     {
-        $leads = Lead::where('leadlist_id', $listId)->orderBy('id', 'desc')->paginate(20);
-        return view('leads', [
-          'leads' => $leads
+        //Total Leads
+        $totalLeads = Lead::where('leadlist_id', $listId)->count();
+
+        //Verified
+        $verified = Lead::where('leadlist_id', $listId)->where('verified', 'true')->count();
+
+        //Fetched website content
+        $fetchedWebsiteContent = Lead::where('leadlist_id', $listId)->where('website_content', '!=', '')->where('website_content', '!=', 'n/a')->count();
+
+        //Personalized
+        $personalized = Lead::where('leadlist_id', $listId)->where('personalization', '!=', '')->where('personalization', '!=', 'n/a')->count();
+
+        //Added to campaign
+        $addedToCampaign = Lead::where('leadlist_id', $listId)->where('campaign_id', '!=', '')->count();
+
+        return view('list-single', [
+            'id' => $listId,
+            'totalLeads' => $totalLeads,
+            'verified' => $verified,
+            'fetchedWebsiteContent' => $fetchedWebsiteContent,
+            'personalized' => $personalized,
+            'addedToCampaign' => $addedToCampaign
         ]);
     }
 
@@ -215,109 +234,20 @@ public function upload($id){
 }
 
 public function verify_list($id){
-    /*
-    $list = Leadlist::find($id);
-
-    $leads = Lead::where('leadlist_id', $id)->where('added_for_verification', null)->paginate(1000);
-    $leadsCount = $leads->count();
-
-    foreach ($leads as $lead) {
-        $email = $lead->email;
-        $domain = substr(strrchr($email, "@"), 1);
-
-        VerifyEmail::dispatch($lead);
-    }
-
-    // Bulk update 'added_for_verification' field for fetched leads
-    Lead::whereIn('id', $leads->pluck('id'))
-        ->update(['added_for_verification' => true]);  
-
-    if($leadsCount > 0){
-        return [
-            'status' => 'success',
-            'processed' => Lead::where('leadlist_id', $id)
-            ->whereNotNull('added_for_verification')->count()
-        ];
-    }else{
-        return [
-            'status' => 'stop',
-            'processed' => Lead::where('leadlist_id', $id)
-            ->whereNotNull('added_for_verification')->count()
-        ];
-    }
-    */
-    
     VerifyList::dispatch($id);
     return redirect()->back()->with('success', 'List verification started');
-    
 }
 
 
 public function fetch_website_content($id){
-    /*
-    $list = Leadlist::find($id);
-    $leads = Lead::where('leadlist_id', $id)->where('added_for_website_scraping', null)->paginate(1000);
-    $leadsCount = $leads->count();
-
-    foreach ($leads as $lead) {
-        FetchWebsiteContent::dispatch($lead->company_website, $lead);
-    }
-
-    // Bulk update 'added_for_website_scraping' field for fetched leads
-    Lead::whereIn('id', $leads->pluck('id'))
-        ->update(['added_for_website_scraping' => true]);  
-
-    if($leadsCount > 0){
-        return [
-            'status' => 'success',
-            'processed' => Lead::where('leadlist_id', $id)
-            ->whereNotNull('added_for_website_scraping')->count()
-        ];
-    }else{
-        return [
-            'status' => 'stop',
-            'processed' => Lead::where('leadlist_id', $id)
-            ->whereNotNull('added_for_website_scraping')->count()
-        ];
-    }
-        */
-
     FetchWebsiteContentList::dispatch($id);
     return redirect()->back()->with('success', 'List website content fetching started');
 }
 
 
 public function personalize_list($id){
-    /*
-    $list = Leadlist::find($id);
-    $leads = Lead::where('leadlist_id', $id)->where('added_for_personalization', null)->paginate(1000);
-    $leadsCount = $leads->count();
-
-    foreach ($leads as $lead) {
-        PersonalizeLead::dispatch($lead);
-    }
-
-    // Bulk update 'added_for_personalization' field for fetched leads
-    Lead::whereIn('id', $leads->pluck('id'))
-        ->update(['added_for_personalization' => true]);  
-
-    if($leadsCount > 0){
-        return [
-            'status' => 'success',
-            'processed' => Lead::where('leadlist_id', $id)
-            ->whereNotNull('added_for_personalization')->count()
-        ];
-    }else{
-        return [
-            'status' => 'stop',
-            'processed' => Lead::where('leadlist_id', $id)
-            ->whereNotNull('added_for_personalization')->count()
-        ];
-    }
-        */
     PersonalizeLeadList::dispatch($id);
     return redirect()->back()->with('success', 'List personalization started');
-
 }
 
 
