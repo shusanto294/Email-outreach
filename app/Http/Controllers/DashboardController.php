@@ -48,4 +48,12 @@ class DashboardController extends Controller
             
         ]);
     }
+
+    public function downloadLogFiles(){
+        //Show content of the laravel.log file
+        $log = file_get_contents(storage_path('logs/laravel.log'));
+        return response($log)->header('Content-Type', 'text/plain');
+    }
 }
+
+

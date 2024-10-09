@@ -128,4 +128,7 @@ Route::get('/open-ai', [ApikeyController::class, 'index'])->middleware(['auth', 
 Route::post('/open-ai/add-new-key', [ApikeyController::class, 'add_new_key'])->middleware(['auth', 'verified'])->name('add_new_key');
 Route::get('/open-ai/delete-api-key/{id}', [ApikeyController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete_api_key');
 
+//Create route to show links for downloading the log files
+Route::get('/logs', [DashboardController::class, 'downloadLogFiles'])->middleware(['auth', 'verified'])->name('download.log.files');
+
 require __DIR__.'/auth.php';
