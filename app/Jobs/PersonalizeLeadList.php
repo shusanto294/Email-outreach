@@ -44,13 +44,10 @@ class PersonalizeLeadList implements ShouldQueue
                 PersonalizeLead::dispatch($lead);
 
                 // Update the lead to mark it as added to the queue
-                $lead->update(['added_for_verification' => true]);
-
-                // Use the Log facade for logging
-                Log::info("Lead {$lead->id} has been added for verification.");
+                $lead->update(['added_for_personalization' => true]);
             } catch (\Exception $e) {
                 // Use the Log facade for error logging
-                Log::error("Failed to process lead {$lead->id}: {$e->getMessage()}");
+                //Do nothing for now
             }
         }
     }
