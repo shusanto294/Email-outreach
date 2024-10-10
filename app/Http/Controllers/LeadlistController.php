@@ -69,7 +69,7 @@ class LeadlistController extends Controller
         $totalLeads = Lead::where('leadlist_id', $listId)->count();
 
         //Verified
-        $verified = Lead::where('leadlist_id', $listId)->where('verified', 'true')->count();
+        $verified = Lead::where('leadlist_id', $listId)->where('verified', 1)->count();
 
         //Fetched website content
         $fetchedWebsiteContent = Lead::where('leadlist_id', $listId)->where('website_content', '!=', '')->where('website_content', '!=', 'n/a')->count();
@@ -78,7 +78,7 @@ class LeadlistController extends Controller
         $personalized = Lead::where('leadlist_id', $listId)->where('personalization', '!=', '')->where('personalization', '!=', 'n/a')->count();
 
         //Added to campaign
-        $addedToCampaign = Lead::where('leadlist_id', $listId)->where('campaign_id', '!=', '')->count();
+        $addedToCampaign = Lead::where('leadlist_id', $listId)->where('campaign_id', '!=', null)->count();
 
         return view('list-single', [
             'id' => $listId,
