@@ -32,6 +32,7 @@ class AddToCampaign implements ShouldQueue
     {
         // Use cursor for better memory efficiency
         $leads = Lead::where('leadlist_id', $this->listId)
+                      ->where('verified', 1)
                       ->whereNull('campaign_id')
                       ->cursor();
     
