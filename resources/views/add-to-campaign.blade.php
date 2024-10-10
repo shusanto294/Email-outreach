@@ -14,6 +14,8 @@
     $campaigns = App\Models\Campaign::orderBy('id', 'desc')->get();
 @endphp
 
+@include('alerts')
+
 <form action="{{ route('add-to-campaign.post', $list->id) }}" method="post" enctype="multipart/form-data">
     @csrf
     <p>{{ $list->name }}</p>
@@ -26,9 +28,5 @@
 
     <input type="submit" value="Add to Campaign" name="Import" class="btn btn-secondary">
 </form>
-
-@if(session()->has('success'))
-    <p class="mt-5">Successfull added to campaign !</p>
-@endif
 
 @endsection

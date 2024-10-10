@@ -8,10 +8,11 @@ use App\Jobs\VerifyList;
 use App\Models\Campaign;
 use App\Models\Leadlist;
 use App\Jobs\VerifyEmail;
+use App\Jobs\AddToCampaign;
 use Illuminate\Http\Request;
 use App\Jobs\PersonalizeLead;
-use App\Jobs\FetchWebsiteContent;
 
+use App\Jobs\FetchWebsiteContent;
 use App\Jobs\PersonalizeLeadList;
 use Illuminate\Support\Facades\DB;
 use OpenAI\Laravel\Facades\OpenAI;
@@ -156,18 +157,15 @@ class LeadlistController extends Controller
           'list' => $list
         ]);
     }
+
     public function leadlist_leads_change_campaign_id(Request $request){
         $data = $request->all();
+
         $listID = $data['list_id'];
         $campaignID = $data['campaign_id'];
 
-        $leads = Lead::where('leadlist_id', $listID)->where('campaign_id', )->get();
-        foreach($leads as $lead){
-            $lead->campaign_id = $campaignID;
-            $lead->save();
-        }
-        
-        return redirect('/lists')->with('success', 'Leads added to cammpaign successfully');
+        AddToCampaign::dispatch($listID, $campaignID);
+        return redirect()->back()->with('success', 'Adding to campaign started');
     }
 
     public function api_create_list(Request $request){
