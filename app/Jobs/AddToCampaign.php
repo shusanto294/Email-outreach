@@ -34,6 +34,7 @@ class AddToCampaign implements ShouldQueue
         $leads = Lead::where('leadlist_id', $this->listId)
                       ->where('verified', 1)
                       ->where('personalization', "!=" ,  NULL)
+                      ->where('website_content', "!=" ,  NULL)
                       ->whereNull('campaign_id')
                       ->cursor();
     

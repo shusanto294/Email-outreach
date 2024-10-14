@@ -112,7 +112,7 @@ class PersonalizeLead implements ShouldQueue
 
         */
 
-        $lead->personalization = "Personalized";
+        $lead->personalization = "PersonalizationL ". $websiteContent;
         $lead->save();
 
         
