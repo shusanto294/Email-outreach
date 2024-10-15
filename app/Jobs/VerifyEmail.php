@@ -36,9 +36,8 @@ class VerifyEmail implements ShouldQueue
     public function handle()
     {
         $email = $this->lead->email;
-
-     
         list($user, $domain) = explode("@", $email);
+        
         if (checkdnsrr($domain, "MX")) {
             $this->lead->verified = 1;
         } else {

@@ -47,16 +47,6 @@ class LeadlistController extends Controller
         return redirect()->back();
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreLeadlistRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreLeadlistRequest $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -91,47 +81,10 @@ class LeadlistController extends Controller
         ]);
     }
 
-    public function show_no_ws($listId)
+    public function show_leads($listId)
     {
-        $leads = Lead::where('leadlist_id', $listId)->where('website_content', "")->where('website_content', "n/a")->orderBy('id', 'desc')->paginate(20);
         return view('leads', [
-          'leads' => $leads
-        ]);
-    }
-
-    public function show_has_ws($listId)
-    {
-        $websiteContentFilters = ['', 'n/a'];
-        $leads = Lead::where('leadlist_id', $listId)
-                        ->whereNotIn('website_content', $websiteContentFilters)
-                        ->orderBy('id', 'desc')
-                        ->paginate(20);
-        return view('leads', [
-          'leads' => $leads
-        ]);
-    }
-
-    public function show_no_ps($listId)
-    {
-        $websiteContentFilters = ['', 'n/a'];
-        $leads = Lead::where('leadlist_id', $listId)
-                        ->where('personalization', "")
-                        ->orderBy('id', 'desc')
-                        ->paginate(20);
-        return view('leads', [
-          'leads' => $leads
-        ]);
-    }
-
-    public function show_has_ps($listId)
-    {
-        $leads = Lead::where('leadlist_id', $listId)
-                        ->where('personalization', '!=', '')
-                        ->where('personalization', '!=', 'n/a')
-                        ->orderBy('id', 'desc')
-                        ->paginate(20);
-        return view('leads', [
-          'leads' => $leads
+            'leads' => Lead::where('leadlist_id', $listId)->orderBy('id', 'desc')->paginate(20)
         ]);
     }
 
@@ -143,13 +96,41 @@ class LeadlistController extends Controller
         ]);
     }
 
-    public function show_not_verified($listId)
+    public function show_fetched_content($listId)
     {
-        $leads = Lead::where('leadlist_id', $listId)->where('verified', '!=' , 'true')->orderBy('id', 'desc')->paginate(20);
+        $websiteContentFilters = ['', 'n/a'];
+        $leads = Lead::where('leadlist_id', $listId)
+                        ->whereNotIn('website_content', $websiteContentFilters)
+                        ->orderBy('id', 'desc')
+                        ->paginate(20);
         return view('leads', [
           'leads' => $leads
         ]);
     }
+
+    public function show_personalized($listId)
+    {
+        $leads = Lead::where('leadlist_id', $listId)
+                        ->where('personalization', '!=', '')
+                        ->where('personalization', '!=', 'n/a')
+                        ->orderBy('id', 'desc')
+                        ->paginate(20);
+        return view('leads', [
+          'leads' => $leads
+        ]);
+    }
+
+    public function added_to_campaign($listId)
+    {
+        $leads = Lead::where('leadlist_id', $listId)
+                        ->where('campaign_id', '!=', null)
+                        ->orderBy('id', 'desc')
+                        ->paginate(20);
+        return view('leads', [
+          'leads' => $leads
+        ]);
+    }
+
 
     public function add_to_campaign($id){
         $list = Leadlist::find($id);
@@ -158,24 +139,25 @@ class LeadlistController extends Controller
         ]);
     }
 
-    public function leadlist_leads_change_campaign_id(Request $request){
-        $data = $request->all();
 
-        $listID = $data['list_id'];
-        $campaignID = $data['campaign_id'];
+    // public function leadlist_leads_change_campaign_id(Request $request){
+    //     $data = $request->all();
 
-        AddToCampaign::dispatch($listID, $campaignID);
-        return redirect()->back()->with('success', 'Adding to campaign started');
-    }
+    //     $listID = $data['list_id'];
+    //     $campaignID = $data['campaign_id'];
 
-    public function api_create_list(Request $request){
-      $leadlist  = Leadlist::create([
-          'name' => $request->name,
-      ]);
-      echo ("********************************* ");
-      echo ($request->name . " - list created");
-      echo (" *********************************");
-    }
+    //     AddToCampaign::dispatch($listID, $campaignID);
+    //     return redirect()->back()->with('success', 'Adding to campaign started');
+    // }
+
+    // public function api_create_list(Request $request){
+    //   $leadlist  = Leadlist::create([
+    //       'name' => $request->name,
+    //   ]);
+    //   echo ("********************************* ");
+    //   echo ($request->name . " - list created");
+    //   echo (" *********************************");
+    // }
 
   public function download($id) {
     // Find the LeadList instance by ID
@@ -228,7 +210,12 @@ public function upload($id){
     return view('upload', [
         'list_id' => $id
     ]);
+}
 
+public function upload_instant_data_scrapper($id){
+    return view('upload-instant-data-scrapper', [
+        'list_id' => $id
+    ]);
 }
 
 public function verify_list($id){

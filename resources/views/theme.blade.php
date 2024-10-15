@@ -35,6 +35,7 @@
         border-radius: 5px;
         position: relative;
         overflow: hidden;
+        display: block;
     }
     .info-box-error-count {
         position: absolute;

@@ -39,33 +39,43 @@ Route::get('/import', function () {
     return view('import');
 })->middleware(['auth', 'verified'])->name('import.get');
 
-Route::post('/import', [LeadController::class, 'import'])->middleware(['auth', 'verified'])->name('import.post');
+// Route::post('/import', [LeadController::class, 'import'])->middleware(['auth', 'verified'])->name('import.post');
 Route::get('/leads', [LeadController::class, 'index'])->middleware(['auth', 'verified'])->name('leads.index');
 Route::get('/lead/{id}', [LeadController::class, 'show'])->middleware(['auth', 'verified'])->name('lead.show');
 Route::post('/lead/{id}/update', [LeadController::class, 'update'])->middleware(['auth', 'verified'])->name('lead.update');
 Route::get('/lead/{id}/delete', [LeadController::class, 'delete'])->middleware(['auth', 'verified'])->name('lead.delete');
 Route::post('/lead/search', [LeadController::class, 'search'])->middleware(['auth', 'verified'])->name('lead.search');
-Route::get('/verify-lead', [LeadController::class, 'verify_lead'])->name('verify.lead');
+// Route::get('/verify-lead', [LeadController::class, 'verify_lead'])->name('verify.lead');
+
+
+// Route::get('/list/{id}/no-ws', [LeadlistController::class, 'show_no_ws'])->middleware(['auth', 'verified'])->name('show.no_ws.list');
+// Route::get('/list/{id}/has-ws', [LeadlistController::class, 'show_has_ws'])->middleware(['auth', 'verified'])->name('show.has_ws.list');
+// Route::get('/list/{id}/perpare', [LeadlistController::class, 'prepare_list'])->middleware(['auth', 'verified'])->name('prepare.list');
+// Route::get('/list/{id}/no-ps', [LeadlistController::class, 'show_no_ps'])->middleware(['auth', 'verified'])->name('show.no_ps.list');
+// Route::get('/list/{id}/has-ps', [LeadlistController::class, 'show_has_ps'])->middleware(['auth', 'verified'])->name('show.has_ps.list');
+// Route::get('/list/{id}/verified', [LeadlistController::class, 'show_verified'])->middleware(['auth', 'verified'])->name('show.verified.list');
+// Route::get('/list/{id}/not-verified', [LeadlistController::class, 'show_not_verified'])->middleware(['auth', 'verified'])->name('show.not.verified.list');
+// Route::post('/add-to-campaign/{id}', [LeadlistController::class, 'leadlist_leads_change_campaign_id'])->middleware(['auth', 'verified'])->name('add-to-campaign.post');
+
 
 Route::get('/lists', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('lists.index');
 Route::post('/add-list', [LeadlistController::class, 'create'])->middleware(['auth', 'verified'])->name('add-list.post');
 Route::get('/list/{id}', [LeadlistController::class, 'show'])->middleware(['auth', 'verified'])->name('show.list');
+Route::get('/list/{id}/leads', [LeadlistController::class, 'show_leads'])->middleware(['auth', 'verified'])->name('show.leads.list');
+Route::get('/list/{id}/verified', [LeadlistController::class, 'show_verified'])->middleware(['auth', 'verified'])->name('show.verified.list');
+Route::get('/list/{id}/fetched-content', [LeadlistController::class, 'show_fetched_content'])->middleware(['auth', 'verified'])->name('show.fetched_content.list');
+Route::get('/list/{id}/personalized', [LeadlistController::class, 'show_personalized'])->middleware(['auth', 'verified'])->name('show.personalized.list');
+Route::get('/list/{id}/added-to-campaign', [LeadlistController::class, 'added_to_campaign'])->middleware(['auth', 'verified'])->name('show.added_to_campaign.list');
 
-Route::get('/list/{id}/no-ws', [LeadlistController::class, 'show_no_ws'])->middleware(['auth', 'verified'])->name('show.no_ws.list');
-Route::get('/list/{id}/has-ws', [LeadlistController::class, 'show_has_ws'])->middleware(['auth', 'verified'])->name('show.has_ws.list');
-Route::get('/list/{id}/download', [LeadlistController::class, 'download'])->middleware(['auth', 'verified'])->name('download.list');
-Route::get('/list/{id}/upload', [LeadlistController::class, 'upload'])->middleware(['auth', 'verified'])->name('upload.list');
+
+Route::get('/list/{id}/verify', [LeadlistController::class, 'verify_list'])->middleware(['auth', 'verified'])->name('verify.list');
 Route::get('/list/{id}/fetch-website-content', [LeadlistController::class, 'fetch_website_content'])->middleware(['auth', 'verified'])->name('fetch.content');
 Route::get('/list/{id}/personalize', [LeadlistController::class, 'personalize_list'])->middleware(['auth', 'verified'])->name('personalize.list');
-Route::get('/list/{id}/perpare', [LeadlistController::class, 'prepare_list'])->middleware(['auth', 'verified'])->name('prepare.list');
-
-Route::get('/list/{id}/no-ps', [LeadlistController::class, 'show_no_ps'])->middleware(['auth', 'verified'])->name('show.no_ps.list');
-Route::get('/list/{id}/has-ps', [LeadlistController::class, 'show_has_ps'])->middleware(['auth', 'verified'])->name('show.has_ps.list');
-Route::get('/list/{id}/verified', [LeadlistController::class, 'show_verified'])->middleware(['auth', 'verified'])->name('show.verified.list');
-Route::get('/list/{id}/not-verified', [LeadlistController::class, 'show_not_verified'])->middleware(['auth', 'verified'])->name('show.not.verified.list');
+Route::get('/list/{id}/download', [LeadlistController::class, 'download'])->middleware(['auth', 'verified'])->name('download.list');
+Route::get('/list/{id}/upload', [LeadlistController::class, 'upload'])->middleware(['auth', 'verified'])->name('upload.list');
+Route::get('/list/{id}/upload-instant-data-scrapper', [LeadlistController::class, 'upload_instant_data_scrapper'])->middleware(['auth', 'verified'])->name('upload.instant.data.scrapper');
 Route::get('/list/{id}/add-to-campaign', [LeadlistController::class, 'add_to_campaign'])->middleware(['auth', 'verified'])->name('add-to-campaign.list');
-Route::post('/add-to-campaign/{id}', [LeadlistController::class, 'leadlist_leads_change_campaign_id'])->middleware(['auth', 'verified'])->name('add-to-campaign.post');
-Route::get('/list/{id}/verify', [LeadlistController::class, 'verify_list'])->middleware(['auth', 'verified'])->name('verify.list');
+
 
 Route::get('/campaigns', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('campaigns.index');
 Route::post('/add-campaign', [CampaignController::class, 'create'])->middleware(['auth', 'verified'])->name('add-campaign.post');

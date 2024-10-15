@@ -12,6 +12,7 @@
     @include('alerts')
 
     <div class="buttons">
+        <a class="btn btn-secondary" href="{{ route('upload.instant.data.scrapper', $id) }}">Instant Web scrapper upload</a>
         <a class="btn btn-secondary" href="{{ route('upload.list', $id) }}">Upload</a>
         <a class="btn btn-secondary" href="{{ route('download.list', $id) }}">Downlaod</a>
         <a class="btn btn-secondary" href="{{ route('verify.list', $id) }}">Verify</a>
@@ -22,40 +23,34 @@
 
     <div class="row infoboxes mt-5">
         <div class="column">
-            <div class="info-box">
+            <a class="info-box" href="{{ route('show.leads.list', $id) }}">
                 <div class="number">{{ number_format($totalLeads) }}</div>
                 <div class="text">Total leads</div>
-            </div>
+            </a>
         </div>
         <div class="column">
-            <div class="info-box">
-
+            <a class="info-box" href="{{ route('show.verified.list', $id) }}">
                 <div class="number">{{ number_format($verified) }}</div>
                 <div class="text">Verified</div>
-            </div>
+            </a>
         </div>
         <div class="column">
-            <div class="info-box">
+            <a class="info-box" href="{{ route('show.fetched_content.list', $id) }}">
                 <div class="number">{{ number_format($fetchedWebsiteContent) }}</div>
                 <div class="text">Fetched Content</div>
-            </div>
+            </a>
         </div>
         <div class="column">
-            <div class="info-box">
+            <a class="info-box" href="{{ route('show.personalized.list', $id) }}">
                 <div class="number">{{ number_format($personalized) }}</div>
-                <div class="text">
-                    Personalized
-                </div>
-            </div>
+                <div class="text"> Personalized</div>
+            </a>
         </div>
         <div class="column">
-            <div class="info-box">
+            <a class="info-box" href="{{ route('show.added_to_campaign.list', $id) }}">
                 <div class="number">{{ number_format($addedToCampaign) }}</div>
-                <div class="text">
-                    Added to campaign
-                </div>
-                
-            </div>
+                <div class="text">Added to campaign</div>
+            </a>
         </div>
     </div>
 

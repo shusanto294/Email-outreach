@@ -48,8 +48,8 @@ class PersonalizeLeadList implements ShouldQueue
                 // Update the lead to mark it as added to the queue
                 $lead->update(['added_for_personalization' => true]);
             } catch (\Exception $e) {
-                // Use the Log facade for error logging
-                //Do nothing for now
+                // Add this eror to the log
+                // Log::error($e->getMessage());
             }
         }
     }

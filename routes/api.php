@@ -21,10 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::post('/create-list', [LeadlistController::class, 'api_create_list'])->name('api.create.list');
-Route::post('/upload-leads', [LeadController::class, 'upload_leads'])->name('upload.leads');
-Route::get('/get-lead-with-no-ps', [LeadController::class, 'get_lead_with_no_ps'])->name('get_lead_with_no_ps');
+// Route::post('/create-list', [LeadlistController::class, 'api_create_list'])->name('api.create.list');
+// Route::post('/upload-leads', [LeadController::class, 'upload_leads'])->name('upload.leads');
+// Route::get('/get-lead-with-no-ps', [LeadController::class, 'get_lead_with_no_ps'])->name('get_lead_with_no_ps');
 
 
 //Ajax lead import
-Route::post('/ajax-lead-import', [LeadController::class, 'ajax_lead_import'])->name('ajax.lead.import');
+Route::post('/uplaod-leads', [LeadController::class, 'uplaod_leads']);
+Route::post('/uplaod-instant-data-scrapper', [LeadController::class, 'uplaod_instant_data_scrapepr']);

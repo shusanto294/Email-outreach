@@ -43,14 +43,18 @@ class FetchWebsiteContentList implements ShouldQueue
     
         foreach ($leads as $lead) {
             try {
-                FetchWebsiteContent::dispatch($lead->company_website, $lead);
+                $email = $lead->email;
+                list($user, $domain) = explode("@", $email);
+                $url = 'https://' . $domain;
+
+                FetchWebsiteContent::dispatch($url, $lead);
 
                 // Update the lead to mark it as added to the queue
                 $lead->update(['added_for_website_scraping' => true]);
 
             } catch (\Exception $e) {
-                // Use the Log facade for error logging
-                //Do nothing for now
+                // Add this eror to the log
+                // Log::error($e->getMessage());
             }
         }
     }

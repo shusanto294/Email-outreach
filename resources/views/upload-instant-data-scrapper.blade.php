@@ -61,7 +61,7 @@ div#progress {
                 };
 
                 $.ajax({
-                    url: '/api/uplaod-leads',
+                    url: '/api/uplaod-instant-data-scrapper',
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(payload),

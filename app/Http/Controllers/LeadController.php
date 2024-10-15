@@ -147,57 +147,57 @@ class LeadController extends Controller
        
     }
 
-    public function upload_leads(Request $request){
-        // $currentDateTime = Carbon::now();
-        // $formattedDateTime = $currentDateTime->format('d F Y - h:i A');
+    // public function upload_leads(Request $request){
+    //     // $currentDateTime = Carbon::now();
+    //     // $formattedDateTime = $currentDateTime->format('d F Y - h:i A');
     
-        $leadList = Leadlist::orderBy('id', 'desc')->first();
+    //     $leadList = Leadlist::orderBy('id', 'desc')->first();
     
-        $data = $request->all();
+    //     $data = $request->all();
         
-        $newEntriesCount = 0;
-        $skippedEntriesCount = 0;
+    //     $newEntriesCount = 0;
+    //     $skippedEntriesCount = 0;
     
-        foreach($data as $lead){
-            $email = $lead['email'];
+    //     foreach($data as $lead){
+    //         $email = $lead['email'];
     
-            // Check if the email already exists in the database
-            $existingLead = Lead::where('email', $email)->first();
+    //         // Check if the email already exists in the database
+    //         $existingLead = Lead::where('email', $email)->first();
     
-            if (!$existingLead) {
-                // Email doesn't exist, create a new entry
+    //         if (!$existingLead) {
+    //             // Email doesn't exist, create a new entry
                 
-                $name = !blank($lead['name']) ? $lead['name'] : 'n/a';
-                $linkedin_profile = !blank($lead['linkedin_profile']) ? $lead['linkedin_profile'] : 'n/a';
-                $title = !blank($lead['title']) ? $lead['title'] : 'n/a';
-                $company = !blank($lead['company']) ? $lead['company'] : 'n/a';
-                $company_website = !blank($lead['company_website']) ? $lead['company_website'] : 'n/a';
-                $location = !blank($lead['location']) ? $lead['location'] : 'n/a';
-                $email = !blank($email) ? $email : 'n/a';
+    //             $name = !blank($lead['name']) ? $lead['name'] : 'n/a';
+    //             $linkedin_profile = !blank($lead['linkedin_profile']) ? $lead['linkedin_profile'] : 'n/a';
+    //             $title = !blank($lead['title']) ? $lead['title'] : 'n/a';
+    //             $company = !blank($lead['company']) ? $lead['company'] : 'n/a';
+    //             $company_website = !blank($lead['company_website']) ? $lead['company_website'] : 'n/a';
+    //             $location = !blank($lead['location']) ? $lead['location'] : 'n/a';
+    //             $email = !blank($email) ? $email : 'n/a';
                 
-                Lead::create([
-                    'name' => $name,
-                    'linkedin_profile' => $linkedin_profile,
-                    'title' => $title,
-                    'company' => $company,
-                    'company_website' => $company_website,
-                    'location' => $location,
-                    'email' => $email,
-                    'leadlist_id' => $leadList->id
-                ]);
+    //             Lead::create([
+    //                 'name' => $name,
+    //                 'linkedin_profile' => $linkedin_profile,
+    //                 'title' => $title,
+    //                 'company' => $company,
+    //                 'company_website' => $company_website,
+    //                 'location' => $location,
+    //                 'email' => $email,
+    //                 'leadlist_id' => $leadList->id
+    //             ]);
                 
                 
-                $newEntriesCount++;
-            } else {
-                // Email already exists, skip the entry
-                $skippedEntriesCount++;
-            }
-        }
+    //             $newEntriesCount++;
+    //         } else {
+    //             // Email already exists, skip the entry
+    //             $skippedEntriesCount++;
+    //         }
+    //     }
 
-        echo $newEntriesCount . ' - new leads added';
-        // echo $skippedEntriesCount . ' - leads already exists in the database';
+    //     echo $newEntriesCount . ' - new leads added';
+    //     // echo $skippedEntriesCount . ' - leads already exists in the database';
         
-    }
+    // }
     
 
     public function personalize()
@@ -397,7 +397,7 @@ class LeadController extends Controller
     }
 
 
-    public function ajax_lead_import(Request $request)
+    public function uplaod_leads(Request $request)
     {
         $listID = $request->input('list_id');
         $leads = $request->input('data');
@@ -415,7 +415,7 @@ class LeadController extends Controller
                 'linkedin_profile' => $lead['linkedin_profile'] ?? '',
                 'title' => $lead['title'] ?? '',
                 'company' => $lead['company'] ?? 'Unknown Company',
-                // 'company_website' => $lead['company_website'] ?? '',
+                'company_website' => $lead['company_website'] ?? '',
                 'location' => $lead['location'] ?? '',
                 'email' => $lead['email'],
                 // 'personalization' => $lead['personalization'] ?? '',
@@ -435,6 +435,44 @@ class LeadController extends Controller
         ]);
     }
 
+
+    public function uplaod_instant_data_scrapepr(Request $request)
+    {
+        $listID = $request->input('list_id');
+        $leads = $request->input('data');
+    
+        $existingLeads = Lead::whereIn('email', array_column($leads, 'email'))->get();
+        $existingEmails = $existingLeads->pluck('email')->toArray();
+        $newLeads = array_filter($leads, function($lead) use ($existingEmails) {
+            return !in_array($lead['zp_xvo3G 3'], $existingEmails);
+        });
+    
+        $newLeads = array_map(function($lead) use ($listID) {
+            return [
+                'leadlist_id' => $listID,
+                'name' => $lead['zp_p2Xqs'] ?? '',
+                'linkedin_profile' => $lead['zp_p2Xqs href 5'] ?? '',
+                'title' => $lead['zp_xvo3G'] ?? '',
+                'company' => $lead['zp_xvo3G 2'] ?? 'Unknown Company',
+                // 'company_website' => $lead['company_website'] ?? '',
+                'location' => $lead['zp_xvo3G 4'] ?? '',
+                'email' => $lead['zp_xvo3G 3'],
+                // 'personalization' => $lead['personalization'] ?? '',
+                'subscribe' => $lead['subscribe'] ?? 1,
+                'sent' => $lead['sent'] ?? 0,
+                'opened' => $lead['opened'] ?? 0,
+                'replied' => $lead['replied'] ?? 0
+            ];
+        }, $newLeads);
+    
+        Lead::insert($newLeads);
+        
+        // Return the number of leads that were imported AND the number of leads that were skipped
+        return response()->json([
+            'imported' => count($newLeads),
+            'skipped' => count($leads) - count($newLeads)
+        ]);
+    }
 
     }
 
