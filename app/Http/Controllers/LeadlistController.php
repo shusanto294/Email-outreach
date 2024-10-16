@@ -140,24 +140,24 @@ class LeadlistController extends Controller
     }
 
 
-    // public function leadlist_leads_change_campaign_id(Request $request){
-    //     $data = $request->all();
+    public function leadlist_leads_change_campaign_id(Request $request){
+        $data = $request->all();
 
-    //     $listID = $data['list_id'];
-    //     $campaignID = $data['campaign_id'];
+        $listID = $data['list_id'];
+        $campaignID = $data['campaign_id'];
 
-    //     AddToCampaign::dispatch($listID, $campaignID);
-    //     return redirect()->back()->with('success', 'Adding to campaign started');
-    // }
+        AddToCampaign::dispatch($listID, $campaignID);
+        return redirect()->back()->with('success', 'Adding to campaign started');
+    }
 
-    // public function api_create_list(Request $request){
-    //   $leadlist  = Leadlist::create([
-    //       'name' => $request->name,
-    //   ]);
-    //   echo ("********************************* ");
-    //   echo ($request->name . " - list created");
-    //   echo (" *********************************");
-    // }
+    public function api_create_list(Request $request){
+      $leadlist  = Leadlist::create([
+          'name' => $request->name,
+      ]);
+      echo ("********************************* ");
+      echo ($request->name . " - list created");
+      echo (" *********************************");
+    }
 
   public function download($id) {
     // Find the LeadList instance by ID

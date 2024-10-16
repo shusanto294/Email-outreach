@@ -147,237 +147,76 @@ class LeadController extends Controller
        
     }
 
-    // public function upload_leads(Request $request){
-    //     // $currentDateTime = Carbon::now();
-    //     // $formattedDateTime = $currentDateTime->format('d F Y - h:i A');
-    
-    //     $leadList = Leadlist::orderBy('id', 'desc')->first();
-    
-    //     $data = $request->all();
-        
-    //     $newEntriesCount = 0;
-    //     $skippedEntriesCount = 0;
-    
-    //     foreach($data as $lead){
-    //         $email = $lead['email'];
-    
-    //         // Check if the email already exists in the database
-    //         $existingLead = Lead::where('email', $email)->first();
-    
-    //         if (!$existingLead) {
-    //             // Email doesn't exist, create a new entry
-                
-    //             $name = !blank($lead['name']) ? $lead['name'] : 'n/a';
-    //             $linkedin_profile = !blank($lead['linkedin_profile']) ? $lead['linkedin_profile'] : 'n/a';
-    //             $title = !blank($lead['title']) ? $lead['title'] : 'n/a';
-    //             $company = !blank($lead['company']) ? $lead['company'] : 'n/a';
-    //             $company_website = !blank($lead['company_website']) ? $lead['company_website'] : 'n/a';
-    //             $location = !blank($lead['location']) ? $lead['location'] : 'n/a';
-    //             $email = !blank($email) ? $email : 'n/a';
-                
-    //             Lead::create([
-    //                 'name' => $name,
-    //                 'linkedin_profile' => $linkedin_profile,
-    //                 'title' => $title,
-    //                 'company' => $company,
-    //                 'company_website' => $company_website,
-    //                 'location' => $location,
-    //                 'email' => $email,
-    //                 'leadlist_id' => $leadList->id
-    //             ]);
-                
-                
-    //             $newEntriesCount++;
-    //         } else {
-    //             // Email already exists, skip the entry
-    //             $skippedEntriesCount++;
-    //         }
-    //     }
-
-    //     echo $newEntriesCount . ' - new leads added';
-    //     // echo $skippedEntriesCount . ' - leads already exists in the database';
-        
-    // }
-    
 
     public function personalize()
     {
         
-        $lead = Lead::where('website_content', "")->first();
+        $lead = Lead::where('personalization', null)->first();
 
         if (!$lead) {
             return "No lead found.";
         }
-
-        //echo "<a href='$lead->company_website' target='blank'>$lead->company_website</a><hr>";
     
         $fullName = $lead->name;
         $nameParts = explode(" ", $fullName);
         $firstName = $nameParts[0] ? $nameParts[0] : '';
+
+        // Get the setting for the last used API key
+        $lastApiKeyUsed = Setting::where('key', 'last_api_key_used')->first();
     
-        if (empty($lead->company_website)) {
-            $lead->website_content = 'n/a';
-            $lead->save();
-            return "Company website is empty.";
+        $apiKey = Apikey::where('id', '>', $lastApiKeyUsed->value)->first();
+            
+        if(!$apiKey){
+            $apiKey = Apikey::orderBy('id', 'asc')->first();
         }
-    
-        // Specify the headers
-        $headers = [
-            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
+
+
+        $lastApiKeyUsed->value = $apiKey->id;
+        $lastApiKeyUsed->save();
+
+        #$openaiApiKey = Setting::where('key', 'openai_api_key')->first();
+
+
+        if($apiKey){
+            config(['openai.api_key' => $apiKey->key ]);
+        }else{
+            dd('Open AI api key not found');
+        }
+
+        $websiteContent = $lead->website_content ? $lead->website_content : '';
+
+        // Shorten the website content to 2000 characters
+        $websiteContentShorten = substr($websiteContent, 0, 2000);
+        
+        // Create a prompt for OpenAI using the lead details
+        $leadDetails = "Name: $firstName\nCompany: $lead->company n\Job Title: $lead->title n\Location: $lead->location n\Content: $websiteContentShorten";
+        $prompt = [
+            'model' => 'gpt-3.5-turbo',
+            'messages' => [
+                ["role" => "system", "content" => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short email for the person asking them if they are interested in your service. Start with what you love about them and how you can help them. How you can provide contact information of their targeted customers so they can reachout to them adn grow their business in a cost effecive way. Don't write any email subject line. Don't use any placeholders in the emails so the email can be sent as is."],
+                ["role" => "user", "content" => $leadDetails]
+            ]
         ];
     
-        // Create a Guzzle client with headers
-        $client = new Client(['headers' => $headers]);
-    
-        try {
-            // Make a GET request to the URL with headers
-            $response = $client->get($lead->company_website, ['timeout' => 30]);
-            //$response = $client->get("diginovatech.com", ['timeout' => 30]);
-            // $response = $client->get("sababafest.com", ['timeout' => 30]);
-    
-            // Check if the response status code is 200 (OK)
-            if ($response->getStatusCode() == 200) {
+        // Call the OpenAI API
+        $result = OpenAI::chat()->create($prompt);
 
-                $htmlContent = $response->getBody()->getContents();
-                $crawler = new Crawler($htmlContent);
-                
-                // Remove script and style tags along with their content
-                $crawler->filter('script, style')->each(function (Crawler $node) {
-                    $node->getNode(0)->parentNode->removeChild($node->getNode(0));
-                });
+        $input_tocken_before = intval($apiKey->input_tocken);
+        $apiKey->input_tocken = $input_tocken_before + $result->usage->promptTokens;
 
-                $websiteContent = '';
-                
+        $output_tocken_before = intval($apiKey->output_tocken);
+        $apiKey->output_tocken = $output_tocken_before + $result->usage->completionTokens;
 
-                try {
-                    $visibleText = $crawler->filter('body')->text();
-                    $websiteContent = $visibleText;
-        
-                    // Optionally, you can use the trim() function to remove leading and trailing whitespaces
-                    $visibleText = trim($visibleText);
-                } catch (\Exception $ex) {
-                    // Handle the case when no visible text is found
-                    $lead->website_content = 'n/a';
-                    $lead->leadlist_id = 1;
-                    $lead->campaign_id = 0;
-                    $lead->save();
-        
-                    echo 'No visible text found';
-                    return;
-                }
-                
-  
-                if ($websiteContent != '') {
-                    if (strlen($websiteContent) > 7000) {
-                        // If yes, take the first 7000 characters
-                        $websiteContent = substr($websiteContent, 0, 7000);
-                    }
-
-                    $lastApiKeyUsed = Setting::where('key', 'last_api_key_used')->first();
-
-                    if(!$lastApiKeyUsed){
-                        Setting::create(array(
-                            'key' => 'last_api_key_used',
-                            'value' => 0
-                        ));
-            
-                        return 'Setting added';
-                    }
-            
-                    $apiKey = Apikey::where('id', '>', $lastApiKeyUsed->value)->first();
-            
-                    if(!$apiKey){
-                        $apiKey = Apikey::orderBy('id', 'asc')->first();
-                    }
-            
-                    $lastApiKeyUsed->value = $apiKey->id;
-                    $lastApiKeyUsed->save();
-            
-                    #return $apiKey;
-
-                    #$openaiApiKey = Setting::where('key', 'openai_api_key')->first();
-                    if($apiKey){
-                        config(['openai.api_key' => $apiKey->key ]);
-                    }else{
-                        dd('Open AI api key not found');
-                    }
-                    
-                    $result = OpenAI::chat()->create([
-                        'model' => 'gpt-3.5-turbo',   
-                        //Website redesign Services
-                        'messages' => [
-                            ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website and you will write a short email to $firstName who is the owner of $lead->company to offer your website redesign service saying what you love about their company and why you wanted to reach out. Also add how your website redesign service can benifit $lead->company's company. Don't use they/their or gramatical 3rd person to refer to $lead->company or their company, use you/your or gramatical 2nd person instead. Don't write any email subject line, the email should not be more than 100 words. The email signature Should be Shusanto Modak \n Freelance Web Developer"],
-                            ["role" => "user", "content" => $websiteContent]
-                        ],
-                        //Seeking collaboration with website design companies
-                        // 'messages' => [
-                        //     ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website which is a website design company and you will write a short email for $firstName who is the owner of $lead->company, asking them if there are any opportunity in their company for you as a web developer. You will write what you love about their company, how you can conribcontribute to their company and why you wanted to reach out. You don't use they/their or gramatical 3rd person to refer to $firstName or $lead->company, you use you/your or gramatical 2nd person instead. You will approch them to have a quick chat. You don't write any email subject line, and the email will not be more than 100 words. The email signature Should be Shusanto Modak \n Freelance Web Developer"],
-                        //     ["role" => "user", "content" => $websiteContent]
-                        // ]
-
-                    ]);
-
-                    $input_tocken_before = intval($apiKey->input_tocken);
-                    $apiKey->input_tocken = $input_tocken_before + $result->usage->promptTokens;
-
-                    $output_tocken_before = intval($apiKey->output_tocken);
-                    $apiKey->output_tocken = $output_tocken_before + $result->usage->completionTokens;
-
-                    $apiKey->save();
+        $apiKey->save();
 
 
-                    $personalizedLine =  nl2br($result->choices[0]->message->content);
-                    $lead->website_content = $websiteContent;
-                    $lead->personalization = $personalizedLine;
-                    $lead->save();
-    
-                    echo $personalizedLine;
+        $personalizedLine =  nl2br($result->choices[0]->message->content);
+        $lead->website_content = $websiteContent;
+        $lead->personalization = $personalizedLine;
+        $lead->save();
 
-                    
-                    echo '<hr>Usage<hr>';
-                    echo 'Prompt tokens :'. $result->usage->promptTokens .'<br>';
-                    echo 'Completion tokens :'. $result->usage->completionTokens .'<br>';
-                    echo 'Total tokens :'. $result->usage->totalTokens;
+        echo $personalizedLine;
 
-                }else{
-                    echo 'No visible text found';
-                    $lead->website_content = 'n/a';
-                    $lead->leadlist_id = 1;
-                    $lead->campaign_id = 0;
-                    $lead->save();
-                }
-
-            } else {
-                $lead->website_content = 'n/a';
-                $lead->leadlist_id = 1;
-                $lead->campaign_id = 0;
-                $lead->save();
-                echo "Failed to fetch the website content. Status code: " . $response->getStatusCode();
-            }
-        } catch (\GuzzleHttp\Exception\RequestException $e) {
-            $lead->website_content = 'n/a';
-            $lead->leadlist_id = 1;
-            $lead->campaign_id = 0;
-            $lead->save();
-        
-            if ($e->hasResponse()) {
-                echo "Failed to fetch the website content. Status code: " . $e->getResponse()->getStatusCode();
-            } else {
-                echo "Failed to fetch the website content. Error: " . $e->getMessage();
-            }
-        } catch (\GuzzleHttp\Exception\ConnectException $e) {
-            $lead->website_content = 'n/a';
-            $lead->leadlist_id = 1;
-            $lead->campaign_id = 0;
-            $lead->save();
-            echo "Connection failed. Error: " . $e->getMessage();
-        } catch (\GuzzleHttp\Exception\TransferException $e) {
-            $lead->website_content = 'n/a';
-            $lead->leadlist_id = 1;
-            $lead->campaign_id = 0;
-            $lead->save();
-            echo "Transfer error. Error: " . $e->getMessage();
-        }
     }
 
     public function skip_lead_personalization(){

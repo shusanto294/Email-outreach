@@ -37,7 +37,7 @@ class PersonalizeLeadList implements ShouldQueue
         // Use cursor for better memory efficiency
         $leads = Lead::where('leadlist_id', $this->listId)
                       ->where('verified', 1)
-                      ->where('website_content', "!=" , NULL)
+                      ->whereNull('personalization')
                       ->whereNull('added_for_personalization')
                       ->cursor();
     

@@ -55,7 +55,7 @@ Route::post('/lead/search', [LeadController::class, 'search'])->middleware(['aut
 // Route::get('/list/{id}/has-ps', [LeadlistController::class, 'show_has_ps'])->middleware(['auth', 'verified'])->name('show.has_ps.list');
 // Route::get('/list/{id}/verified', [LeadlistController::class, 'show_verified'])->middleware(['auth', 'verified'])->name('show.verified.list');
 // Route::get('/list/{id}/not-verified', [LeadlistController::class, 'show_not_verified'])->middleware(['auth', 'verified'])->name('show.not.verified.list');
-// Route::post('/add-to-campaign/{id}', [LeadlistController::class, 'leadlist_leads_change_campaign_id'])->middleware(['auth', 'verified'])->name('add-to-campaign.post');
+
 
 
 Route::get('/lists', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('lists.index');
@@ -66,6 +66,7 @@ Route::get('/list/{id}/verified', [LeadlistController::class, 'show_verified'])-
 Route::get('/list/{id}/fetched-content', [LeadlistController::class, 'show_fetched_content'])->middleware(['auth', 'verified'])->name('show.fetched_content.list');
 Route::get('/list/{id}/personalized', [LeadlistController::class, 'show_personalized'])->middleware(['auth', 'verified'])->name('show.personalized.list');
 Route::get('/list/{id}/added-to-campaign', [LeadlistController::class, 'added_to_campaign'])->middleware(['auth', 'verified'])->name('show.added_to_campaign.list');
+Route::post('/add-to-campaign/{id}', [LeadlistController::class, 'leadlist_leads_change_campaign_id'])->middleware(['auth', 'verified'])->name('add-to-campaign.post');
 
 
 Route::get('/list/{id}/verify', [LeadlistController::class, 'verify_list'])->middleware(['auth', 'verified'])->name('verify.list');

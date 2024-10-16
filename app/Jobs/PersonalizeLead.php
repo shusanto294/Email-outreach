@@ -34,67 +34,128 @@ class PersonalizeLead implements ShouldQueue
      *
      * @return void
      */
+    // public function handle()
+    // {
+    //     $lead = $this->lead;
+    //     // $fullName = $lead->name;
+    //     // $nameParts = explode(" ", $fullName);
+    //     // $firstName = $nameParts[0] ? $nameParts[0] : '';
+    //     // $websiteContent = $lead->website_content;
+
+
+    //     $lastApiKeyUsed = Setting::where('key', 'last_api_key_used')->first();
+
+    //     if(!$lastApiKeyUsed){
+    //         Setting::create(array(
+    //             'key' => 'last_api_key_used',
+    //             'value' => 0
+    //         ));
+
+    //         return 'Setting added';
+    //     }
+
+    //     $apiKey = Apikey::where('id', '>', $lastApiKeyUsed->value)->first();
+
+    //     if(!$apiKey){
+    //         $apiKey = Apikey::orderBy('id', 'asc')->first();
+    //     }
+
+    //     $lastApiKeyUsed->value = $apiKey->id;
+    //     $lastApiKeyUsed->save();
+
+    //     if($apiKey){
+    //         config(['openai.api_key' => $apiKey->key ]);
+    //     }else{
+    //         //Add a error log that the api key is not found
+    //         return 'Api key not found';
+    //     }
+
+        
+    //     $result = OpenAI::chat()->create([
+    //         'model' => 'gpt-3.5-turbo',   
+    //         'messages' => [
+    //             ["role" => "system", "content" => "You are Shusanto a B2B lead generation expert you will be provided lead details and you will write a short email for the person asking them if they are interested in your service."],
+    //             ["role" => "user", "content" => $lead]
+    //         ]
+
+    //     ]);
+
+
+    //     $input_tocken_before = intval($apiKey->input_tocken);
+    //     $apiKey->input_tocken = $input_tocken_before + $result->usage->promptTokens;
+
+    //     $output_tocken_before = intval($apiKey->output_tocken);
+    //     $apiKey->output_tocken = $output_tocken_before + $result->usage->completionTokens;
+
+    //     $apiKey->save();
+
+
+    //     $personalization =  nl2br($result->choices[0]->message->content);
+    //     // $lead->website_content = $websiteContent;
+    //     $lead->personalization = $personalization;
+    //     $lead->save();
+
+    //     $lead->personalization = "PersonalizationL ". $websiteContent;
+    //     $lead->save();
+
+        
+    // }
+
+
     public function handle()
     {
+        // Extract the lead details from the object
         $lead = $this->lead;
+ 
+        // $lead = Lead::where('personalization', null)->first();
+
+        if (!$lead) {
+            return "No lead found.";
+        }
+    
         $fullName = $lead->name;
         $nameParts = explode(" ", $fullName);
         $firstName = $nameParts[0] ? $nameParts[0] : '';
-        $websiteContent = $lead->website_content;
 
-        /*
-
-        if (strlen($websiteContent) > 5000) {
-            // If yes, take the first 5000 characters
-            $websiteContent = substr($websiteContent, 0, 5000);
-        }
-
+        // Get the setting for the last used API key
         $lastApiKeyUsed = Setting::where('key', 'last_api_key_used')->first();
-
-        if(!$lastApiKeyUsed){
-            Setting::create(array(
-                'key' => 'last_api_key_used',
-                'value' => 0
-            ));
-
-            return 'Setting added';
-        }
-
+    
         $apiKey = Apikey::where('id', '>', $lastApiKeyUsed->value)->first();
-
+            
         if(!$apiKey){
             $apiKey = Apikey::orderBy('id', 'asc')->first();
         }
 
+
         $lastApiKeyUsed->value = $apiKey->id;
         $lastApiKeyUsed->save();
 
-        #return $apiKey;
-
         #$openaiApiKey = Setting::where('key', 'openai_api_key')->first();
+
+
         if($apiKey){
             config(['openai.api_key' => $apiKey->key ]);
         }else{
-            //Add a error log that the api key is not found
-            return 'Api key not found';
+            dd('Open AI api key not found');
         }
 
+        $websiteContent = $lead->website_content ? $lead->website_content : '';
+
+        // Shorten the website content to 2000 characters
+        $websiteContentShorten = substr($websiteContent, 0, 2000);
         
-        $result = OpenAI::chat()->create([
-            'model' => 'gpt-3.5-turbo',   
-            //Website redesign Services
-            // 'messages' => [
-            //     ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website and you will write a short email to $firstName who is the owner of $lead->company to offer your website redesign service saying what you love about their company and why you wanted to reach out. Also add how your website redesign service can benifit $lead->company's company. Don't use they/their or gramatical 3rd person to refer to $lead->company or their company, use you/your or gramatical 2nd person instead. Don't write any email subject line, the email should not be more than 100 words. The email signature Should be Shusanto Modak \n Freelance Web Developer"],
-            //     ["role" => "user", "content" => $websiteContent]
-            // ],
-            //Seeking collaboration with website design companies
+        // Create a prompt for OpenAI using the lead details
+        $leadDetails = "Name: $firstName\nCompany: $lead->company n\Job Title: $lead->title n\Location: $lead->location n\Content: $websiteContentShorten";
+        $prompt = [
+            'model' => 'gpt-3.5-turbo',
             'messages' => [
-                ["role" => "system", "content" => "You are Shusanto a freelance web developer. You will be provided information from $lead->company's website which is a website design company and you will write a short email for $firstName who is the owner of $lead->company, asking them if there are any opportunity in their company for you as a web developer. You will write what you love about their company, how you can contribute to their company and why you wanted to reach out. You don't use they/their or gramatical 3rd person to refer to $firstName or $lead->company, you use you/your or gramatical 2nd person instead. You will approch them to have a quick chat. You don't write any email subject line, and the email will not be more than 100 words. The email signature Should be Shusanto Modak \n Freelance Web Developer"],
-                ["role" => "user", "content" => $websiteContent]
+                ["role" => "system", "content" => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short email for the person asking them if they are interested in your service. Start with what you love about them and how you can help them. How you can provide contact information of their targeted customers so they can reachout to them adn grow their business in a cost effecive way. Don't write any email subject line. Don't use any placeholders in the emails so the email can be sent as is."],
+                ["role" => "user", "content" => $leadDetails]
             ]
-
-        ]);
-
+        ];
+    
+        // Call the OpenAI API
+        $result = OpenAI::chat()->create($prompt);
 
         $input_tocken_before = intval($apiKey->input_tocken);
         $apiKey->input_tocken = $input_tocken_before + $result->usage->promptTokens;
@@ -105,16 +166,17 @@ class PersonalizeLead implements ShouldQueue
         $apiKey->save();
 
 
-        $personalization =  nl2br($result->choices[0]->message->content);
+        $personalizedLine =  nl2br($result->choices[0]->message->content);
         $lead->website_content = $websiteContent;
-        $lead->personalization = $personalization;
+        $lead->personalization = $personalizedLine;
         $lead->save();
 
-        */
+        // echo $personalizedLine;
 
-        $lead->personalization = "PersonalizationL ". $websiteContent;
-        $lead->save();
-
-        
     }
+    
+    
+
+
+
 }
