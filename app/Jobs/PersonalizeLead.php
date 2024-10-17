@@ -149,7 +149,7 @@ class PersonalizeLead implements ShouldQueue
         $prompt = [
             'model' => 'gpt-4o-mini',
             'messages' => [
-                ["role" => "system", "content" => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short email for the lead asking them. Start witha compliment and how you can help them by providing contact information of their targeted customers so they can reachout to them adn grow their business in a cost effecive way. Don't write any email subject line. The email will be sent to the lead directly so please don't write any palceholders texts that needs to be changed manually. The email should not be more than 800 Charecters. End with your name and company name. and your job title as B2B lead generation expert. Don't mention any company name or your contact details and ask them to reply to this email if they are interested."],
+                ["role" => "system", "content" => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short email for the person asking them if they are interested in your service. The email should not be more then 500 charecters. End with Shusanto <br> B2B  lead generation expert. Don't write any subject line just write the email body."],
                 ["role" => "user", "content" => $leadDetails]
             ]
         ];
