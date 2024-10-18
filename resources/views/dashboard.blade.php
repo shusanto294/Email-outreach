@@ -83,45 +83,32 @@
     <div class="row infoboxes mb-5">
         <div class="column">
             <div class="info-box">
-                <div class="number">{{ number_format($totalLeadsAdded) }}</div>
+                <div class="number">0</div>
                 <div class="text">Leads added</div>
             </div>
         </div>
         <div class="column">
             <div class="info-box">
-                <div class="info-box-error-count bg-danger text-white">{{ number_format($personalizationFailed) }}</div>
-                <div class="number">{{ number_format($totalLeadsPersonalized) }}</div>
-                <div class="text">Personalized - {{ number_format($totalLeadsNotPersonalized)}} left</div>
+                <div class="number">0</div>
+                <div class="text">Verified</div>
             </div>
         </div>
         <div class="column">
             <div class="info-box">
-                <div class="number">{{ number_format($totalEmailSentCount) }}</div>
-                <div class="text">Sent - {{ number_format($totalEmailNotSentCount) }} left</div>
+                <div class="number">0</div>
+                <div class="text">Personalized</div>
             </div>
         </div>
         <div class="column">
             <div class="info-box">
-                <div class="number">{{ number_format($totalEmailsOpened) }}</div>
-                <div class="text">
-                    @if($totalEmailSentCount > 0)
-                        Opened - {{ number_format(($totalEmailsOpened / $totalEmailSentCount) * 100, 2) }}%
-                    @else
-                        Opened - 0%
-                    @endif
-                </div>
+                <div class="number">0</div>
+                <div class="text">Sent </div>
             </div>
         </div>
         <div class="column">
             <div class="info-box">
-                <div class="number">{{ number_format($totalReplyCount) }}</div>
-                <div class="text">
-                    @if($totalEmailSentCount > 0)
-                        Replies - {{ number_format(($totalReplyCount / $totalEmailSentCount) * 100, 2) }}%
-                    @else
-                        Replies - 0%
-                    @endif
-                </div>
+                <div class="number">0</div>
+                <div class="text">Replied</div>
                 
             </div>
         </div>
@@ -129,8 +116,6 @@
 
 
     <div class="mb-5">
-        <p style="margin-top: 50px;"><b>Jobs:</b></p>
-
         @if ($totalJobs)
             <p>{{ $totalJobs }} Jobs are in waiting to perform background operations</p>
         @endif
@@ -167,9 +152,13 @@
 
     @php
         $testEmailsTo = App\Models\Setting::where('key', 'send_test_emails_to')->first();
+        $openAiPrompt = App\Models\Setting::where('key', 'open_ai_prompt')->first();
     @endphp
     <form action="{{ route('update.settings') }}" method="POST" class="col-lg-12">
         @csrf
+
+        <label for="open_ai_prompt" class="mb-2">Open AI prompt :</label>
+        <textarea rows="5" type="email" name="open_ai_prompt" id="open_ai_prompt" placeholder="Write your open ai prompt here ..." class="form-control mb-3">{{ $openAiPrompt ? $openAiPrompt->value : '' }}</textarea>
 
         <label for="send_test_emails_to" class="mb-2">Send test emails to :</label>
         <textarea rows="5" type="email" name="send_test_emails_to" id="send_test_emails_to" placeholder="user@example.com, user@example2.com" class="form-control mb-3">{{ $testEmailsTo ? $testEmailsTo->value : '' }}</textarea>

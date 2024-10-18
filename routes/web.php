@@ -35,9 +35,9 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 
 Route::post('/update-send-semails-setting', [SettingController::class, 'updateSendEmailsSetting'])->middleware(['auth', 'verified'])->name('settings.send-emails');
 
-Route::get('/import', function () {
-    return view('import');
-})->middleware(['auth', 'verified'])->name('import.get');
+// Route::get('/import', function () {
+//     return view('import');
+// })->middleware(['auth', 'verified'])->name('import.get');
 
 // Route::post('/import', [LeadController::class, 'import'])->middleware(['auth', 'verified'])->name('import.post');
 Route::get('/leads', [LeadController::class, 'index'])->middleware(['auth', 'verified'])->name('leads.index');
@@ -57,10 +57,13 @@ Route::post('/lead/search', [LeadController::class, 'search'])->middleware(['aut
 // Route::get('/list/{id}/not-verified', [LeadlistController::class, 'show_not_verified'])->middleware(['auth', 'verified'])->name('show.not.verified.list');
 
 
+Route::get('/mailboxes/upload', [MailboxController::class, 'upload'])->middleware(['auth', 'verified'])->name('upload.mailboxes');
+
 
 Route::get('/lists', [LeadlistController::class, 'index'])->middleware(['auth', 'verified'])->name('lists.index');
 Route::post('/add-list', [LeadlistController::class, 'create'])->middleware(['auth', 'verified'])->name('add-list.post');
 Route::get('/list/{id}', [LeadlistController::class, 'show'])->middleware(['auth', 'verified'])->name('show.list');
+Route::get('/list/{id}/delete', [LeadlistController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete.list');
 Route::get('/list/{id}/leads', [LeadlistController::class, 'show_leads'])->middleware(['auth', 'verified'])->name('show.leads.list');
 Route::get('/list/{id}/verified', [LeadlistController::class, 'show_verified'])->middleware(['auth', 'verified'])->name('show.verified.list');
 Route::get('/list/{id}/fetched-content', [LeadlistController::class, 'show_fetched_content'])->middleware(['auth', 'verified'])->name('show.fetched_content.list');

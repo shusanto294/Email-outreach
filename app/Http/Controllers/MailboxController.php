@@ -133,4 +133,48 @@ class MailboxController extends Controller
         }
 
     }
+
+    public function upload(){
+        return view('upload-mailboxes');
+    }
+
+    public function upload_mailboxes(Request $request)
+    {
+        // Fetch mailboxes data from the request
+        $mailboxes = $request->input('data');
+        
+        // Retrieve existing mailboxes based on mail_username
+        $existingMailboxes = Mailbox::whereIn('mail_username', array_column($mailboxes, 'mail_username'))->get();
+        $existingEmails = $existingMailboxes->pluck('mail_username')->toArray();
+        
+        // Filter out the new mailboxes that don't already exist in the database
+        $newMailboxes = array_filter($mailboxes, function($mailbox) use ($existingEmails) {
+            return !in_array($mailbox['mail_username'], $existingEmails);
+        });
+        
+        // Map the new mailboxes to the appropriate format for insertion
+        $newMailBoxes = array_map(function($mailbox) {
+            return [
+                'mail_from_name' => $mailbox['mail_from_name'],
+                'mail_username' => $mailbox['mail_username'],
+                'mail_password' => $mailbox['mail_password'],
+                'mail_smtp_host' => $mailbox['mail_smtp_host'],
+                'mail_imap_host' => $mailbox['mail_imap_host'],
+                'mail_smtp_port' => $mailbox['mail_smtp_port'],
+                'mail_imap_port' => $mailbox['mail_imap_port'],
+                'status' => $mailbox['status']
+            ];
+        }, $newMailboxes);
+        
+        // Insert the new leads into the Lead model
+        Mailbox::insert($newMailBoxes);
+        
+        // Return the number of leads that were imported and the number of leads that were skipped
+        return response()->json([
+            'imported' => count($newMailBoxes),
+            'skipped' => count($mailboxes) - count($newMailBoxes)
+        ]);
+    }
+
+    
 }

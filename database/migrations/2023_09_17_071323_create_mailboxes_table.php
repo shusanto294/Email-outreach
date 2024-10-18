@@ -15,13 +15,13 @@ return new class extends Migration
     {
         Schema::create('mailboxes', function (Blueprint $table) {
             $table->id();
+            $table->string('mail_from_name');
+            $table->string('mail_username');
+            $table->string('mail_password');
             $table->string('mail_smtp_host');
             $table->string('mail_imap_host');
             $table->string('mail_smtp_port');
             $table->string('mail_imap_port');
-            $table->string('mail_username');
-            $table->string('mail_password');
-            $table->string('mail_from_name');
             $table->string('status')->default('off');
             $table->timestamps();
         });

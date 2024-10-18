@@ -104,6 +104,9 @@ class PersonalizeLead implements ShouldQueue
 
     public function handle()
     {
+        $openAiPrompt = Setting::where('key', 'open_ai_prompt')->first();
+        $openAiPromptText = $openAiPrompt->value;
+
         // Extract the lead details from the object
         $lead = $this->lead;
  
@@ -149,7 +152,7 @@ class PersonalizeLead implements ShouldQueue
         $prompt = [
             'model' => 'gpt-4o-mini',
             'messages' => [
-                ["role" => "system", "content" => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short email for the person asking them if they are interested in your service. The email should not be more then 500 charecters. Don't write any subject line just write the email body. Don't out any placeholder texts like [Your Contact Information] etc. Start with wht you love about them and why you wanted to reachout and then shortly explain how your B2B ead generation service can benifit them. End with Shusanto <br> B2B  lead generation expert."],
+                ["role" => "system", "content" => $openAiPromptText],
                 ["role" => "user", "content" => $leadDetails]
             ]
         ];
@@ -170,8 +173,6 @@ class PersonalizeLead implements ShouldQueue
         $lead->website_content = $websiteContent;
         $lead->personalization = $personalizedLine;
         $lead->save();
-
-        // echo $personalizedLine;
 
     }
     

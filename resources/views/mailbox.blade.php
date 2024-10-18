@@ -20,6 +20,7 @@ table a:hover{
 @include('alerts')
 
 <p style="text-align: right">
+    <a href="{{ route('upload.mailboxes') }}" class="btn btn-secondary">Uplaod Mailboxes</a>
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Add New Mailbox

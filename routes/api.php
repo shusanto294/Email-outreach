@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\MailboxController;
 use App\Http\Controllers\LeadlistController;
 
 /*
@@ -27,5 +28,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 //Ajax lead import
+Route::post('/uplaod-mailboxes', [MailboxController::class, 'upload_mailboxes']);
 Route::post('/uplaod-leads', [LeadController::class, 'uplaod_leads']);
 Route::post('/uplaod-instant-data-scrapper', [LeadController::class, 'uplaod_instant_data_scrapepr']);

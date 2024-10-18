@@ -235,8 +235,15 @@ public function personalize_list($id){
     return redirect()->back()->with('success', 'List personalization started');
 }
 
+public function delete($id){
+    // Bulk delete leads associated with the given leadlist_id
+    Lead::where('leadlist_id', $id)->delete();
 
-
+    // Delete the lead list
+    Leadlist::destroy($id);
+    
+    return redirect('/lists')->with('warning', 'List deleted successfully!');
+}
 
 
 }

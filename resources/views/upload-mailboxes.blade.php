@@ -3,47 +3,16 @@
 
 @section('content')
 
-
-
-@php
-$leads = App\Models\Lead::all();
-$leadCount = $leads->count();
-@endphp
-
-<p>Total Leads: {{ $leadCount }}</p>
-
-@php
-    $lists = App\Models\Leadlist::orderBy('id', 'desc')->get();
-@endphp
-
-{{-- <form action="/import" method="post" enctype="multipart/form-data">
-    @csrf
-
-    <select type="select" class="form-control mb-3" name="list_id">
-        @foreach($lists as $list)
-            <option value="{{ $list->id }}">{{ $list->name }}</option>
-        @endforeach
-    </select>
-
-    <input type="file" name="file" id="csvFile" accept=".csv" class="form-control mb-3">
-    <div id="progress"></div>
-
-    <input type="submit" value="Import Now" name="Import" class="btn btn-secondary">
-</form>
-
-@if(session()->has('success'))
-<p class="mt-5" style="color: green;">{{ session('success') }}l</p>
-@endif --}}
+<style>
+div#progress {
+    margin-top: 20px;
+}
+</style>
 
 
 <form id="uploadForm" enctype="multipart/form-data">
-    <select type="select" class="form-control mb-3" name="list_id">
-        @foreach($lists as $list)
-            <option value="{{ $list->id }}">{{ $list->name }}</option>
-        @endforeach
-    </select>
     <input type="file" id="csvFile" accept=".csv">
-    <button type="submit">Upload</button>
+    <button class="btn btn-secondary" type="submit">Upload Mailboxes</button>
 </form>
 <div id="progress"></div>
 
@@ -55,7 +24,7 @@ $leadCount = $leads->count();
             e.preventDefault();
             
             const file = $('#csvFile')[0].files[0];
-            const listId = $('select[name="list_id"]').val();  // Get the selected list_id
+            const listId = $('input[name="list_id"]').val();  // Get the selected list_id
 
             if (!file) {
                 alert('Please select a CSV file');
@@ -67,7 +36,7 @@ $leadCount = $leads->count();
                 skipEmptyLines: true,  // Skip empty lines
                 complete: function(results) {
                     const data = results.data;
-                    if (data.length === 0) {
+                    if (data.length === 0) { 
                         alert('No data found in the CSV file');
                         return;
                     }
@@ -91,7 +60,7 @@ $leadCount = $leads->count();
                 };
 
                 $.ajax({
-                    url: '/api/ajax-lead-import',
+                    url: '/api/uplaod-mailboxes',
                     method: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(payload),
