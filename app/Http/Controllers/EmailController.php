@@ -181,6 +181,56 @@ class EmailController extends Controller
         $email->delete();
         return redirect('/emails')->with('success', 'Email deleted successfully');
     }
+
+        public function send_reply(Request $request, $replyID){
+        //return $request->all();
+        $reply = Reply::find($replyID);
+        $mailbox = Mailbox::where('mail_username', $reply->to)->first();
+        $lead = Lead::where('email', $reply->from_address)->first();
+
+        config(['mail.mailers.smtp.host' => $mailbox->mail_smtp_host ]);
+        config(['mail.mailers.smtp.port' => $mailbox->mail_smtp_port ]);
+        config(['mail.mailers.smtp.username' => $mailbox->mail_username ]);
+        config(['mail.mailers.smtp.password' => $mailbox->mail_password ]);
+        config(['mail.from.address' => $mailbox->mail_username ]);
+        config(['mail.from.name' => $mailbox->mail_from_name ]);
+
+        $uniqueId = uniqid(rand(), true);
+        $prefix = substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'), 0, 4);
+        $finalUniqueId = $prefix . $uniqueId;
+
+        $emailSubject = $request->subject;
+        $emailBody = $request->body;
+
+        $email = Email::create([
+            'subject' => $emailSubject,
+            'body' => $emailBody,
+            'campaign_id' => 0,
+            'lead_id' => 0,
+            'uid' => $finalUniqueId
+        ]);
+
+        $currentTime = Carbon::now();
+
+        $email->sent = $currentTime;
+        $email->mailbox_id = $mailbox->id;
+        $email->sent_from = $mailbox->mail_username;
+        $email->save(); 
+
+        // $trackingUrl = route('track.email', ['uid' => $email->uid]);
+        // $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
+
+        // $emailBody .= $trackingPixel;
+
+        Mail::html($emailBody, function (Message $message) use ($reply, $emailSubject) {
+            $message->to($reply->from_address)->subject($emailSubject);
+            // $message->to("shusanto294@gmail.com")->subject($emailSubject);
+        });
+
+        return redirect('/inbox')->with('success', 'Reply sent successfully!');
+
+
+    }
     
 
 

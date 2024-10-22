@@ -7,13 +7,14 @@ use App\Models\Email;
 use App\Models\Reply;
 use App\Models\Mailbox;
 use App\Models\Setting;
+use App\Jobs\CheckMailboxes;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
 use Illuminate\Support\Carbon;
 use Webklex\IMAP\Facades\Client;
 use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreReplyRequest;
 use App\Http\Requests\UpdateReplyRequest;
-use Illuminate\Mail\Message;
 
 class ReplyController extends Controller
 {
@@ -43,74 +44,88 @@ class ReplyController extends Controller
 
 
         
-        $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
-        // $messages = $inboxFolder->messages()->all()->limit(10)->get();
+        // $messages = $inboxFolder->messages()->unseen()->limit(10)->get();
+        //$messages = $inboxFolder->messages()->all()->limit(5)->get();
+
+        //Get emails from the inbox in latest first order
+        //$messages = $inboxFolder->messages()->all()->get();
+
+        //Get messages from the inbox in unseen order
+        // $messages = $inboxFolder->messages()->unseen()->get();
+
+        //Get meesages from inbox which has not falled as downloaded
+
+
+
+        //change the order of the emails to oldest first
+        $messages = $messages->reverse();
 
         if(count($messages) < 1){
-            echo 'No new emails found !';
+            echo 'No new emails found on ';
             return;
         }
 
-        $keywords = Setting::where('key', 'ignore_replies_keywords')->first();
-        $cleanedString = str_replace(', ', ',', $keywords->value);
-        $ignores = explode(",", $cleanedString);
-        
-
         foreach ($messages as $message) {
+
+            //Get the unique identifier of the email
+            $messageID = $message->getUid();
+
+            echo '<pre>';
+            var_dump($messageID);
+            echo '</pre>';
+            echo '<hr>';
+
+            //Print subject line
+            //echo '<h3>' . $message->getSubject() . '</h3>';
+
+            //Print uniqueue indentifier
+            //echo '<p>UID: ' . $message->getUid() . '</p>';
+
+
+            /*
 
             $sender = $message->getFrom()[0];
 
-            // echo '<pre>';
-            // var_dump($sender);
-            // echo '</pre>';
-            // echo '<hr>';
+            if ($sender) {
+                echo $message->getSubject();
+                echo '<br>';
+                
+                $fromEmail = $sender->mail;
+                $emailString = $fromEmail . $sender->personal . $message->getSubject() . $message->getHTMLBody();
 
-            if($sender){
+                // Create new reply without campaign_id initially
+                $newReply = Reply::create([
+                    'from_name' => $sender->personal,
+                    'from_address' => $sender->mailbox . '@' . $sender->host,
+                    'to' => $mailbox->mail_username,
+                    'subject' => $message->getSubject(),
+                    'body' => $message->getHTMLBody(),
+                    'campaign_id' => null // Set to null initially
+                ]);
 
-                $fromEmail =  $sender->mail;
-    
-                // $shouldStore = true;
-                $emailString = $fromEmail. $sender->personal.  $message->getSubject(). $message->getHTMLBody();
-        
-                echo '<div style="background: #ddd; padding: 20px; margin-bottom: 20px;">';
-                echo '<p>Name : ' . $sender->personal . '</p>';
-                echo '<p>Email: ' . $fromEmail. '</p>';
-                echo '<div style="margin-bottom: 20px;"><h3>' . $message->getSubject() . '</h3></div>';
-        
-                // foreach ($ignores as $ignore) {
-                //     if (strpos($emailString, $ignore)) {
-                //         echo '<p style="color: red;">Substring found in the text.</p>';
-                //         $shouldStore = false;
-                //         break;
-                //     }
-                // }
-        
-                echo '</div>';
-        
-
+                // Look for matching lead
                 $lead = Lead::where('email', $fromEmail)->first();
-                $campaignID = 0;
-    
-                if($lead){
+
+                if ($lead) {
                     $campaignID = $lead->campaign_id;
-
-                    Reply::create([
-                        'from_name' => $sender->personal,
-                        'from_address' => $sender->mailbox . '@' . $sender->host,
-                        'to' => $mailbox->mail_username,
-                        'subject' => $message->getSubject(),
-                        'body' => $message->getHTMLBody(),
-                        'campaign_id' => $campaignID
-                    ]);
-
                     $lead->replied = 1;
                     $lead->save();
+
+                    // Update reply with campaign_id
+                    $newReply->campaign_id = $campaignID;
+                    $newReply->save();
                 }
-                     
-                 
             }
 
-            $message->setFlag(['Seen']);
+            
+            */
+
+            // $message->setFlag(['Seen']);
+
+            //Move the email to another folder called downloaded
+            // $message->moveToFolder('downloaded');
+
+
     
         }
 
@@ -152,9 +167,9 @@ class ReplyController extends Controller
            return;
        }
 
-       $keywords = Setting::where('key', 'ignore_replies_keywords')->first();
-       $cleanedString = str_replace(', ', ',', $keywords->value);
-       $ignores = explode(",", $cleanedString);
+    //    $keywords = Setting::where('key', 'ignore_replies_keywords')->first();
+    //    $cleanedString = str_replace(', ', ',', $keywords->value);
+    //    $ignores = explode(",", $cleanedString);
 
        foreach ($messages as $message) {
 
@@ -179,14 +194,7 @@ class ReplyController extends Controller
             echo '<p>Email: ' . $fromEmail. '</p>';
             //echo '<p>From: ' . $message->getFrom()[0]->mailbox . '@' . $message->getFrom()[0]->host . '</p>';
             echo '<div style="margin-bottom: 20px;"><h3>' . $message->getSubject() . '</h3></div>';
-    
-            // foreach ($ignores as $ignore) {
-            //     if (strpos($emailString, $ignore)) {
-            //         echo '<p style="color: red;">Substring found in the text.</p>';
-            //         $shouldStore = false;
-            //         break;
-            //     }
-            // }
+
     
             echo '</div>';
     
@@ -265,11 +273,14 @@ class ReplyController extends Controller
         $emailBody = $request->body;
 
         $email = Email::create([
+            'uid' => $finalUniqueId,
+            'campaign_id' => 0,
+            'lead_id' => 0,
             'subject' => $emailSubject,
             'body' => $emailBody,
-            'campaign_id' => 0,
-            'lead_id' => $lead->id,
-            'uid' => $finalUniqueId
+            'sent_from' => $mailbox->mail_username,
+            'sent_to' => $reply->from_address,
+            'reciver_name' => $reply->from_name,
         ]);
 
         $currentTime = Carbon::now();
@@ -279,20 +290,24 @@ class ReplyController extends Controller
         $email->sent_from = $mailbox->mail_username;
         $email->save(); 
 
+        // $trackingUrl = route('track.email', ['uid' => $email->uid]);
+        // $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
 
-        $trackingUrl = route('track.email', ['uid' => $email->uid]);
-        $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
+        // $emailBody .= $trackingPixel;
 
-        $emailBody .= $trackingPixel;
-
-        Mail::html($emailBody, function (Message $message) use ($lead, $emailSubject) {
-            $message->to($lead->email)->subject($emailSubject);
+        Mail::html($emailBody, function (Message $message) use ($reply, $emailSubject) {
+            $message->to($reply->from_address)->subject($emailSubject);
             // $message->to("shusanto294@gmail.com")->subject($emailSubject);
         });
 
         return redirect('/inbox')->with('success', 'Reply sent successfully!');
 
 
+    }
+
+    public function refresh_inbox(){
+        CheckMailboxes::dispatch();
+        return redirect()->back()->with('success', 'Inbox refreshed successfully');
     }
 
 

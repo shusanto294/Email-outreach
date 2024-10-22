@@ -73,14 +73,12 @@
     @endphp
 
     <div class="inline-space-between">
-        <p><b>This month</b></p>
         @if ($reliesNotSeen)
             <a class="new-replies-count" style="color: #000;" href="/inbox">{{ $reliesNotSeen }} new {{ $reliesNotSeen > 1 ? "replies" : "reply" }}</a>
         @endif
-        
     </div>
 
-    <div class="row infoboxes mb-5">
+    {{-- <div class="row infoboxes mb-5">
         <div class="column">
             <div class="info-box">
                 <div class="number">0</div>
@@ -112,7 +110,7 @@
                 
             </div>
         </div>
-    </div>
+    </div> --}}
 
 
     <div class="mb-5">

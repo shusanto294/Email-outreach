@@ -209,39 +209,28 @@ form.inline-form button{
 <table class="table table-striped">
     <thead>
       <tr>
-        <th scope="col">#ID</i></th>
-        <th scope="col">Check Inbox</i></th>
-        <th scope="col">To</i></th>
-        {{-- <th scope="col">Company</i></th> --}}
-        <th scope="col">Subject</i></th>
-        <th scope="col">Sent</i></th>
-        <th scope="col" style="text-align: center;">Opened</i></th>
+        <th scope="col">#ID</th>
+        <th scope="col">Subject</th>
+        <th scope="col">Reciver Name</th>
+        <th scope="col">Reciver Email</th>
+        
+        <th scope="col">Sent</th>
+
       </tr>
     </thead>
     <tbody>
         @foreach ($emails as $email)
             <tr>
               <td>{{ $email->id }}</td>
-              <td><a target="_blank" href="{{ route('replies.check', $email->mailbox_id) }}">Check Replies</a></td>
-              @php
-                    $lead = App\Models\Lead::find($email->lead_id);
-              @endphp
-              <td>
-                <a href="{{ route('lead.show', $email->lead_id) }}">{{ $lead->email }}</a>
-              </td>
-              {{-- <td>
-                <a target="_blank" href="{{ $lead->company_website }}">{{ $lead->company }}</a>
-              </td> --}}
               <td>
                 <a href="{{ route('email.single', $email->id) }}">{{ $email->subject }}</a>
               </td>
+              <td>{{ $email->reciver_name }}</td>
+              <td>{{ $email->sent_to }}</td>
               <td>
                 {!! $email->sent ? \Carbon\Carbon::parse($email->sent)->format('h:i A') : ''  !!}
               </td>
-              <td style="text-align: center;">
-                {{-- {!! $email->opened == 0 ? '' : '<div class="opened-count-and-time"><div class="opened">'.$email->opened_count.'</div>'. \Carbon\Carbon::parse($email->updated_at)->format('h:i A'). '</div>' !!} --}}
-                {!! $email->opened == 0 ? '' :  '<div class="opened-count-and-time">' . \Carbon\Carbon::parse($email->opened)->format('h:i A') . '<div class="opened">'.$email->opened_count.'</div>'. '</div>'  !!}
-              </td>
+
             </tr>
         @endforeach
     </tbody>

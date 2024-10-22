@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('to');
             $table->text('subject');
             $table->longText('body');
-            $table->integer('campaign_id')->default(0);
+            $table->integer('campaign_id')->nullable();
             $table->integer('seen')->default(0);
             $table->timestamps();
         });

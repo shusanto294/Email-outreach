@@ -34,6 +34,8 @@ class PersonalizeLead implements ShouldQueue
      *
      * @return void
      */
+
+     
     // public function handle()
     // {
     //     $lead = $this->lead;

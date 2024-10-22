@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('lead_id');
             $table->string('mailbox_id')->nullable();
             $table->string('sent_from')->nullable();
+            $table->string('sent_to')->nullable();
+            $table->string('reciver_name')->nullable();
             $table->timestamp('sent')->nullable();
             $table->timestamp('opened')->nullable();
             $table->integer('opened_count')->default(0);

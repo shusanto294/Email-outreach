@@ -52,14 +52,10 @@ class DatabaseSeeder extends Seeder
             'value' => 'shusanto294@gmail.com',
         ]);
 
-        DB::table('settings')->insert([
-            'key' => 'ignore_replies_keywords',
-            'value' => 'Automatic reply, Undeliverable, cpanel, Mailer-Daemon, mailer-daemon, warmy.io, CK14RRD, 34N2J7J, HJQJV3V, B2FF62E, TH175DY',
-        ]);
 
         DB::table('settings')->insert([
             'key' => 'open_ai_prompt',
-            'value' => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short email for the person asking them if they are interested in your service. The email should not be more then 500 characters. Don't write any subject line just write the email body. Don't out any placeholder texts like [Your Contact Information] etc. Start with why you love about them and why you wanted to reach out and then shortly explain how your B2B lead generation service can benefit them. End with Shusanto <br> B2B  lead generation expert.",
+            'value' => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short email for the person asking them if they are interested in your service. The email should not be more then 500 characters. Don't write any subject line just write the email body. Don't put any placeholder texts like [Your Contact Information] etc. Start with why you love about them and why you wanted to reach out and then shortly explain how your B2B lead generation service can benefit them. End with Shusanto <br> B2B  lead generation expert.",
         ]);
 
 

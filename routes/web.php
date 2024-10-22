@@ -132,6 +132,7 @@ Route::get('/delete-reply/{id}', [ReplyController::class, 'delete'])->middleware
 Route::get('/inbox/{id}', [ReplyController::class, 'show'])->middleware(['auth', 'verified'])->name('show.reply');
 Route::get('/inbox/{id}/respond', [ReplyController::class, 'respond'])->middleware(['auth', 'verified'])->name('show.respond');
 Route::post('/inbox/{id}/send-reply', [ReplyController::class, 'send_reply'])->middleware(['auth', 'verified'])->name('send.reply');
+Route::get('/refresh-inbox', [ReplyController::class, 'refresh_inbox'])->middleware(['auth', 'verified'])->name('replies.refresh');
 
 Route::get('/personalize', [LeadController::class, 'personalize'])->name('personalize');
 Route::get('/skip-lead-personalization', [LeadController::class, 'skip_lead_personalization'])->name('skip_lead_personalization');
