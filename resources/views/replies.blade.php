@@ -12,6 +12,13 @@ table a{
 table a:hover{
   text-decoration: underline;
 }
+
+.inline-buttons{
+  display: flex;
+  justify-content: flex-end;
+  column-gap: 20px;
+  margin-bottom: 30px;
+}
 </style>
 @endsection
 
@@ -19,7 +26,12 @@ table a:hover{
 
 @include('alerts')
 
-<a href="{{ route('replies.refresh') }}" class="btn btn-secondary" style="float: right;">Refresh inbox</a>
+<div class="inline-buttons">
+  <a href="{{ route('replies.refresh') }}" class="btn btn-secondary">Refresh Inbox</a>
+  <a href="{{ route('replies.mark.all.as.read') }}" class="btn btn-secondary">Mark All As Read</a>
+</div>
+
+
 
 @if(count($replies) > 0 )
 

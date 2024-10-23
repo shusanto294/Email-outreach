@@ -121,18 +121,19 @@ Route::post('/mailbox/create', [MailboxController::class, 'create'])->middleware
 Route::get('/mailbox/{id}', [MailboxController::class, 'show'])->middleware(['auth', 'verified'])->name('mailbox.show');
 Route::post('/mailbox/{id}/update', [MailboxController::class, 'update'])->middleware(['auth', 'verified'])->name('mailbox.update');
 Route::get('/mailbox/{id}/delete', [MailboxController::class, 'delete'])->middleware(['auth', 'verified'])->name('mailbox.delete');
-Route::get('/check-deliveribility/{id}', [MailboxController::class, 'checkDeliveribility'])->name('mailbox.check.deliveribility');
+Route::get('/send-test-email/{id}', [MailboxController::class, 'sendTestmail'])->name('send.test.email');
 
 //Replies
 
 Route::get('/inbox', [ReplyController::class, 'index'])->middleware(['auth', 'verified'])->name('replies.index');
-Route::get('/check-replies', [ReplyController::class, 'checkRepliesFromAllInbox'])->name('replies.check.from.all.inboxes');
-Route::get('/check-replies/{mailboxID}', [ReplyController::class, 'checkReplies'])->name('replies.check');
+Route::get('/check-mailbox/{mailboxID}', [ReplyController::class, 'checkMainbox'])->name('check.mailbox');
 Route::get('/delete-reply/{id}', [ReplyController::class, 'delete'])->middleware(['auth', 'verified'])->name('delete.reply'); 
 Route::get('/inbox/{id}', [ReplyController::class, 'show'])->middleware(['auth', 'verified'])->name('show.reply');
 Route::get('/inbox/{id}/respond', [ReplyController::class, 'respond'])->middleware(['auth', 'verified'])->name('show.respond');
 Route::post('/inbox/{id}/send-reply', [ReplyController::class, 'send_reply'])->middleware(['auth', 'verified'])->name('send.reply');
 Route::get('/refresh-inbox', [ReplyController::class, 'refresh_inbox'])->middleware(['auth', 'verified'])->name('replies.refresh');
+Route::get('/mark-all-as-read', [ReplyController::class, 'mark_all_as_read'])->middleware(['auth', 'verified'])->name('replies.mark.all.as.read');
+Route::get('/check-replies', [ReplyController::class, 'checkReplies'])->name('check.replies');
 
 Route::get('/personalize', [LeadController::class, 'personalize'])->name('personalize');
 Route::get('/skip-lead-personalization', [LeadController::class, 'skip_lead_personalization'])->name('skip_lead_personalization');

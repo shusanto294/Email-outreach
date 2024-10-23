@@ -99,7 +99,7 @@ class MailboxController extends Controller
         return redirect()->back()->with('success', 'Mailbox deleted successfully');
     }
 
-    function checkDeliveribility($id) {
+    function sendTestmail($id) {
         $mailbox = Mailbox::find($id);
         config(['mail.mailers.smtp.host' => $mailbox->mail_smtp_host]);
         config(['mail.mailers.smtp.port' => $mailbox->mail_smtp_port]);

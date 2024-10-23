@@ -39,7 +39,7 @@ table a:hover{
         <th scope="col">Open rate</th>
         <th scope="col">Status</th>
         <th scope="col">Test</th>
-        <th scope="col">Replies</th>
+        <th scope="col">Check</th>
         <th scope="col">Delete</th>
     </thead>
     <tbody>
@@ -82,8 +82,8 @@ table a:hover{
                     <span style="background: red; color: #fff; padding: 2px 5px;">Off</span>
                   @endif
                 </td>
-                <td><a target="_blank" href="{{ route('mailbox.check.deliveribility', $mailbox->id) }}">Send test email</a></td>
-                <td><a target="_blank" href="{{ route('replies.check', $mailbox->id) }}">Check Replies</a></td>
+                <td><a target="_blank" href="{{ route('send.test.email', $mailbox->id) }}">Send test email</a></td>
+                <td><a target="_blank" href="{{ route('check.mailbox', $mailbox->id) }}">Check Emails</a></td>
                 <td><a href="{{ route('mailbox.delete', $mailbox->id) }}">Delete</a></td>
               </tr>
         @endforeach

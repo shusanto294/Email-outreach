@@ -30,7 +30,7 @@ class ReplyController extends Controller
         ]);
     }
 
-    public function checkReplies($mailBoxId){
+    public function checkMainbox($mailBoxId){
         $mailbox = Mailbox::find($mailBoxId);
 
         config(['imap.accounts.default.host' => $mailbox->mail_imap_host ]);
@@ -43,21 +43,7 @@ class ReplyController extends Controller
         $inboxFolder = $client->getFolder('INBOX');
 
 
-        
-        // $messages = $inboxFolder->messages()->unseen()->limit(10)->get();
-        //$messages = $inboxFolder->messages()->all()->limit(5)->get();
-
-        //Get emails from the inbox in latest first order
-        //$messages = $inboxFolder->messages()->all()->get();
-
-        //Get messages from the inbox in unseen order
-        // $messages = $inboxFolder->messages()->unseen()->get();
-
-        //Get meesages from inbox which has not falled as downloaded
-
-
-
-        //change the order of the emails to oldest first
+        $messages = $inboxFolder->messages()->all()->limit(10)->get();
         $messages = $messages->reverse();
 
         if(count($messages) < 1){
@@ -71,61 +57,10 @@ class ReplyController extends Controller
             $messageID = $message->getUid();
 
             echo '<pre>';
-            var_dump($messageID);
+            //Print email subject
+            echo 'Subject: ' . $message->getSubject() . '<br>';
             echo '</pre>';
             echo '<hr>';
-
-            //Print subject line
-            //echo '<h3>' . $message->getSubject() . '</h3>';
-
-            //Print uniqueue indentifier
-            //echo '<p>UID: ' . $message->getUid() . '</p>';
-
-
-            /*
-
-            $sender = $message->getFrom()[0];
-
-            if ($sender) {
-                echo $message->getSubject();
-                echo '<br>';
-                
-                $fromEmail = $sender->mail;
-                $emailString = $fromEmail . $sender->personal . $message->getSubject() . $message->getHTMLBody();
-
-                // Create new reply without campaign_id initially
-                $newReply = Reply::create([
-                    'from_name' => $sender->personal,
-                    'from_address' => $sender->mailbox . '@' . $sender->host,
-                    'to' => $mailbox->mail_username,
-                    'subject' => $message->getSubject(),
-                    'body' => $message->getHTMLBody(),
-                    'campaign_id' => null // Set to null initially
-                ]);
-
-                // Look for matching lead
-                $lead = Lead::where('email', $fromEmail)->first();
-
-                if ($lead) {
-                    $campaignID = $lead->campaign_id;
-                    $lead->replied = 1;
-                    $lead->save();
-
-                    // Update reply with campaign_id
-                    $newReply->campaign_id = $campaignID;
-                    $newReply->save();
-                }
-            }
-
-            
-            */
-
-            // $message->setFlag(['Seen']);
-
-            //Move the email to another folder called downloaded
-            // $message->moveToFolder('downloaded');
-
-
     
         }
 
@@ -135,100 +70,104 @@ class ReplyController extends Controller
 
     }
 
-    public function checkRepliesFromAllInbox(){
-
-        $lastReplyCheckedFrom = Setting::where('key', 'last_reply_checked_from')->first();
-        $mailbox = Mailbox::where('id', '>', $lastReplyCheckedFrom->value)->where('status', 'on')->orderBy('id', 'asc')->first();
-        if(!$mailbox){
-            $mailbox = Mailbox::where('status', 'on')->orderBy('id', 'asc')->first();
-        }
-
-        //Change the checked inbox information
-        $lastReplyCheckedFrom->value = $mailbox->id;
-        $lastReplyCheckedFrom->save();
-
-        echo '<p>Checking mailbox : ' . $mailbox->mail_username .'</p>';
-
-        config(['imap.accounts.default.host' => $mailbox->mail_imap_host ]);
-        config(['imap.accounts.default.port' => $mailbox->mail_imap_port ]);
-        config(['imap.accounts.default.username' => $mailbox->mail_username ]);
-        config(['imap.accounts.default.password' => $mailbox->mail_password ]);
+    // public function checkRepliesFromAllInbox(){
 
 
-       $client = Client::account('default');  
-       $client->connect();
-       $inboxFolder = $client->getFolder('INBOX');
 
-       $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
-       //$messages = $inboxFolder->messages()->all()->limit(10)->get();
+    //     $lastReplyCheckedFrom = Setting::where('key', 'last_reply_checked_from')->first();
+    //     $mailbox = Mailbox::where('id', '>', $lastReplyCheckedFrom->value)->where('status', 'on')->orderBy('id', 'asc')->first();
+    //     if(!$mailbox){
+    //         $mailbox = Mailbox::where('status', 'on')->orderBy('id', 'asc')->first();
+    //     }
 
-       if(count($messages) < 1){
-           echo 'No new emails found !';
-           return;
-       }
+    //     //Change the checked inbox information
+    //     $lastReplyCheckedFrom->value = $mailbox->id;
+    //     $lastReplyCheckedFrom->save();
 
-    //    $keywords = Setting::where('key', 'ignore_replies_keywords')->first();
-    //    $cleanedString = str_replace(', ', ',', $keywords->value);
-    //    $ignores = explode(",", $cleanedString);
+    //     echo '<p>Checking mailbox : ' . $mailbox->mail_username .'</p>';
 
-       foreach ($messages as $message) {
+    //     config(['imap.accounts.default.host' => $mailbox->mail_imap_host ]);
+    //     config(['imap.accounts.default.port' => $mailbox->mail_imap_port ]);
+    //     config(['imap.accounts.default.username' => $mailbox->mail_username ]);
+    //     config(['imap.accounts.default.password' => $mailbox->mail_password ]);
 
-        $sender = $message->getFrom()[0];
 
-        // echo '<pre>';
-        // var_dump($sender);
-        // echo '</pre>';
-        // echo '<hr>';
+    //    $client = Client::account('default');  
+    //    $client->connect();
+    //    $inboxFolder = $client->getFolder('INBOX');
 
-        if($sender){
-            // echo $sender->mail;
-            // echo '<br>';
+    //    $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
+    //    //$messages = $inboxFolder->messages()->all()->limit(10)->get();
 
-            $fromEmail =  $sender->mail;
+    //    if(count($messages) < 1){
+    //        echo 'No new emails found !';
+    //        return;
+    //    }
 
-            // $shouldStore = true;
-            $emailString = $fromEmail. $sender->personal.  $message->getSubject(). $message->getHTMLBody();
+    // //    $keywords = Setting::where('key', 'ignore_replies_keywords')->first();
+    // //    $cleanedString = str_replace(', ', ',', $keywords->value);
+    // //    $ignores = explode(",", $cleanedString);
+
+    //    foreach ($messages as $message) {
+
+    //     $sender = $message->getFrom()[0];
+
+    //     // echo '<pre>';
+    //     // var_dump($sender);
+    //     // echo '</pre>';
+    //     // echo '<hr>';
+
+    //     if($sender){
+    //         // echo $sender->mail;
+    //         // echo '<br>';
+
+    //         $fromEmail =  $sender->mail;
+
+    //         // $shouldStore = true;
+    //         $emailString = $fromEmail. $sender->personal.  $message->getSubject(). $message->getHTMLBody();
     
-            echo '<div style="background: #ddd; padding: 20px; margin-bottom: 20px;">';
-            echo '<p>Name : ' . $sender->personal . '</p>';
-            echo '<p>Email: ' . $fromEmail. '</p>';
-            //echo '<p>From: ' . $message->getFrom()[0]->mailbox . '@' . $message->getFrom()[0]->host . '</p>';
-            echo '<div style="margin-bottom: 20px;"><h3>' . $message->getSubject() . '</h3></div>';
+    //         echo '<div style="background: #ddd; padding: 20px; margin-bottom: 20px;">';
+    //         echo '<p>Name : ' . $sender->personal . '</p>';
+    //         echo '<p>Email: ' . $fromEmail. '</p>';
+    //         //echo '<p>From: ' . $message->getFrom()[0]->mailbox . '@' . $message->getFrom()[0]->host . '</p>';
+    //         echo '<div style="margin-bottom: 20px;"><h3>' . $message->getSubject() . '</h3></div>';
 
     
-            echo '</div>';
+    //         echo '</div>';
     
      
-            $lead = Lead::where('email', $fromEmail)->first();
-            $campaignID = 0;
+    //         $lead = Lead::where('email', $fromEmail)->first();
+    //         $campaignID = 0;
 
-            if($lead){
-                $campaignID = $lead->campaign_id;
+    //         if($lead){
+    //             $campaignID = $lead->campaign_id;
 
-                Reply::create([
-                    'from_name' => $sender->personal,
-                    'from_address' => $sender->mailbox . '@' . $sender->host,
-                    'to' => $mailbox->mail_username,
-                    'subject' => $message->getSubject(),
-                    'body' => $message->getHTMLBody(),
-                    'campaign_id' => $campaignID
-                ]);
+    //             Reply::create([
+    //                 'from_name' => $sender->personal,
+    //                 'from_address' => $sender->mailbox . '@' . $sender->host,
+    //                 'to' => $mailbox->mail_username,
+    //                 'subject' => $message->getSubject(),
+    //                 'body' => $message->getHTMLBody(),
+    //                 'campaign_id' => $campaignID
+    //             ]);
 
-                $lead->replied = 1;
-                $lead->save();
-            }
+    //             $lead->replied = 1;
+    //             $lead->save();
+    //         }
                  
              
-        }
+    //     }
 
-        $message->setFlag(['Seen']);
+    //     $message->setFlag(['Seen']);
 
-    }
+    // }
 
-       // Disconnect from the IMAP server
-       $client->disconnect();
+    //    // Disconnect from the IMAP server
+    //    $client->disconnect();
 
-    }
+    // }
+
+
 
     public function delete($id){
         $reply = Reply::find($id);
@@ -238,7 +177,7 @@ class ReplyController extends Controller
 
     public function show($id){
         $reply = Reply::find($id);
-        $reply->seen += 1;
+        $reply->seen = 1;
         $reply->save();
         return view('reply-single', [
             'reply' => $reply
@@ -310,5 +249,15 @@ class ReplyController extends Controller
         return redirect()->back()->with('success', 'Inbox refreshed successfully');
     }
 
+    public function mark_all_as_read(){
+        Reply::where('seen', 0)->update(['seen' => 1]);
+        return redirect()->back()->with('success', 'All replies marked as read');
+    }
+
+    public function checkReplies(){
+        CheckMailboxes::dispatch();
+        echo "Checking replies from all inboxes";
+    }
+    
 
 }
