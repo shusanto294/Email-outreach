@@ -115,16 +115,15 @@ class EmailController extends Controller
                 $email->save(); 
 
 
-                $trackingUrl = route('track.email', ['uid' => $email->uid]);
-                $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
-
-                $dynamicBody .= $trackingPixel;
+                // $trackingUrl = route('track.email', ['uid' => $email->uid]);
+                // $trackingPixel = '<img src="' . $trackingUrl . '" alt="" style="display: none;">';
+                // $dynamicBody .= $trackingPixel;
 
                 Mail::html($dynamicBody, function (Message $message) use ($lead, $campaign, $dynamicSubject) {
                     $message->to($lead->email)->subject($dynamicSubject);
                 });
 
-                return $email;
+                echo 'Email sent to ' . $lead->email . ' successfully !';
 
             }else{
                 echo 'No leads found !'; 

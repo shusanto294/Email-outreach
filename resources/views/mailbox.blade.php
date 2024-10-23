@@ -83,7 +83,7 @@ table a:hover{
                   @endif
                 </td>
                 <td><a target="_blank" href="{{ route('send.test.email', $mailbox->id) }}">Send test email</a></td>
-                <td><a target="_blank" href="{{ route('check.mailbox', $mailbox->id) }}">Check Emails</a></td>
+                <td><a target="_blank" href="{{ route('check.mailbox', $mailbox->id) }}">Check Inbox</a></td>
                 <td><a href="{{ route('mailbox.delete', $mailbox->id) }}">Delete</a></td>
               </tr>
         @endforeach

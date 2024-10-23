@@ -43,7 +43,8 @@ class ReplyController extends Controller
         $inboxFolder = $client->getFolder('INBOX');
 
 
-        $messages = $inboxFolder->messages()->all()->limit(10)->get();
+        #$messages = $inboxFolder->messages()->all()->limit(10)->get();
+        $messages = $inboxFolder->messages()->all()->get();
         $messages = $messages->reverse();
 
         if(count($messages) < 1){
@@ -56,10 +57,13 @@ class ReplyController extends Controller
             //Get the unique identifier of the email
             $messageID = $message->getUid();
 
-            echo '<pre>';
-            //Print email subject
             echo 'Subject: ' . $message->getSubject() . '<br>';
-            echo '</pre>';
+            echo $message->getHTMLBody();
+
+            // echo '<pre>';
+            // var_dump($message);
+            // echo '/<pre>';
+
             echo '<hr>';
     
         }
