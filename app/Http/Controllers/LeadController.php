@@ -275,17 +275,64 @@ class LeadController extends Controller
     }
 
 
+    // public function uplaod_instant_data_scrapepr(Request $request)
+    // {
+    //     $listID = $request->input('list_id');
+    //     $leads = $request->input('data');
+    
+    //     $existingLeads = Lead::whereIn('email', array_column($leads, 'email'))->get();
+    //     $existingEmails = $existingLeads->pluck('email')->toArray();
+    //     $newLeads = array_filter($leads, function($lead) use ($existingEmails) {
+    //         return !in_array($lead['zp_xvo3G 3'], $existingEmails);
+    //     });
+    
+    //     $newLeads = array_map(function($lead) use ($listID) {
+    //         return [
+    //             'leadlist_id' => $listID,
+    //             'name' => $lead['zp_p2Xqs'] ?? '',
+    //             'linkedin_profile' => $lead['zp_p2Xqs href 5'] ?? '',
+    //             'title' => $lead['zp_xvo3G'] ?? '',
+    //             'company' => $lead['zp_xvo3G 2'] ?? 'Unknown Company',
+    //             // 'company_website' => $lead['company_website'] ?? '',
+    //             'location' => $lead['zp_xvo3G 4'] ?? '',
+    //             'email' => $lead['zp_xvo3G 3'],
+    //             // 'personalization' => $lead['personalization'] ?? '',
+    //             'subscribe' => $lead['subscribe'] ?? 1,
+    //             'sent' => $lead['sent'] ?? 0,
+    //             'opened' => $lead['opened'] ?? 0,
+    //             'replied' => $lead['replied'] ?? 0
+    //         ];
+    //     }, $newLeads);
+    
+    //     Lead::insert($newLeads);
+        
+    //     // Return the number of leads that were imported AND the number of leads that were skipped
+    //     return response()->json([
+    //         'imported' => count($newLeads),
+    //         'skipped' => count($leads) - count($newLeads)
+    //     ]);
+    // }
+
     public function uplaod_instant_data_scrapepr(Request $request)
     {
         $listID = $request->input('list_id');
         $leads = $request->input('data');
     
-        $existingLeads = Lead::whereIn('email', array_column($leads, 'email'))->get();
+        // Filter out leads where 'zp_xvo3G 3' (email) is blank or invalid
+        $leads = array_filter($leads, function($lead) {
+            return !empty($lead['zp_xvo3G 3']) && filter_var($lead['zp_xvo3G 3'], FILTER_VALIDATE_EMAIL);
+        });
+    
+        // Get existing leads to check for duplicates
+        $existingLeads = Lead::whereIn('email', array_column($leads, 'zp_xvo3G 3'))->get();
         $existingEmails = $existingLeads->pluck('email')->toArray();
+    
+        // Filter new leads by excluding any duplicates based on email
         $newLeads = array_filter($leads, function($lead) use ($existingEmails) {
             return !in_array($lead['zp_xvo3G 3'], $existingEmails);
         });
     
+        // Map the new leads to the required format
         $newLeads = array_map(function($lead) use ($listID) {
             return [
                 'leadlist_id' => $listID,
@@ -293,10 +340,8 @@ class LeadController extends Controller
                 'linkedin_profile' => $lead['zp_p2Xqs href 5'] ?? '',
                 'title' => $lead['zp_xvo3G'] ?? '',
                 'company' => $lead['zp_xvo3G 2'] ?? 'Unknown Company',
-                // 'company_website' => $lead['company_website'] ?? '',
                 'location' => $lead['zp_xvo3G 4'] ?? '',
                 'email' => $lead['zp_xvo3G 3'],
-                // 'personalization' => $lead['personalization'] ?? '',
                 'subscribe' => $lead['subscribe'] ?? 1,
                 'sent' => $lead['sent'] ?? 0,
                 'opened' => $lead['opened'] ?? 0,
@@ -304,16 +349,16 @@ class LeadController extends Controller
             ];
         }, $newLeads);
     
+        // Insert the new leads into the database
         Lead::insert($newLeads);
-        
+    
         // Return the number of leads that were imported AND the number of leads that were skipped
         return response()->json([
             'imported' => count($newLeads),
             'skipped' => count($leads) - count($newLeads)
         ]);
     }
-
-
+    
     
 
     }

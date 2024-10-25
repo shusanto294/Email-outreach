@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('leads', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('name');
+            $table->text('name')->nullable();
             $table->text('linkedin_profile')->nullable();
             $table->text('title')->nullable();
-            $table->text('company');
+            $table->text('company')->nullable();
             $table->text('company_website')->nullable();
             $table->text('location')->nullable();
             $table->text('email');
