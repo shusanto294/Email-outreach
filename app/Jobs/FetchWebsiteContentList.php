@@ -47,7 +47,7 @@ class FetchWebsiteContentList implements ShouldQueue
                 list($user, $domain) = explode("@", $email);
                 $url = 'https://' . $domain;
 
-                FetchWebsiteContent::dispatch($url, $lead);
+                FetchWebsiteContent::dispatch($url, $lead)->onQueue('medium');;
 
                 // Update the lead to mark it as added to the queue
                 $lead->update(['added_for_website_scraping' => true]);
