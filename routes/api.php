@@ -30,4 +30,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Ajax lead import
 Route::post('/uplaod-mailboxes', [MailboxController::class, 'upload_mailboxes']);
 Route::post('/uplaod-leads', [LeadController::class, 'uplaod_leads']);
-Route::post('/uplaod-instant-data-scrapper', [LeadController::class, 'uplaod_instant_data_scrapepr']);
+Route::post('/uplaod-instant-data-scrapper', [LeadController::class, 'upload_instant_data_scraper']);

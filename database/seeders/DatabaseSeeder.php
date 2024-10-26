@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
 
         DB::table('settings')->insert([
             'key' => 'send_emails',
-            'value' => 'on',
+            'value' => 'off',
         ]);
 
         DB::table('settings')->insert([
@@ -56,6 +56,16 @@ class DatabaseSeeder extends Seeder
         DB::table('settings')->insert([
             'key' => 'open_ai_prompt',
             'value' => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short email for the person asking them if they are interested in your service. The email should not be more then 500 characters. Don't write any subject line just write the email body. Don't put any placeholder texts like [Your Contact Information] etc. Start with why you love about them and why you wanted to reach out and then shortly explain how your B2B lead generation service can benefit them. End with Shusanto <br> B2B  lead generation expert.",
+        ]);
+
+        DB::table('settings')->insert([
+            'key' => 'daily_sending_limit',
+            'value' => 390
+        ]);
+
+        DB::table('settings')->insert([
+            'key' => 'email_sent_today',
+            'value' => 0
         ]);
 
 

@@ -140,15 +140,25 @@ class LeadlistController extends Controller
     }
 
 
-    public function leadlist_leads_change_campaign_id(Request $request){
+    public function leadlist_leads_change_campaign_id(Request $request)
+    {
         $data = $request->all();
-
+    
         $listID = $data['list_id'];
         $campaignID = $data['campaign_id'];
-
-        AddToCampaign::dispatch($listID, $campaignID);
-        return redirect()->back()->with('success', 'Adding to campaign started');
+    
+        // Update the campaign_id for all matching leads in a single query
+        Lead::where('leadlist_id', $listID)
+            ->where('verified', 1)
+            ->where('personalization', '!=', null)
+            ->update(['campaign_id' => $campaignID]);
+    
+        // Uncomment if you need to dispatch a job afterward
+        // AddToCampaign::dispatch($listID, $campaignID);
+    
+        return redirect()->back()->with('success', 'Leads added to campaign');
     }
+    
 
     public function api_create_list(Request $request){
       $leadlist  = Leadlist::create([

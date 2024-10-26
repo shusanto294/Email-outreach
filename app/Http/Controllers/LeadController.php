@@ -275,45 +275,7 @@ class LeadController extends Controller
     }
 
 
-    // public function uplaod_instant_data_scrapepr(Request $request)
-    // {
-    //     $listID = $request->input('list_id');
-    //     $leads = $request->input('data');
-    
-    //     $existingLeads = Lead::whereIn('email', array_column($leads, 'email'))->get();
-    //     $existingEmails = $existingLeads->pluck('email')->toArray();
-    //     $newLeads = array_filter($leads, function($lead) use ($existingEmails) {
-    //         return !in_array($lead['zp_xvo3G 3'], $existingEmails);
-    //     });
-    
-    //     $newLeads = array_map(function($lead) use ($listID) {
-    //         return [
-    //             'leadlist_id' => $listID,
-    //             'name' => $lead['zp_p2Xqs'] ?? '',
-    //             'linkedin_profile' => $lead['zp_p2Xqs href 5'] ?? '',
-    //             'title' => $lead['zp_xvo3G'] ?? '',
-    //             'company' => $lead['zp_xvo3G 2'] ?? 'Unknown Company',
-    //             // 'company_website' => $lead['company_website'] ?? '',
-    //             'location' => $lead['zp_xvo3G 4'] ?? '',
-    //             'email' => $lead['zp_xvo3G 3'],
-    //             // 'personalization' => $lead['personalization'] ?? '',
-    //             'subscribe' => $lead['subscribe'] ?? 1,
-    //             'sent' => $lead['sent'] ?? 0,
-    //             'opened' => $lead['opened'] ?? 0,
-    //             'replied' => $lead['replied'] ?? 0
-    //         ];
-    //     }, $newLeads);
-    
-    //     Lead::insert($newLeads);
-        
-    //     // Return the number of leads that were imported AND the number of leads that were skipped
-    //     return response()->json([
-    //         'imported' => count($newLeads),
-    //         'skipped' => count($leads) - count($newLeads)
-    //     ]);
-    // }
-
-    public function uplaod_instant_data_scrapepr(Request $request)
+    public function upload_instant_data_scraper(Request $request)
     {
         $listID = $request->input('list_id');
         $leads = $request->input('data');
@@ -345,7 +307,8 @@ class LeadController extends Controller
                 'subscribe' => $lead['subscribe'] ?? 1,
                 'sent' => $lead['sent'] ?? 0,
                 'opened' => $lead['opened'] ?? 0,
-                'replied' => $lead['replied'] ?? 0
+                'replied' => $lead['replied'] ?? 0,
+                'created_at' => now()
             ];
         }, $newLeads);
     
