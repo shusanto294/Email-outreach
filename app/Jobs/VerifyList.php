@@ -37,12 +37,11 @@ class VerifyList implements ShouldQueue
     {
         // Use cursor for better memory efficiency
         $leads = Lead::where('leadlist_id', $this->listId)
-                      ->whereNull('verified')
                       ->cursor();
     
         foreach ($leads as $lead) {
             try {
-                VerifyEmail::dispatch($lead)->onQueue('medium');;
+                VerifyEmail::dispatch($lead)->onQueue('high');;
 
                 // Update the lead to mark it as added to the queue
                 $lead->update(['added_for_verification' => true]);

@@ -163,34 +163,6 @@ class PersonalizeLead implements ShouldQueue
         $leadDetails = "Name: $firstName\nCompany: $lead->company n\Job Title: $lead->title n\Location: $lead->location n\Content: $websiteContentShorten";
         
 
-        //Personalize subject line
-
-        $prompt = [
-            'model' => 'gpt-4o-mini',
-            'messages' => [
-                ["role" => "system", "content" => $subject_line_prompt_text],
-                ["role" => "user", "content" => $leadDetails]
-            ]
-        ];
-    
-        // Call the OpenAI API
-        $result = OpenAI::chat()->create($prompt);
-
-        $input_tocken_before = intval($apiKey->input_tocken);
-        $apiKey->input_tocken = $input_tocken_before + $result->usage->promptTokens;
-
-        $output_tocken_before = intval($apiKey->output_tocken);
-        $apiKey->output_tocken = $output_tocken_before + $result->usage->completionTokens;
-
-        $apiKey->save();
-
-
-        $personalization =  nl2br($result->choices[0]->message->content);
-        // $lead->website_content = $websiteContent;
-        $lead->personalizedSubjectLine = $personalization;
-        $lead->save();
-
-
         //Personalization for the email body
 
         $prompt = [
@@ -216,6 +188,34 @@ class PersonalizeLead implements ShouldQueue
         $personalization =  nl2br($result->choices[0]->message->content);
         // $lead->website_content = $websiteContent;
         $lead->personalization = $personalization;
+        $lead->save();
+
+
+        //Personalize subject line
+
+        $prompt = [
+            'model' => 'gpt-4o-mini',
+            'messages' => [
+                ["role" => "system", "content" => $subject_line_prompt_text],
+                ["role" => "user", "content" => $lead->personalization]
+            ]
+        ];
+    
+        // Call the OpenAI API
+        $result = OpenAI::chat()->create($prompt);
+
+        $input_tocken_before = intval($apiKey->input_tocken);
+        $apiKey->input_tocken = $input_tocken_before + $result->usage->promptTokens;
+
+        $output_tocken_before = intval($apiKey->output_tocken);
+        $apiKey->output_tocken = $output_tocken_before + $result->usage->completionTokens;
+
+        $apiKey->save();
+
+
+        $personalization =  nl2br($result->choices[0]->message->content);
+        // $lead->website_content = $websiteContent;
+        $lead->personalizedSubjectLine = $personalization;
         $lead->save();
 
     }

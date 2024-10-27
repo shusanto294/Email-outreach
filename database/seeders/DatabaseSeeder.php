@@ -53,13 +53,13 @@ class DatabaseSeeder extends Seeder
         ]);
 
         DB::table('settings')->insert([
-            'key' => 'subject_line_prompt',
-            'value' => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short and attractive email subject line that will make the person curious about what's inside the email and open the email. The subject line should not be more than 100 characters.",
+            'key' => 'personalization_prompt',
+            'value' => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short email to the person asking them if they are interested in your service. The email should not be more than 500 characters. Don't write any subject line, write the body of the email. Don't put any placeholder texts like [Your Contact Information] etc. Start with what you love about them and why you wanted to reach out and then shortly explain how your B2B lead generation service can benefit them. End with Shusanto <br> B2B  lead generation expert.",
         ]);
 
         DB::table('settings')->insert([
-            'key' => 'personalization_prompt',
-            'value' => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short email for the person asking them if they are interested in your service. The email should not be more then 500 characters. Don't write any subject line just write the email body. Don't put any placeholder texts like [Your Contact Information] etc. Start with why you love about them and why you wanted to reach out and then shortly explain how your B2B lead generation service can benefit them. End with Shusanto <br> B2B  lead generation expert.",
+            'key' => 'subject_line_prompt',
+            'value' => "You are Shusanto, a B2B lead generation expert. You will be provided email copy and you will write a very personalized email subject line that looks like a genuine email from some friend or customer so the receiver opens the email anyway. The subject line should be between 41 to 50 characters. The subject line should reflect or summarize the actual email and should be also attractive enough for the receiver to open the email. Please don't use any quotation marks or placeholders.",
         ]);
 
         DB::table('settings')->insert([
@@ -83,9 +83,9 @@ class DatabaseSeeder extends Seeder
         // Lists
 
         DB::table('campaigns')->insert([
-            'name' => '[firstname], looking for B2B leads?',
-            'subject' => '[firstname], looking for B2B leads?',
-            'body' => '[personalizedLine]'
+            'name' => 'Personalized Email Campaign',
+            'subject' => '[personalizedSubjectLine]',
+            'body' => '[personalization]'
         ]);
         
         

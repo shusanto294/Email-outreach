@@ -43,7 +43,7 @@ class PersonalizeLeadList implements ShouldQueue
     
         foreach ($leads as $lead) {
             try {
-                PersonalizeLead::dispatch($lead);
+                PersonalizeLead::dispatch($lead)->onQueue('low');
 
                 // Update the lead to mark it as added to the queue
                 $lead->update(['added_for_personalization' => true]);

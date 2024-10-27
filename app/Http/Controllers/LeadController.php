@@ -261,7 +261,8 @@ class LeadController extends Controller
                 'subscribe' => $lead['subscribe'] ?? 1,
                 'sent' => $lead['sent'] ?? 0,
                 'opened' => $lead['opened'] ?? 0,
-                'replied' => $lead['replied'] ?? 0
+                'replied' => $lead['replied'] ?? 0,
+                'created_at' => now()
             ];
         }, $newLeads);
     

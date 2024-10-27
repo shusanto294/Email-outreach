@@ -112,11 +112,6 @@
         </div>
     </div> --}}
 
-
-
-
-
-
     <div class="row">
         <div class="col-lg-6 mb-3">
           <p><b>Email sending on/off</b></p>
@@ -149,11 +144,12 @@
     <form action="{{ route('update.settings') }}" method="POST" class="col-lg-12">
         @csrf
 
-        <label for="subject_line_prompt" class="mb-2">Subject line prompt :</label>
-        <textarea rows="5" type="email" name="subject_line_prompt" id="subject_line_prompt" placeholder="Write your subject line prompt here ..." class="form-control mb-3">{{ $subjectLinePrompt ? $subjectLinePrompt->value : '' }}</textarea>
 
         <label for="personalization_prompt" class="mb-2">Personalization prompt :</label>
         <textarea rows="5" type="email" name="personalization_prompt" id="personalization_prompt" placeholder="Write your personalization ai prompt here ..." class="form-control mb-3">{{ $personalizationPrompt ? $personalizationPrompt->value : '' }}</textarea>
+
+        <label for="subject_line_prompt" class="mb-2">Subject line prompt :</label>
+        <textarea rows="5" type="email" name="subject_line_prompt" id="subject_line_prompt" placeholder="Write your subject line prompt here ..." class="form-control mb-3">{{ $subjectLinePrompt ? $subjectLinePrompt->value : '' }}</textarea>
 
         <label for="send_test_emails_to" class="mb-2">Send test emails to :</label>
         <textarea rows="5" type="email" name="send_test_emails_to" id="send_test_emails_to" placeholder="user@example.com, user@example2.com" class="form-control mb-3">{{ $testEmailsTo ? $testEmailsTo->value : '' }}</textarea>
@@ -166,6 +162,11 @@
     </form>
 
 
+    <div class="row mt-5">
+        <p>Current time: {{ now()->setTimezone(config('app.timezone'))->format('g:i A') }}</p>
+        <p>Current date: {{ now()->setTimezone(config('app.timezone'))->format('d F Y') }}</p>
+    </div>
+    
 
     <div class="mt-5">
         @if ($totalJobs)

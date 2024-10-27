@@ -38,7 +38,6 @@ class FetchWebsiteContentList implements ShouldQueue
     {
         // Use cursor for better memory efficiency
         $leads = Lead::where('leadlist_id', $this->listId)
-                      ->where('verified', 1)
                       ->whereNull('website_content')
                       ->cursor();
     
@@ -48,7 +47,7 @@ class FetchWebsiteContentList implements ShouldQueue
                 list($user, $domain) = explode("@", $email);
                 $url = 'https://' . $domain;
 
-                FetchWebsiteContent::dispatch($url, $lead)->onQueue('medium');;
+                FetchWebsiteContent::dispatch($url, $lead)->onQueue('medium');
 
                 // Update the lead to mark it as added to the queue
                 $lead->update(['added_for_website_scraping' => true]);

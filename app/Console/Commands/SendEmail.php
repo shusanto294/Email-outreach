@@ -89,16 +89,16 @@ class SendEmail extends Command
                 $firstName = $nameParts[0] ?? '';
                 $company = $lead->company ?? '';
                 $personalizedLine = $lead->personalization ?? '';
-                $website = $lead->company_website;
+                $personalizedSubjectLine = $lead->personalizedSubjectLine;
     
                 $dynamicSubject = str_replace(
-                    ["[firstname]", "[company]", "[personalizedLine]", "[website]"], 
-                    [$firstName, $company, $personalizedLine, $website], 
+                    ["[firstname]", "[company]", "[personalization]", "[personalizedSubjectLine]"], 
+                    [$firstName, $company, $personalizedLine, $personalizedSubjectLine], 
                     $subject
                 );
                 $dynamicBody = str_replace(
-                    ["[firstname]", "[company]", "[personalizedLine]", "[website]"], 
-                    [$firstName, $company, $personalizedLine, $website], 
+                    ["[firstname]", "[company]", "[personalization]", "[personalizedSubjectLine]"], 
+                    [$firstName, $company, $personalizedLine, $personalizedSubjectLine], 
                     $body
                 );
     
@@ -111,6 +111,8 @@ class SendEmail extends Command
                     'body' => $dynamicBody,
                     'campaign_id' => $campaign->id,
                     'lead_id' => $lead->id,
+                    'sent_to'=> $lead->email,
+                    'reciver_name' => $lead->name,
                     'uid' => $finalUniqueId
                 ]);
     

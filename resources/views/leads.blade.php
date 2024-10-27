@@ -3,69 +3,9 @@
 @section('head')
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <style>
-      a.icon-link {
-          text-decoration: none;
-          margin-right: 10px;
-          font-size: 20px;
-      }
-      a.icon-link.website{
-          text-decoration: none;
-          margin-right: 0px;
-          font-size: 16px;
-      }
-      .leads-header {
-        display: flex;
-        margin-bottom: 30px;
-      }
-      .leads-header .search-form, .leads-header .import-button{
-        flex: 1
-      }
-      .search-form {
-          display: felx;
-      }
-
-      form.lead-search-form {
-          display: flex;
-          max-width: 300px;
-      }
-
-      form.lead-search-form button {
-          margin-left: 20px;
-      }
-      .search-form {
-          display: felx;
-      }
-
-      form.lead-search-form {
-          display: flex;
-          max-width: 400px;
-      }
-
-      form.lead-search-form button {
-          margin-left: 20px;
-      }
-
-      .import-button {
-          display: flex;
-          justify-content: flex-end;
-      }
-      table a{
-        text-decoration: none;
-        color: #000;
-      }
-      table a:hover{
-        text-decoration: underline !Important;
-      }
-      table a:visited{
-        color: green;
-      }
-      table a.active-link{
-        color: green;
-        text-decoration: underline;
-      }
-      table a:active{
-        text-decoration: underline;
-      }
+    .lead{
+      font-size: 18px;
+    }
     </style>
 @endsection
 
@@ -95,34 +35,27 @@
 
 @if(count($leads) > 0 )
 
-<table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#ID</i></th>
-        <th scope="col">Name</th>
-        {{-- <th scope="col">Company</th> --}}
-        <th scope="col">Website</th>
-        <th scope="col">Email</th>
-        {{-- <th scope="col">WC</th> --}}
-        <th scope="col">PS</th>
-      </tr>
-    </thead>
-    <tbody>
-        @foreach ($leads as $lead)
-            <tr>
-              <td>{{ $lead->id }}</td>
-              <td>
-                <a class="name" target="_blank" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a>
-              </td>
-              {{-- <td>{{ $lead->company }}</td> --}}
-              <td><a class="website" href="{{ $lead->company_website }}" target="_blank">{{ $lead->company_website }}</a> </td>
-              <td>{{ $lead->email }}</td>
-              {{-- <td>{!! $lead->website_content ? "<span style='color: green;''>&#x2713;</span>" : "<span style='color: red;''>&#x2715;</span>" !!}</td> --}}
-              <td><a class="leadlink" target="_blank" href="{{ route('lead.show', $lead->id) }}#personalizedLine">{!! $lead->personalization ? $lead->personalization : "<span style='color: red;''>&#x2715;</span>" !!}</a></td>
-            </tr>
-        @endforeach
-    </tbody>
-  </table>
+@foreach ($leads as $lead)
+    <div class="lead card p-3 mb-4">
+        <div class="lead-details">
+
+
+
+          <p><b>{{ $lead->personalizedSubjectLine }}</b></p>
+          <p>{!! $lead->personalization !!}</p>
+
+          <hr>
+
+          <p>
+            Name: <a href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a> <br>
+            Company: {{ $lead->company }} <br>
+            Email: {{ $lead->email }} <br>
+          </p>
+        </div>
+            
+    </div>
+
+@endforeach
 
 @endif
 

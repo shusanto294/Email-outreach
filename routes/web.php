@@ -81,8 +81,8 @@ Route::get('/campaign/{id}/regerate-emails', [CampaignController::class, 'regera
 // Route::get('/test-email/{mailboxID}', [EmailController::class, 'testEmail'])->name('test.email');
 // Route::get('/track-email/{uid}', [EmailController::class, 'trackEmail'])->name('track.email');
 
-Route::get('/emails', [EmailController::class, 'index'])->middleware(['auth', 'verified'])->name('emails.index');
-Route::get('/sent', [EmailController::class, 'responded'])->middleware(['auth', 'verified'])->name('emails.replies');
+// Route::get('/emails', [EmailController::class, 'index'])->middleware(['auth', 'verified'])->name('emails.index');
+Route::get('/sent', [EmailController::class, 'index'])->middleware(['auth', 'verified'])->name('emails.replies');
 Route::get('/sent/{id}', [EmailController::class, 'show'])->middleware(['auth', 'verified'])->name('email.single');
 Route::get('/sent/{id}/edit', [EmailController::class, 'edit'])->middleware(['auth', 'verified'])->name('email.edit');
 Route::post('/sent/{id}/update', [EmailController::class, 'update'])->middleware(['auth', 'verified'])->name('email.update');
