@@ -37,13 +37,13 @@ class PersonalizeLeadList implements ShouldQueue
         // Use cursor for better memory efficiency
         $leads = Lead::where('leadlist_id', $this->listId)
                       ->where('verified', 1)
+                      ->whereNull('personalizedSubjectLine')
                       ->whereNull('personalization')
-                      ->whereNull('added_for_personalization')
                       ->cursor();
     
         foreach ($leads as $lead) {
             try {
-                PersonalizeLead::dispatch($lead)->onQueue('low');;
+                PersonalizeLead::dispatch($lead);
 
                 // Update the lead to mark it as added to the queue
                 $lead->update(['added_for_personalization' => true]);

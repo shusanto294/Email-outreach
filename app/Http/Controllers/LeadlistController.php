@@ -242,7 +242,7 @@ public function fetch_website_content($id){
 
 
 public function personalize_list($id){
-    PersonalizeLeadList::dispatch($id)->onQueue('low');;
+    PersonalizeLeadList::dispatch($id);
     return redirect()->back()->with('success', 'List personalization started');
 }
 

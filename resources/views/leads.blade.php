@@ -73,7 +73,7 @@
 
 @include('alerts')
 
-<div class="leads-header">
+{{-- <div class="leads-header">
   <div class="search-form">
     <form action="{{ route('lead.search') }}" method="POST" class="lead-search-form">
       @csrf
@@ -91,7 +91,7 @@
     <a href="/import" class="btn btn-secondary">Import leads</a>
     <button class="btn btn-secondary" id="openLinks" style="margin-left: 20px;">Edit all Leads</button>
   </div>
-</div>
+</div> --}}
 
 @if(count($leads) > 0 )
 

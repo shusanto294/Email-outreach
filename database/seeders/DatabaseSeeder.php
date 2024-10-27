@@ -52,9 +52,13 @@ class DatabaseSeeder extends Seeder
             'value' => 'shusanto294@gmail.com',
         ]);
 
+        DB::table('settings')->insert([
+            'key' => 'subject_line_prompt',
+            'value' => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short and attractive email subject line that will make the person curious about what's inside the email and open the email. The subject line should not be more than 100 characters.",
+        ]);
 
         DB::table('settings')->insert([
-            'key' => 'open_ai_prompt',
+            'key' => 'personalization_prompt',
             'value' => "You are Shusanto, a B2B lead generation expert. You will be provided lead details and you will write a short email for the person asking them if they are interested in your service. The email should not be more then 500 characters. Don't write any subject line just write the email body. Don't put any placeholder texts like [Your Contact Information] etc. Start with why you love about them and why you wanted to reach out and then shortly explain how your B2B lead generation service can benefit them. End with Shusanto <br> B2B  lead generation expert.",
         ]);
 

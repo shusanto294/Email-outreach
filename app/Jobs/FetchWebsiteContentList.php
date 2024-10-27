@@ -38,7 +38,8 @@ class FetchWebsiteContentList implements ShouldQueue
     {
         // Use cursor for better memory efficiency
         $leads = Lead::where('leadlist_id', $this->listId)
-                      ->whereNull('added_for_website_scraping')
+                      ->where('verified', 1)
+                      ->whereNull('website_content')
                       ->cursor();
     
         foreach ($leads as $lead) {

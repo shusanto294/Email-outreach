@@ -20,10 +20,12 @@ class DashboardController extends Controller
 
         $totalJobs = DB::table('jobs')->count();
         $totalFailedJobs = DB::table('failed_jobs')->count();
+        $failedJobs = DB::table('failed_jobs')->orderBy('id', 'desc')->get();
     
         return view('dashboard', [
             'totalJobs' => $totalJobs,
-            'totalFailedJobs' => $totalFailedJobs
+            'totalFailedJobs' => $totalFailedJobs,
+            'failedJobs' => $failedJobs,
         ]);
     }
 
@@ -32,6 +34,12 @@ class DashboardController extends Controller
         $log = file_get_contents(storage_path('logs/laravel.log'));
         return response($log)->header('Content-Type', 'text/plain');
     }
+
+    public function deleteFailedJobs(){
+        DB::table('failed_jobs')->delete();
+        return redirect()->back()->with('success', 'Failed jobs deleted successfully');
+    }
 }
+
 
 

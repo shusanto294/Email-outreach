@@ -113,15 +113,7 @@
     </div> --}}
 
 
-    <div class="mb-5">
-        @if ($totalJobs)
-            <p>{{ $totalJobs }} Jobs are in waiting to perform background operations</p>
-        @endif
-    
-        @if ($totalFailedJobs)
-            <p class="text-danger">{{ $totalFailedJobs }} Jobs failed their operation</p>
-        @endif
-    </div>
+
 
 
 
@@ -150,14 +142,18 @@
 
     @php
         $testEmailsTo = App\Models\Setting::where('key', 'send_test_emails_to')->first();
-        $openAiPrompt = App\Models\Setting::where('key', 'open_ai_prompt')->first();
+        $subjectLinePrompt = App\Models\Setting::where('key', 'subject_line_prompt')->first();
+        $personalizationPrompt = App\Models\Setting::where('key', 'personalization_prompt')->first();
         $dailySendingLimit = App\Models\Setting::where('key', 'daily_sending_limit')->first();
     @endphp
     <form action="{{ route('update.settings') }}" method="POST" class="col-lg-12">
         @csrf
 
-        <label for="open_ai_prompt" class="mb-2">Open AI prompt :</label>
-        <textarea rows="5" type="email" name="open_ai_prompt" id="open_ai_prompt" placeholder="Write your open ai prompt here ..." class="form-control mb-3">{{ $openAiPrompt ? $openAiPrompt->value : '' }}</textarea>
+        <label for="subject_line_prompt" class="mb-2">Subject line prompt :</label>
+        <textarea rows="5" type="email" name="subject_line_prompt" id="subject_line_prompt" placeholder="Write your subject line prompt here ..." class="form-control mb-3">{{ $subjectLinePrompt ? $subjectLinePrompt->value : '' }}</textarea>
+
+        <label for="personalization_prompt" class="mb-2">Personalization prompt :</label>
+        <textarea rows="5" type="email" name="personalization_prompt" id="personalization_prompt" placeholder="Write your personalization ai prompt here ..." class="form-control mb-3">{{ $personalizationPrompt ? $personalizationPrompt->value : '' }}</textarea>
 
         <label for="send_test_emails_to" class="mb-2">Send test emails to :</label>
         <textarea rows="5" type="email" name="send_test_emails_to" id="send_test_emails_to" placeholder="user@example.com, user@example2.com" class="form-control mb-3">{{ $testEmailsTo ? $testEmailsTo->value : '' }}</textarea>
@@ -171,11 +167,34 @@
 
 
 
-   
+    <div class="mt-5">
+        @if ($totalJobs)
+            <p>{{ $totalJobs }} Jobs are in waiting to perform background operations</p>
+        @endif
     
+        @if ($totalFailedJobs)
+            <p class="text-danger">{{ $totalFailedJobs }} Jobs failed their operation</p>
+        @endif
+    </div>
 
 
-    
+    @if ($totalFailedJobs)
+        <div class="row mb-3">
+            <div style="widows: 100%; text-align: right;"> 
+                <a class="btn btn-danger" href="/delete-failed-jobs">Delete Failed jobs</a>
+            </div>
+        </div>
+    @endif
+
+
+
+    @foreach ($failedJobs as $failedJob)
+        <div class="card mb-3">
+            <div class="card-body">
+                <p class="card-text">{{ $failedJob->exception }}</p>
+            </div>
+        </div>
+    @endforeach
 
 
 @endsection

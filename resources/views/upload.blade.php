@@ -13,9 +13,13 @@ div#progress {
 <form id="uploadForm" enctype="multipart/form-data">
     <input type="hidden" name="list_id" value="{{ $list_id }}">
     <input type="file" id="csvFile" accept=".csv">
-    <button type="submit">Upload</button>
+    <button class="btn btn-secondary" type="submit">Upload</button>
 </form>
 <div id="progress"></div>
+
+<div class="mt-5">
+    <a href="{{ route('show.list', $list_id) }}">Go Back</a>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
@@ -23,6 +27,7 @@ div#progress {
     $(document).ready(function() {
         $('#uploadForm').on('submit', function(e) {
             e.preventDefault();
+            $('#progress').text('Processing...');
             
             const file = $('#csvFile')[0].files[0];
             const listId = $('input[name="list_id"]').val();  // Get the selected list_id
@@ -41,7 +46,7 @@ div#progress {
                         alert('No data found in the CSV file');
                         return;
                     }
-                    processInChunks(data, 1000, listId);  // Pass listId to processInChunks
+                    processInChunks(data, 100, listId);  // Pass listId to processInChunks
                 }
             });
         });

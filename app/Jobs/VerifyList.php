@@ -37,7 +37,7 @@ class VerifyList implements ShouldQueue
     {
         // Use cursor for better memory efficiency
         $leads = Lead::where('leadlist_id', $this->listId)
-                      ->whereNull('added_for_verification')
+                      ->whereNull('verified')
                       ->cursor();
     
         foreach ($leads as $lead) {

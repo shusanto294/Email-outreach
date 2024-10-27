@@ -13,11 +13,11 @@
 
     <div class="buttons">
         <a class="btn btn-secondary" href="{{ route('upload.instant.data.scrapper', $id) }}">Instant Web scrapper upload</a>
-        <a class="btn btn-secondary" href="{{ route('upload.list', $id) }}">Upload</a>
-        <a class="btn btn-secondary" href="{{ route('download.list', $id) }}">Downlaod</a>
         <a class="btn btn-secondary" href="{{ route('verify.list', $id) }}">Verify</a>
         <a class="btn btn-secondary" href="{{ route('fetch.content', $id) }}">Fetch content</a>
         <a class="btn btn-secondary" href="{{ route('personalize.list', $id) }}">Personalize</a>
+        <a class="btn btn-secondary" href="{{ route('upload.list', $id) }}">Upload</a>
+        <a class="btn btn-secondary" href="{{ route('download.list', $id) }}">Downlaod</a>
         <a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $id) }}">Add to campaign</a>
         
     <div>
@@ -55,11 +55,9 @@
         </div>
     </div>
 
-    <div class="row mt-5">
-        <div class="col">
-            <a class="btn btn-danger" href="{{ route('delete.list', $id) }}">Delete List</a>
-        </div>
-    </div>
+    <div class="buttons mt-5">
+        <a style="margin-left: auto;" class="btn btn-danger" href="{{ route('delete.list', $id) }}">Delete List</a>
+    <div>
     
 
 
