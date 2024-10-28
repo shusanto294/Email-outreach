@@ -25,7 +25,7 @@ class DashboardController extends Controller
         return view('dashboard', [
             'totalJobs' => $totalJobs,
             'totalFailedJobs' => $totalFailedJobs,
-            'failedJobs' => $failedJobs,
+            // 'failedJobs' => $failedJobs,
         ]);
     }
 

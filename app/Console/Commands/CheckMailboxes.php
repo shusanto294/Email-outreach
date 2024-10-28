@@ -57,22 +57,17 @@ class CheckMailboxes extends Command
     
                 if ($sender) {
                     $fromEmail = $sender->mail;
-                    $newReply = Reply::create([
-                        'from_name'    => $sender->personal,
-                        'from_address' => $sender->mailbox . '@' . $sender->host,
-                        'to'           => $mailbox->mail_username,
-                        'subject'      => $message->getSubject(),
-                        'body'         => $message->getHTMLBody(),
-                        'campaign_id'  => null
-                    ]);
-    
                     $lead = Lead::where('email', $fromEmail)->first();
     
                     if ($lead) {
-                        $newReply->campaign_id = $lead->campaign_id;
-                        $lead->replied = true;
-                        $lead->save();
-                        $newReply->save();
+                        $newReply = Reply::create([
+                            'from_name'    => $sender->personal,
+                            'from_address' => $sender->mailbox . '@' . $sender->host,
+                            'to'           => $mailbox->mail_username,
+                            'subject'      => $message->getSubject(),
+                            'body'         => $message->getHTMLBody(),
+                            'campaign_id'  => $lead->campaign_id ?? null,
+                        ]);
                     }
                 }
     
