@@ -46,9 +46,9 @@ table a:hover{
         <th scope="col">Name</th>
         <th scope="col">Leads</th>
         <th scope="col">Sent</th>
-        <th scope="col">Opened</th>
+        {{-- <th scope="col">Opened</th> --}}
         <th scope="col">Replied</th>
-        <th scope="col">Open Rate</th>
+        {{-- <th scope="col">Open Rate</th> --}}
         <th scope="col">Reply rate</th>
         <th scope="col" style="text-align: right">Actions</th>
       </tr>
@@ -58,7 +58,7 @@ table a:hover{
           @php
             $leadsCount = App\Models\Lead::where('campaign_id', $campaign->id)->count();
             $sentCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('sent', 1)->count();
-            $openedCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('opened', 1)->count();
+            // $openedCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('opened', 1)->count();
             $replyCount = App\Models\Reply::where('campaign_id', $campaign->id)->count();
 
             
@@ -73,15 +73,15 @@ table a:hover{
                 </td>
 
 
-                <td>
+                {{-- <td>
                   <a href="{{ route('campaign.opened', $campaign->id) }}">{{ $openedCount }}</a>
-                </td>
+                </td> --}}
 
                 <td>
                   <a href="{{ route('campaign.replied', $campaign->id) }}">{{ $replyCount }}</a>
                 </td>
 
-                <td>
+                {{-- <td>
                   @php  
                   
                     if($openedCount && $sentCount){
@@ -92,7 +92,8 @@ table a:hover{
                     }
                     
                   @endphp
-                </td>
+                </td> --}}
+                
                 <td>
                   @php  
                   

@@ -72,7 +72,7 @@
     $reliesNotSeen = App\Models\Reply::where('seen', '<', 1)->count();
     @endphp
 
-    <div class="inline-space-between">
+    <div class="inline-space-between mb-3">
         @if ($reliesNotSeen)
             <a class="new-replies-count" style="color: #000;" href="/inbox">{{ $reliesNotSeen }} new {{ $reliesNotSeen > 1 ? "replies" : "reply" }}</a>
         @endif
