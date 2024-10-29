@@ -228,7 +228,7 @@ form.inline-form button{
               <td>{{ $email->reciver_name }}</td>
               <td>{{ $email->sent_to }}</td>
               <td>
-                {!! $email->sent ? \Carbon\Carbon::parse($email->sent)->format('h:i A') : ''  !!}
+                {!! \Carbon\Carbon::parse($email->created_at)->format('h:i A') !!}
               </td>
 
             </tr>
