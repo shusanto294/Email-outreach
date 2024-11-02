@@ -69,7 +69,8 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Dhaka',
+    // 'timezone' => 'Asia/Dhaka',
+    'timezone' => 'America/Chicago',
 
     /*
     |--------------------------------------------------------------------------
