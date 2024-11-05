@@ -78,6 +78,11 @@
         @endif
     </div>
 
+    <div class="row mb-5">
+        <p>{{ now()->setTimezone(config('app.timezone'))->format('g:i A') }}</p>
+        <p>{{ now()->setTimezone(config('app.timezone'))->format('l, d F Y') }}</p>
+    </div>
+
     {{-- <div class="row infoboxes mb-5">
         <div class="column">
             <div class="info-box">
@@ -162,10 +167,7 @@
     </form>
 
 
-    <div class="row mt-5">
-        <p>Current time: {{ now()->setTimezone(config('app.timezone'))->format('g:i A') }}</p>
-        <p>Current date: {{ now()->setTimezone(config('app.timezone'))->format('d F Y') }}</p>
-    </div>
+
     
 
     <div class="mt-5">

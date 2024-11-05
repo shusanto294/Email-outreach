@@ -1,10 +1,4 @@
 Xampp php extensions needed
 extension=zip
 extension=gd
-
-
-Check supervisor status
-sudo supervisorctl status
-
-Check cpu and memory usage
-htop
+extension=imap
