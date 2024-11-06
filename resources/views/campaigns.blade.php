@@ -37,89 +37,65 @@ table a:hover{
   </button>
 </p>
 
-@if(count($campaigns) > 0 )
+@if(count($campaigns) > 0)
 
-<table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#id</th>
-        <th scope="col">Name</th>
-        <th scope="col">Leads</th>
-        <th scope="col">Sent</th>
-        {{-- <th scope="col">Opened</th> --}}
-        <th scope="col">Replied</th>
-        {{-- <th scope="col">Open Rate</th> --}}
-        <th scope="col">Reply rate</th>
-        <th scope="col" style="text-align: right">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-        @foreach ($campaigns as $campaign)
-          @php
-            $leadsCount = App\Models\Lead::where('campaign_id', $campaign->id)->count();
-            $sentCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('sent', 1)->count();
-            // $openedCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('opened', 1)->count();
-            $replyCount = App\Models\Reply::where('campaign_id', $campaign->id)->count();
+  @foreach ($campaigns as $campaign)
+    @php
+      $leadsCount = App\Models\Lead::where('campaign_id', $campaign->id)->count();
+      $sentCount = App\Models\Lead::where('campaign_id', $campaign->id)->where('sent', 1)->count();
+      $replyCount = App\Models\Reply::where('campaign_id', $campaign->id)->count();
+    @endphp
 
-            
-          @endphp
-            <tr>
-                <td>{{ $campaign->id }}</td>
-                <td><a href="{{ route('campaign.single', $campaign->id) }}">{{ $campaign->name }}</a></td>
-                <td><a href="{{ route('campaign.show.leads', $campaign->id) }}">{{ $leadsCount == 0 ? 'n/a' : $leadsCount; }}</a></td>
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <a href="{{ route('campaign.single', $campaign->id) }}"><h5 class="card-title">{{ $campaign->name }}</h5></a>
 
-                <td>
-                  <a href="{{ route('campaign.sent', $campaign->id) }}">{{ $sentCount }}</a>
-                </td>
-
-
-                {{-- <td>
-                  <a href="{{ route('campaign.opened', $campaign->id) }}">{{ $openedCount }}</a>
-                </td> --}}
-
-                <td>
-                  <a href="{{ route('campaign.replied', $campaign->id) }}">{{ $replyCount }}</a>
-                </td>
-
-                {{-- <td>
-                  @php  
-                  
-                    if($openedCount && $sentCount){
-                      $openRate = ($openedCount / $sentCount) * 100;
-                      echo number_format($openRate, 2).' %';
-                    }else{
-                      echo 'n/a';
-                    }
-                    
-                  @endphp
-                </td> --}}
-                
-                <td>
-                  @php  
-                  
-                    if($replyCount && $sentCount){
-                      $replyRate = ($replyCount / $sentCount) * 100;
-                      echo number_format($replyRate, 2).' %';
-                    }else{
-                      echo 'n/a';
-                    }
-                    
-                  @endphp
-                </td>
-                <td>
-                  <div class="action-icons">
-                    <a href="{{ route('campaign.duplicate', $campaign->id) }}"><i class="fa-regular fa-paste"></i></a>
-                    <a href="{{ route('campaign.delete',  $campaign->id) }}"><i class="fa-regular fa-trash-can"></i></a>
-                  </div>
-                  
-                  
-                </td>
-            </tr>
-        @endforeach
-    </tbody>
-  </table>
+          <p class="card-text">
+            <strong>Leads:</strong> 
+            <a href="{{ route('campaign.show.leads', $campaign->id) }}">
+              {{ $leadsCount == 0 ? 'n/a' : $leadsCount }}
+            </a>
+          </p>
+          <p class="card-text">
+            <strong>Sent:</strong> 
+            <a href="{{ route('campaign.sent', $campaign->id) }}">
+              {{ $sentCount }}
+            </a>
+          </p>
+          <p class="card-text">
+            <strong>Replied:</strong> 
+            <a href="{{ route('campaign.replied', $campaign->id) }}">
+              {{ $replyCount }}
+            </a>
+          </p>
+          <p class="card-text">
+            <strong>Reply Rate:</strong> 
+            @php  
+              if($replyCount && $sentCount){
+                $replyRate = ($replyCount / $sentCount) * 100;
+                echo number_format($replyRate, 2) . ' %';
+              } else {
+                echo 'n/a';
+              }
+            @endphp
+          </p>
+          <div class="d-flex justify-content-end">
+            <a href="{{ route('campaign.duplicate', $campaign->id) }}" class="btn btn-sm btn-secondary mr-2" style="margin-right: 10px;">
+              <i class="fa-regular fa-paste"></i> Duplicate
+            </a>
+            <a href="{{ route('campaign.delete',  $campaign->id) }}" class="btn btn-sm btn-danger">
+              <i class="fa-regular fa-trash-can"></i> Delete
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endforeach
 
 @endif
+
+
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

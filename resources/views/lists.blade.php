@@ -33,32 +33,27 @@ table a:hover{
 
 <div id="alert"></div>
 
+
 @if(count($lists) > 0)
 
-<table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#id</th>
-        <th scope="col">Name</th>
-        <th scope="col">Leads</th>
-      </tr>
-    </thead>
-    <tbody>
-        @foreach ($lists as $list)
+  @foreach ($lists as $list)
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><a href="{{ route('show.list', $list->id) }}">{{ $list->name }}</a></h5>
+
           @php
               $leadsCount = $list->leads()->count();
           @endphp
 
-            <tr>
-                <td>{{ $list->id }}</td>
-                <td><a href="{{ route('show.list', $list->id) }}">{{ $list->name }}</a></td>
-                <td>{{ number_format($leadsCount) }}</td>
-            </tr>
-        @endforeach
-    </tbody>
-  </table>
+          <p class="card-text"><strong>Leads:</strong> {{ number_format($leadsCount) }}</p>
+        </div>
+      </div>
+    </div>
+  @endforeach
 
 @endif
+
 
 
   <!-- Modal -->

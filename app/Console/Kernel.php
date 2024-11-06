@@ -30,7 +30,7 @@ class Kernel extends ConsoleKernel
         });
     
         // Run app:check-mailboxes every minute
-        $schedule->command('app:check-mailboxes')->everyMinute();
+        $schedule->command('app:app:check-replies')->everyMinute();
     }
     
 

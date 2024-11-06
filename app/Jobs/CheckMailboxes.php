@@ -27,7 +27,7 @@ class CheckMailboxes implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(): void
+    public function handle()
     {
         $mailboxes = Mailbox::cursor();
     
@@ -45,6 +45,10 @@ class CheckMailboxes implements ShouldQueue
             $client->connect();
             $inboxFolder = $client->getFolder('INBOX');
     
+    
+            // $messages = $inboxFolder->messages()->all()->get();
+            //$messages = $inboxFolder->messages()->all()->limit(10)->get();
+    
             // Fetch unseen messages in batches
             $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
     
@@ -57,34 +61,59 @@ class CheckMailboxes implements ShouldQueue
     
                 if ($sender) {
                     $fromEmail = $sender->mail;
-                    $newReply = Reply::create([
-                        'from_name'    => $sender->personal,
-                        'from_address' => $sender->mailbox . '@' . $sender->host,
-                        'to'           => $mailbox->mail_username,
-                        'subject'      => $message->getSubject(),
-                        'body'         => $message->getHTMLBody(),
-                        'campaign_id'  => null
-                    ]);
-    
                     $lead = Lead::where('email', $fromEmail)->first();
     
                     if ($lead) {
-                        $newReply->campaign_id = $lead->campaign_id;
-                        $lead->replied = true;
-                        $lead->save();
-                        $newReply->save();
+                        // Try to retrieve the HTML body, fallback to text body if HTML is missing
+                        $body = $message->getHTMLBody() ?? $message->getTextBody();
+                        $body = mb_convert_encoding($body, 'UTF-8', 'auto'); // Handle character encoding
+    
+                        // Decode subject if needed
+                        $subject = $this->decodeMimeStr($message->getSubject());
+    
+                        $newReply = Reply::create([
+                            'from_name'    => $sender->personal,
+                            'from_address' => $sender->mailbox . '@' . $sender->host,
+                            'to'           => $mailbox->mail_username,
+                            'subject'      => $subject,
+                            'body'         => $body,
+                            'campaign_id'  => $lead->campaign_id ?? null,
+                        ]);
                     }
                 }
     
                 // Move to Archive
                 // $message->move('INBOX.Archive');
-
+    
                 // Mark as seen
                 $message->setFlag('Seen');
             }
     
             $client->disconnect();
         }
+    }
+    
+    /**
+     * Decode MIME encoded string to properly display subject lines with special characters.
+     */
+    protected function decodeMimeStr($string)
+    {
+        $decoded = '';
+        $elements = imap_mime_header_decode($string);
+    
+        foreach ($elements as $element) {
+            // Default to UTF-8 if charset is missing or invalid
+            $charset = !empty($element->charset) ? $element->charset : 'UTF-8';
+    
+            // Handle common invalid charset cases
+            if (!in_array(strtoupper($charset), mb_list_encodings())) {
+                $charset = 'ISO-8859-1'; // Fallback if charset is invalid
+            }
+    
+            $decoded .= mb_convert_encoding($element->text, 'UTF-8', $charset);
+        }
+    
+        return $decoded;
     }
 
 

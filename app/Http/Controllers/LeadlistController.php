@@ -230,19 +230,19 @@ public function upload_instant_data_scrapper($id){
 
 public function verify_list($id){
     // VerifyList::dispatch($id);
-    VerifyList::dispatch($id)->onQueue('high');
+    VerifyList::dispatch($id)->onQueue('medium');
     return redirect()->back()->with('success', 'List verification started');
 }
 
 
 public function fetch_website_content($id){
-    FetchWebsiteContentList::dispatch($id)->onQueue('medium');
+    FetchWebsiteContentList::dispatch($id)->onQueue('low');
     return redirect()->back()->with('success', 'List website content fetching started');
 }
 
 
 public function personalize_list($id){
-    PersonalizeLeadList::dispatch($id)->onQueue('low');
+    PersonalizeLeadList::dispatch($id)->onQueue('default');
     return redirect()->back()->with('success', 'List personalization started');
 }
 

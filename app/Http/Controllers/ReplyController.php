@@ -249,7 +249,7 @@ class ReplyController extends Controller
     }
 
     public function refresh_inbox(){
-        CheckMailboxes::dispatch()->onQueue('high');;
+        CheckMailboxes::dispatch()->onQueue('high');
         return redirect()->back()->with('success', 'Inbox refreshed successfully');
     }
 
@@ -259,7 +259,7 @@ class ReplyController extends Controller
     }
 
     public function checkReplies(){
-        CheckMailboxes::dispatch()->onQueue('high');;
+        CheckMailboxes::dispatch()->onQueue('high');
         echo "Checking replies from all inboxes";
     }
     

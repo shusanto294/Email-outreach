@@ -2,3 +2,6 @@ Xampp php extensions needed
 extension=zip
 extension=gd
 extension=imap
+
+Queue orders
+php artisan queue:work --queue high,medium,low,default

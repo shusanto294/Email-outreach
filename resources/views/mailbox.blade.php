@@ -27,70 +27,57 @@ table a:hover{
     </button>
 </p>
 
-@if(count($mailboxes) > 0 )
+@if(count($mailboxes) > 0)
 
-<table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#id</th>
-        <th scope="col">Mail</th>
-        <th scope="col">Sent</th>
-        <th scope="col">Opened</th>
-        <th scope="col">Open rate</th>
-        <th scope="col">Status</th>
-        <th scope="col">Test</th>
-        <th scope="col">Check</th>
-        <th scope="col">Delete</th>
-    </thead>
-    <tbody>
 
-    @php
-      $lastCampaign = App\Models\Campaign::orderby('id', 'desc')->first();
-      $lastCampaignId = 0;
-      if($lastCampaign){
-        $lastCampaignId = $lastCampaign->id;
-      }
-    @endphp
+  @php
+    $lastCampaign = App\Models\Campaign::orderby('id', 'desc')->first();
+    $lastCampaignId = $lastCampaign ? $lastCampaign->id : 0;
+  @endphp
 
-        @foreach ($mailboxes as $mailbox)
-            <tr>
-                <td>{{ $mailbox->id }}</td>
-                <td><a href="{{ route('mailbox.show', $mailbox->id) }}">{{ $mailbox->mail_username }}</a> </td>
-                @php
-                    $totalEmailSent = App\Models\Email::where('campaign_id', $lastCampaignId)->where('mailbox_id', $mailbox->id)->count();
-                @endphp
-                <td>{{ $totalEmailSent }}</td>
-                
-                @php
-                    $totalEmailOpened = App\Models\Email::where('campaign_id', $lastCampaignId)->where('mailbox_id', $mailbox->id)->where('opened', '>' , 0)->count();
-                @endphp
-                <td>{{ $totalEmailOpened }}</td>
-                <td>
-                  @php
-                    if($totalEmailSent && $totalEmailOpened){
-                      $openRate = ($totalEmailOpened / $totalEmailSent) * 100;
-                      echo number_format($openRate, 2).' %';
-                    }else{
-                      echo 'n/a';
-                    }
-                  @endphp
-                </td>
-                <td>
-                  @if ($mailbox->status == 'on')
-                      <span style="background: green; color: #fff; padding: 2px 5px;">On</span>
-                  @else
-                    <span style="background: red; color: #fff; padding: 2px 5px;">Off</span>
-                  @endif
-                </td>
-                <td><a target="_blank" href="{{ route('send.test.email', $mailbox->id) }}">Send test email</a></td>
-                <td><a target="_blank" href="{{ route('check.mailbox', $mailbox->id) }}">Check Inbox</a></td>
-                <td><a href="{{ route('mailbox.delete', $mailbox->id) }}">Delete</a></td>
-              </tr>
-        @endforeach
-    </tbody>
-  </table>
+  @foreach ($mailboxes as $mailbox)
+    <div class="col-12 mb-3">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title"><a href="{{ route('mailbox.show', $mailbox->id) }}">{{ $mailbox->mail_username }}</a></h5>
+
+          @php
+            $totalEmailSent = App\Models\Email::where('campaign_id', $lastCampaignId)->where('mailbox_id', $mailbox->id)->count();
+            $totalEmailOpened = App\Models\Email::where('campaign_id', $lastCampaignId)->where('mailbox_id', $mailbox->id)->where('opened', '>', 0)->count();
+          @endphp
+
+          <p class="card-text"><strong>Sent:</strong> {{ $totalEmailSent }}</p>
+          <p class="card-text"><strong>Opened:</strong> {{ $totalEmailOpened }}</p>
+          <p class="card-text"><strong>Open Rate:</strong> 
+            @php
+              if($totalEmailSent && $totalEmailOpened) {
+                $openRate = ($totalEmailOpened / $totalEmailSent) * 100;
+                echo number_format($openRate, 2) . ' %';
+              } else {
+                echo 'n/a';
+              }
+            @endphp
+          </p>
+          <p class="card-text"><strong>Status:</strong> 
+            @if ($mailbox->status == 'on')
+              <span style="background: green; color: #fff; padding: 2px 5px;">On</span>
+            @else
+              <span style="background: red; color: #fff; padding: 2px 5px;">Off</span>
+            @endif
+          </p>
+
+          <div class="inline-buttons">
+            <a target="_blank" href="{{ route('send.test.email', $mailbox->id) }}" class="btn btn-primary btn-sm">Send Test Email</a>
+            <a target="_blank" href="{{ route('check.mailbox', $mailbox->id) }}" class="btn btn-secondary btn-sm">Check Inbox</a>
+            <a href="{{ route('mailbox.delete', $mailbox->id) }}" class="btn btn-danger btn-sm">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  @endforeach
 
 @endif
+
 
   <!-- Modal -->
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
