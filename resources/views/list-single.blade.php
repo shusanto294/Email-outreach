@@ -18,6 +18,7 @@
         <a class="btn btn-secondary" href="{{ route('personalize.list', $id) }}">Personalize</a>
         <a class="btn btn-secondary" href="{{ route('upload.list', $id) }}">Upload</a>
         <a class="btn btn-secondary" href="{{ route('download.list', $id) }}">Downlaod</a>
+        <a class="btn btn-secondary" href="{{ route('add.new.lead', $id) }}">Add new Lead</a>
         <a class="btn btn-secondary" href="{{ route('add-to-campaign.list', $id) }}">Add to campaign</a>
         
     <div>

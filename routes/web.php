@@ -63,6 +63,8 @@ Route::get('/list/{id}/download', [LeadlistController::class, 'download'])->midd
 Route::get('/list/{id}/upload', [LeadlistController::class, 'upload'])->middleware(['auth', 'verified'])->name('upload.list');
 Route::get('/list/{id}/upload-instant-data-scrapper', [LeadlistController::class, 'upload_instant_data_scrapper'])->middleware(['auth', 'verified'])->name('upload.instant.data.scrapper');
 Route::get('/list/{id}/add-to-campaign', [LeadlistController::class, 'add_to_campaign'])->middleware(['auth', 'verified'])->name('add-to-campaign.list');
+Route::get('/list/{id}/add-new-lead', [LeadlistController::class, 'add_new_lead'])->middleware(['auth', 'verified'])->name('add.new.lead');
+Route::post('/list/{id}/add-new-lead', [LeadlistController::class, 'store_new_lead'])->middleware(['auth', 'verified'])->name('store.new.lead');
 
 
 Route::get('/campaigns', [CampaignController::class, 'index'])->middleware(['auth', 'verified'])->name('campaigns.index');

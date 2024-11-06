@@ -54,7 +54,7 @@ table a:hover{
           <p class="card-text">
             <strong>Leads:</strong> 
             <a href="{{ route('campaign.show.leads', $campaign->id) }}">
-              {{ $leadsCount == 0 ? 'n/a' : $leadsCount }}
+              {{ $leadsCount }}
             </a>
           </p>
           <p class="card-text">
@@ -81,10 +81,10 @@ table a:hover{
             @endphp
           </p>
           <div class="d-flex justify-content-end">
-            <a href="{{ route('campaign.duplicate', $campaign->id) }}" class="btn btn-sm btn-secondary mr-2" style="margin-right: 10px;">
+            <a href="{{ route('campaign.duplicate', $campaign->id) }}" class="btn btn-secondary mr-2" style="margin-right: 10px;">
               <i class="fa-regular fa-paste"></i> Duplicate
             </a>
-            <a href="{{ route('campaign.delete',  $campaign->id) }}" class="btn btn-sm btn-danger">
+            <a href="{{ route('campaign.delete',  $campaign->id) }}" class="btn btn-danger">
               <i class="fa-regular fa-trash-can"></i> Delete
             </a>
           </div>

@@ -30,6 +30,9 @@
 @endsection
 
 @section('content')
+
+    @include('alerts')
+
     <h3>{{ $lead->name }}</h3>
     <p class="mt-3"><b>Website : </b><a target="_blank" href="{{ $lead->company_website }}">{{ $lead->company_website }}</a></p>
     <p class="mt-3"><b>Linkedin Prodile : </b>{{ $lead->linkedin_profile }}</p>
@@ -55,6 +58,9 @@
 
         <p class="dynamic-variables">Website content</p>
         <textarea style="min-height: 200px;" id="summernote" name="websiteContent" class="form-control mb-3" placeholder="Website content">{{ $lead->website_content }}</textarea>
+
+        <label for="personalized_subject_line" class="mt-3">Personalized subject line</label>
+        <input type="text" name="personalized_subject_line" id="personalized_subject_line" value="{{ $lead->personalizedSubjectLine }}" class="form-control mt-3">
 
         <p class="dynamic-variables mt-3">Personalized Line - Dynamic variables: <span>[firstname]</span> <span>[company]</span> <span>[website]</span></p>
         <textarea id="personalizedLine" style="min-height: 200px;" id="summernote" name="personalizedLine" class="form-control mb-3" placeholder="Personalized Line">{{ $lead->personalization }}</textarea>

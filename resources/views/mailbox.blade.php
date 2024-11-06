@@ -30,11 +30,6 @@ table a:hover{
 @if(count($mailboxes) > 0)
 
 
-  @php
-    $lastCampaign = App\Models\Campaign::orderby('id', 'desc')->first();
-    $lastCampaignId = $lastCampaign ? $lastCampaign->id : 0;
-  @endphp
-
   @foreach ($mailboxes as $mailbox)
     <div class="col-12 mb-3">
       <div class="card">
@@ -42,22 +37,12 @@ table a:hover{
           <h5 class="card-title"><a href="{{ route('mailbox.show', $mailbox->id) }}">{{ $mailbox->mail_username }}</a></h5>
 
           @php
-            $totalEmailSent = App\Models\Email::where('campaign_id', $lastCampaignId)->where('mailbox_id', $mailbox->id)->count();
-            $totalEmailOpened = App\Models\Email::where('campaign_id', $lastCampaignId)->where('mailbox_id', $mailbox->id)->where('opened', '>', 0)->count();
+            $sentCount = App\Models\Email::where('mailbox_id', $mailbox->id)
+                ->where('created_at', '>=', now()->subDays(30))
+                ->count();
           @endphp
 
-          <p class="card-text"><strong>Sent:</strong> {{ $totalEmailSent }}</p>
-          <p class="card-text"><strong>Opened:</strong> {{ $totalEmailOpened }}</p>
-          <p class="card-text"><strong>Open Rate:</strong> 
-            @php
-              if($totalEmailSent && $totalEmailOpened) {
-                $openRate = ($totalEmailOpened / $totalEmailSent) * 100;
-                echo number_format($openRate, 2) . ' %';
-              } else {
-                echo 'n/a';
-              }
-            @endphp
-          </p>
+          <p class="card-text"><strong>Sent in last 30 days:</strong> {{ $sentCount }}</p>
           <p class="card-text"><strong>Status:</strong> 
             @if ($mailbox->status == 'on')
               <span style="background: green; color: #fff; padding: 2px 5px;">On</span>
@@ -66,10 +51,10 @@ table a:hover{
             @endif
           </p>
 
-          <div class="inline-buttons">
-            <a target="_blank" href="{{ route('send.test.email', $mailbox->id) }}" class="btn btn-primary btn-sm">Send Test Email</a>
-            <a target="_blank" href="{{ route('check.mailbox', $mailbox->id) }}" class="btn btn-secondary btn-sm">Check Inbox</a>
-            <a href="{{ route('mailbox.delete', $mailbox->id) }}" class="btn btn-danger btn-sm">Delete</a>
+          <div class="inline-buttons right-aligned">
+            <a target="_blank" href="{{ route('send.test.email', $mailbox->id) }}" class="btn btn-primary">Send Test Email</a>
+            <a target="_blank" href="{{ route('check.mailbox', $mailbox->id) }}" class="btn btn-secondary">Check Inbox</a>
+            <a href="{{ route('mailbox.delete', $mailbox->id) }}" class="btn btn-danger">Delete</a>
           </div>
         </div>
       </div>

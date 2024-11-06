@@ -38,7 +38,7 @@
         </div>
         
         <button type="submit" class="btn btn-secondary mt-3">Update Mailbox</button>
-        <a class="btn btn-secondary mt-3" href="{{ route('test.email', $mailbox->id) }}">Send Test Email</a>
+        <a class="btn btn-secondary mt-3" href="{{ route('send.test.email', $mailbox->id) }}">Send Test Email</a>
     </form>
     
 @endsection

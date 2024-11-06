@@ -27,7 +27,7 @@ table a:hover{
 @include('alerts')
 
 <div class="inline-buttons">
-  {{-- <a href="{{ route('replies.refresh') }}" class="btn btn-secondary">Refresh Inbox</a> --}}
+  <a href="{{ route('replies.refresh') }}" class="btn btn-secondary">Refresh Inbox</a>
   <a href="{{ route('replies.mark.all.as.read') }}" class="btn btn-secondary">Mark All As Read</a>
 </div>
 

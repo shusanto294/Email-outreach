@@ -84,6 +84,8 @@ class LeadController extends Controller
     public function update(Request $request, $id){
         $lead = Lead::find($id);
 
+        $lead->personalizedSubjectLine = $request->personalized_subject_line;
+
         $fullName = $lead->name;
         $nameParts = explode(" ", $fullName);
         $firstName = $nameParts[0] ? $nameParts[0] : '';
@@ -95,7 +97,7 @@ class LeadController extends Controller
 
 
         $lead->save();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Lead updated successfully!');
     }
 
     public function search(Request $request) {

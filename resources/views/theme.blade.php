@@ -59,11 +59,11 @@
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
     }
 
+    .inline-buttons.right-aligned {
+      text-align: right;
+    }
+
     @media(max-width: 500px){
-        .btn.btn-secondary{
-            width: 100%;
-            margin-top: 20px;
-        }
         .info-box{
             margin-bottom: 20px;
         }

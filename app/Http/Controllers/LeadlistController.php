@@ -256,5 +256,19 @@ public function delete($id){
     return redirect('/lists')->with('warning', 'List deleted successfully!');
 }
 
+public function add_new_lead($id){
+    return view('add-new-lead', [
+        'leadListId' => $id
+    ]);
+}
+
+public function store_new_lead(Request $request, $id)
+{
+    // Create the lead
+    Lead::create($request->all());
+
+    // Redirect back to the previous page
+    return redirect()->back()->with('success', 'Lead created Successfully');
+}
 
 }
