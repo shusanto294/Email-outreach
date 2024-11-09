@@ -271,4 +271,10 @@ public function store_new_lead(Request $request, $id)
     return redirect()->back()->with('success', 'Lead created Successfully');
 }
 
+public function delete_not_sent($id){
+    // Bulk delete leads associated with the given leadlist_id
+    Lead::where('leadlist_id', $id)->where('sent', 0)->delete();
+    return redirect()->back()->with('warning', 'Leads deleted successfully!');
+}
+
 }

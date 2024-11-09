@@ -160,7 +160,7 @@ class PersonalizeLead implements ShouldQueue
         $websiteContentShorten = substr($websiteContent, 0, 2000);
         
         // Create a prompt for OpenAI using the lead details
-        $leadDetails = "Name: $firstName\nCompany: $lead->company n\Job Title: $lead->title n\Location: $lead->location n\Content: $websiteContentShorten";
+        $leadDetails = "Name: $firstName\nCompany: $lead->company n\Job Title: $lead->title n\Location: $lead->location n\Content: $websiteContentShorten n\Personalization: $lead->persnalization";
         
 
         //Personalization for the email body
@@ -197,7 +197,7 @@ class PersonalizeLead implements ShouldQueue
             'model' => 'gpt-4o-mini',
             'messages' => [
                 ["role" => "system", "content" => $subject_line_prompt_text],
-                ["role" => "user", "content" => $lead->personalization]
+                ["role" => "user", "content" => $leadDetails]
             ]
         ];
     

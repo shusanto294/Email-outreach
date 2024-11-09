@@ -57,6 +57,7 @@
     </div>
 
     <div class="buttons mt-5">
+        <a style="margin-left: auto;" class="btn btn-danger" href="{{ route('delete.not.sent', $id) }}">Delete Not Sent Leads</a>
         <a style="margin-left: auto;" class="btn btn-danger" href="{{ route('delete.list', $id) }}">Delete List</a>
     <div>
     
