@@ -17,7 +17,7 @@ use App\Models\Email;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Mail\Message;
 
-class SendEmail implements ShouldQueue
+class SendEmailJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 

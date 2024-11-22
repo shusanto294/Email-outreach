@@ -4,13 +4,14 @@ namespace App\Console\Commands;
 
 use Carbon\Carbon;
 use App\Models\Lead;
+use App\Models\Email;
 use App\Models\Mailbox;
 use App\Models\Setting;
 use App\Models\Campaign;
-use App\Models\Email;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Console\Command;
+use App\Jobs\SendEmailJob;
 use Illuminate\Mail\Message;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class SendEmail extends Command
 {
@@ -37,7 +38,7 @@ class SendEmail extends Command
         $sendPerMinute = $sendPerMinuteSetting ? (int) $sendPerMinuteSetting->value : 1;
     
         for ($i = 0; $i < $sendPerMinute; $i++) {
-            SendEmail::dispatch()->onQueue('high');
+            SendEmailJob::dispatch()->onQueue('high');
         }
     
         echo "Added {$sendPerMinute} emails to queue";
