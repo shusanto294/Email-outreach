@@ -145,6 +145,7 @@
         $subjectLinePrompt = App\Models\Setting::where('key', 'subject_line_prompt')->first();
         $personalizationPrompt = App\Models\Setting::where('key', 'personalization_prompt')->first();
         $dailySendingLimit = App\Models\Setting::where('key', 'daily_sending_limit')->first();
+        $sendPerMinute = App\Models\Setting::where('key', 'send_per_minute')->first();
     @endphp
     <form action="{{ route('update.settings') }}" method="POST" class="col-lg-12">
         @csrf
@@ -159,9 +160,11 @@
         <label for="send_test_emails_to" class="mb-2">Send test emails to :</label>
         <textarea rows="5" type="email" name="send_test_emails_to" id="send_test_emails_to" placeholder="user@example.com, user@example2.com" class="form-control mb-3">{{ $testEmailsTo ? $testEmailsTo->value : '' }}</textarea>
 
+        <label for="daily_sending_limit" class="mb-2">Send per minute :</label>
+        <input type="number" name="send_per_minute" id="send_per_minute" placeholder="2" class="form-control mb-3" value="{{ $sendPerMinute ? $sendPerMinute->value : '' }}">
+
         <label for="daily_sending_limit" class="mb-2">Daily Sending Limit :</label>
         <input type="number" name="daily_sending_limit" id="daily_sending_limit" placeholder="500" class="form-control mb-3" value="{{ $dailySendingLimit ? $dailySendingLimit->value : '' }}">
-
 
         <button type="submit"  class="btn btn-secondary">Save Settings</button>
     </form>
