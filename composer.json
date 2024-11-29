@@ -7,7 +7,6 @@
     "require": {
         "php": "^8.0.2",
         "egulias/email-validator": "^4.0",
-        "fabpot/goutte": "^4.0",
         "guzzlehttp/guzzle": "^7.9",
         "laravel/framework": "^10.16",
         "laravel/sanctum": "^3.2",
@@ -15,8 +14,10 @@
         "maatwebsite/excel": "^3.1",
         "openai-php/laravel": "^0.8",
         "psr/simple-cache": "^3.0",
+        "symfony/browser-kit": "^7.2",
         "symfony/css-selector": "^6.4",
         "symfony/dom-crawler": "^6.4",
+        "voku/portable-utf8": "^6.0",
         "webklex/laravel-imap": "^5.3.0",
         "webklex/php-imap": "^5.5"
     },
