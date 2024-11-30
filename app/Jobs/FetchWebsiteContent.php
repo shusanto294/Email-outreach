@@ -2,12 +2,13 @@
 
 namespace App\Jobs;
 
-use Goutte\Client;
+use GuzzleHttp\Client;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Symfony\Component\DomCrawler\Crawler;
 
 class FetchWebsiteContent implements ShouldQueue
 {
@@ -34,29 +35,20 @@ class FetchWebsiteContent implements ShouldQueue
      */
     public function handle()
     {
-        // Fetch the website content using Goutte
+        // Fetch the website content using Guzzle
         $client = new Client();
-        $crawler = $client->request('GET', $this->url);
+        $response = $client->request('GET', $this->url);
+        $html = $response->getBody()->getContents();
 
-        // Specify the tags you want to extract content from (e.g., h1, h2, p, div)
-        $tagsToExtract = 'body';
+        // Create a Crawler instance from the HTML
+        $crawler = new Crawler($html);
 
-        // Filter the crawler to only include these tags
-        $extractedContent = $crawler->filter($tagsToExtract)->each(function ($node) {
-            return $node->text();
-        });
+        // Extract the meta description
+        $metaDescription = $crawler->filter('meta[name="description"]')->attr('content');
 
-        // Join the extracted content into a single string
-        $extractedContent = implode(' ', $extractedContent);
-
-        // Clean up the content
-        $extractedContent = preg_replace('/\s+/', ' ', $extractedContent); // Replace multiple spaces with a single space
-        $extractedContent = preg_replace('/[^A-Za-z0-9\- ]/', '', $extractedContent); // Remove non-alphanumeric characters
-        $extractedContent = trim($extractedContent); // Trim leading/trailing spaces
-
-        // Save content to the lead
-        if (strlen($extractedContent) > 0) {
-            $this->lead->website_content = $extractedContent;
+        // Save the meta description to the lead
+        if (!empty($metaDescription)) {
+            $this->lead->website_content = $metaDescription;
         } else {
             $this->lead->website_content = "n/a";
         }

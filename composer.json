@@ -5,32 +5,35 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.1",
         "egulias/email-validator": "^4.0",
-        "guzzlehttp/guzzle": "^7.9",
+        "facebook/webdriver": "*",
+        "guzzlehttp/guzzle": "^7.5",
         "laravel/framework": "^10.16",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
         "maatwebsite/excel": "^3.1",
         "openai-php/laravel": "^0.8",
         "psr/simple-cache": "^3.0",
-        "symfony/browser-kit": "^7.2",
-        "symfony/css-selector": "^6.4",
-        "symfony/dom-crawler": "^6.4",
+        "symfony/browser-kit": "^7.0",
+        "symfony/css-selector": "^7.0",
+        "symfony/dom-crawler": "^7.2",
+        "symfony/http-client": "^7.0",
+        "symfony/panther": "^2.1",
         "voku/portable-utf8": "^6.0",
-        "webklex/laravel-imap": "^5.3.0",
+        "webklex/laravel-imap": "^5.3",
         "webklex/php-imap": "^5.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.8",
         "fakerphp/faker": "^1.21",
         "laravel/breeze": "^1.21",
-        "laravel/pint": "^1.12",
+        "laravel/pint": "^1.6",
         "laravel/sail": "^1.20",
         "mockery/mockery": "^1.5",
-        "nunomaduro/collision": "^7.5",
-        "phpunit/phpunit": "^9.6",
-        "spatie/laravel-ignition": "^2.1"
+        "nunomaduro/collision": "^7.0",
+        "phpunit/phpunit": "^10.0",
+        "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -72,7 +75,5 @@
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
         }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+    }
 }
