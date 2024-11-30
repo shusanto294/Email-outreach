@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
 
     
     protected function schedule(Schedule $schedule)
-    {   /*
+    {   
         
         // Run app:send-email every minute between 9 AM and 5 PM, excluding Sunday (0) and Saturday (6)
         $schedule->command('app:send-email')
@@ -31,10 +31,10 @@ class Kernel extends ConsoleKernel
         ->skip(function () {
             return in_array(now()->dayOfWeek, [0, 6]); // Skip on Sunday (0) and Saturday (6)
         });
-    
+
+        /*
         // Run app:check-mailboxes every minute
         $schedule->command('app:check-replies')->everyMinute();
-        
         */
     }
     
