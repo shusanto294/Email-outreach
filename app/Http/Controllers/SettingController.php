@@ -31,6 +31,7 @@ class SettingController extends Controller
         return redirect()->back();
     }
 
+
     public function update(Request $request){
         $values =  $request->all();
         foreach($values as $key => $value){

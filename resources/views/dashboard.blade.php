@@ -122,7 +122,7 @@
           <p><b>Email sending on/off</b></p>
         </div>
         <div class="col-lg-6">
-          <form action="{{ route('settings.send-emails') }}" method="POST" class="email-switch" id="sendEmailsForm">
+          <form action="{{ route('settings.send-emails') }}" method="POST" class="email-switch" id="checkRepliesForm">
             @csrf
             {{-- <p>Send emails</p> --}}
             <label class="switch">
@@ -139,6 +139,8 @@
         </form>
         </div>
     </div>
+
+
 
     @php
         $testEmailsTo = App\Models\Setting::where('key', 'send_test_emails_to')->first();
@@ -216,6 +218,15 @@
                     console.log('Checkbox is unchecked');
                 }
                 $("#sendEmailsForm").submit();
+            });
+
+            $("#checkReplies").change(function() {
+                if (this.checked) {
+                    console.log('Checkbox is checked');
+                }else{
+                    console.log('Checkbox is unchecked');
+                }
+                $("#checkRepliesForm").submit();
             });
         });
     </script>

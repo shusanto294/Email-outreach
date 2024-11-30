@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Models\Setting;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -19,6 +20,7 @@ class Kernel extends ConsoleKernel
     ];
 
 
+    /*
     protected function schedule(Schedule $schedule)
     {
         // Run app:send-email every minute between 9 AM and 5 PM, excluding Sunday (0) and Saturday (6)
@@ -31,6 +33,31 @@ class Kernel extends ConsoleKernel
     
         // Run app:check-mailboxes every minute
         $schedule->command('app:check-replies')->everyMinute();
+    }
+    */
+    
+    protected function schedule(Schedule $schedule)
+    {
+        // Check the send_emails setting
+        $sendEmailsSetting = Setting::where('key', 'send_emails')->first();
+        $sendEmails = 'off';
+        if ($sendEmailsSetting) {
+            $sendEmails = $sendEmailsSetting->value;
+        }
+        
+        if ($sendEmails === 'on') {
+            // Run app:send-email every minute between 9 AM and 5 PM, excluding Sunday (0) and Saturday (6) only if send_emails is 'on'
+            $schedule->command('app:send-email')
+                ->everyMinute()
+                ->between('09:00', '17:00') // 9 AM to 5 PM
+                ->skip(function () {
+                    return in_array(now()->dayOfWeek, [0, 6]); // Skip on Sunday (0) and Saturday (6)
+                });
+
+            // Run app:check-mailboxes every minute
+            $schedule->command('app:check-replies')->everyMinute();
+        }
+        
     }
     
 
