@@ -36,12 +36,18 @@ class SendEmail extends Command
     {
         $sendPerMinuteSetting = Setting::where('key', 'send_per_minute')->first();
         $sendPerMinute = $sendPerMinuteSetting ? (int) $sendPerMinuteSetting->value : 1;
-    
-        for ($i = 0; $i < $sendPerMinute; $i++) {
-            SendEmailJob::dispatch()->onQueue('high');
+
+        $sendEmailSetting = Setting::where('key', 'send_emails')->first();
+        $sendEmail = $sendPerMinuteSetting ? (int) $sendPerMinuteSetting->send_emails : 'off';
+
+        if($sendEmail){
+            for ($i = 0; $i < $sendPerMinute; $i++) {
+                SendEmailJob::dispatch()->onQueue('high');
+            }
+        
+            echo "Added {$sendPerMinute} emails to queue";
         }
-    
-        echo "Added {$sendPerMinute} emails to queue";
+
     }
     
 }

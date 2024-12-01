@@ -64,12 +64,12 @@ class DatabaseSeeder extends Seeder
 
         DB::table('settings')->insert([
             'key' => 'send_per_minute',
-            'value' => 2
+            'value' => 25
         ]);
 
         DB::table('settings')->insert([
             'key' => 'daily_sending_limit',
-            'value' => 500
+            'value' => 1500
         ]);
 
         DB::table('settings')->insert([
