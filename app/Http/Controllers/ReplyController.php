@@ -218,7 +218,7 @@ class ReplyController extends Controller
         $email = Email::create([
             'uid' => $finalUniqueId,
             'campaign_id' => 0,
-            'lead_id' => 0,
+            'lead_id' => $lead->id,
             'subject' => $emailSubject,
             'body' => $emailBody,
             'sent_from' => $mailbox->mail_username,
