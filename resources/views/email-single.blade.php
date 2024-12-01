@@ -33,22 +33,11 @@
 @endsection
 
 @section('content')
-    @php
-        $lead = App\Models\Lead::find($email->lead_id);
-    @endphp
-
-    @if ($lead)
-    <h4>To</h4>
-      <p>Name: <a target="_blank" style="color: #212529;" href="{{ route('lead.show', $lead->id) }}">{{ $lead->name }}</a></p>
-      <p>Comapny: <a target="_blank" style="color: #212529;" href="{{ $lead->company_website }}">{{ $lead->company }}</a></p>
-
-    @else
-      <p>To: {{ $email->reciver_name }}</p>
-      <p>Email: {{ $email->sent_to }}</p>
-    @endif
+  <p>To: <a href="{{ route('lead.show', $email->lead_id) }}">{{ $email->sent_to }}</a></p>
+  <p>From: {{ $email->sent_from }}</p>
 
     <h4>Subject:</h4>
-    <p class="email-subject">{!! $email->opened_count == 0 ? '<i style="opacity: .5;" class="fa-regular fa-eye-slash"></i>' : '<span class="opened">'.$email->opened_count.'</span>' !!} {{ $email->subject }}</p>
+    <p class="email-subject"> {{ $email->subject }}</p>
 
     <h4>Body:</h4>
     {!! $email->body !!}

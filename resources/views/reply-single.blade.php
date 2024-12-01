@@ -7,11 +7,11 @@
 @endphp
 
 @if ($lead)
-    <p>Lead Details</p>
+    <p>From:  <a href="{{ route('lead.show', $lead->id) }}">{{ $reply->from_address }}</a></p>
+@else
+    <p>From: {{ $reply->from_address }}</p>
 @endif
 
-
-<p>Name: {{ $reply->from_name }}</p>
 <p>To: {{ $reply->to }}</p>
 
 <h3>{{  $reply->subject }}</h3>
