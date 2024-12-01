@@ -4,6 +4,7 @@ use App\Mail\MyTestEmail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LeadController;
+use App\Http\Controllers\ClickController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\ApikeyController;
@@ -79,7 +80,7 @@ Route::get('/campaign/{id}/opened', [CampaignController::class, 'showOpened'])->
 Route::get('/campaign/{id}/replied', [CampaignController::class, 'showReplied'])->middleware(['auth', 'verified'])->name('campaign.replied');
 Route::get('/campaign/{id}/delete', [CampaignController::class, 'delete'])->middleware(['auth', 'verified'])->name('campaign.delete');
 Route::get('/campaign/{id}/duplicate', [CampaignController::class, 'duplicate'])->middleware(['auth', 'verified'])->name('campaign.duplicate');
-Route::get('/campaign/{id}/regerate-emails', [CampaignController::class, 'regerate_emails'])->middleware(['auth', 'verified'])->name('campaign.regerate_emails');
+Route::get('/campaign/{id}/send-test-email', [CampaignController::class, 'send_test_email'])->middleware(['auth', 'verified'])->name('campaign.send.test.email');
 
 // Route::get('/send-email', [EmailController::class, 'send']);
 // Route::get('/test-email/{mailboxID}', [EmailController::class, 'testEmail'])->name('test.email');
@@ -135,5 +136,8 @@ Route::get('/logs', [DashboardController::class, 'downloadLogFiles'])->middlewar
 
 //Delete failed jobs
 Route::get('/delete-failed-jobs', [DashboardController::class, 'deleteFailedJobs'])->middleware(['auth', 'verified'])->name('delete.failed.jobs');
+
+//Meeting link redirection
+Route::get('/calender/{campaignID}/{leadID}', [ClickController::class, 'calenderLink'])->name('calender.link');
 
 require __DIR__.'/auth.php';

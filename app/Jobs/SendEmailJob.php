@@ -93,15 +93,17 @@ class SendEmailJob implements ShouldQueue
                 $company = $lead->company ?? '';
                 $personalizedLine = $lead->personalization ?? '';
                 $personalizedSubjectLine = $lead->personalizedSubjectLine;
+
+                $calendarLink = "<a href='" . url("calender/{$campaign->id}/{$lead->id}") . "'>Book a Meeting</a>";
     
                 $dynamicSubject = str_replace(
-                    ["[firstname]", "[company]", "[personalization]", "[personalizedSubjectLine]"], 
-                    [$firstName, $company, $personalizedLine, $personalizedSubjectLine], 
+                    ["[firstname]", "[company]", "[personalization]", "[personalizedSubjectLine]", "[calenderLink]"], 
+                    [$firstName, $company, $personalizedLine, $personalizedSubjectLine, $calendarLink], 
                     $subject
                 );
                 $dynamicBody = str_replace(
-                    ["[firstname]", "[company]", "[personalization]", "[personalizedSubjectLine]"], 
-                    [$firstName, $company, $personalizedLine, $personalizedSubjectLine], 
+                    ["[firstname]", "[company]", "[personalization]", "[personalizedSubjectLine]", "[calenderLink]"], 
+                    [$firstName, $company, $personalizedLine, $personalizedSubjectLine, $calendarLink], 
                     $body
                 );
     

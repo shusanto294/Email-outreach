@@ -21,9 +21,11 @@
     <form action="{{ route('update-campaign.post', $campaign->id) }}" method="POST">
         @csrf
         <input type="text" name="campaignName" placeholder="Campaign Name" class="form-control mb-3" value="{{ $campaign->name }}" required>
-        <p class="dynamic-variables">Dynamic variables: <span>[firstname]</span> <span>[company]</span> <span>[personalizedSubjectLine]</span> <span>[personalization]</span></p>
+        <p class="dynamic-variables">Dynamic variables: <span>[firstname]</span> <span>[company]</span> <span>[personalizedSubjectLine]</span> <span>[personalization]</span> <span>[calenderLink]</span></p>
         <input type="text" name="emailSubject" placeholder="Subject" class="form-control mb-3" value="{{ $campaign->subject }}" required>
         <textarea id="summernote" name="emailBody" id="" cols="30" rows="10" class="form-control mb-3">{!! $campaign->body !!}</textarea>
+        
+        <a class="btn btn-secondary mt-3" href="{{ route('campaign.send.test.email', $campaign->id) }}">Send Test email</a>
         <button type="submit" class="btn btn-secondary mt-3">Update campaign</button>
     </form>
 

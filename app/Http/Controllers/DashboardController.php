@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Lead;
+use App\Models\Click;
 use App\Models\Email;
 use App\Models\Reply;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,11 +23,20 @@ class DashboardController extends Controller
         $totalJobs = DB::table('jobs')->count();
         $totalFailedJobs = DB::table('failed_jobs')->count();
         $failedJobs = DB::table('failed_jobs')->orderBy('id', 'desc')->get();
+
+        $leadsAdded = Lead::where('created_at', '>=', now()->subDays(30))->count();
+        $emailsSent = Email::where('created_at', '>=', now()->subDays(30))->count();
+        $clicked = Click::where('created_at', '>=', now()->subDays(30))->count();
+        $replied = Reply::where('created_at', '>=', now()->subDays(30))->count();
+
     
         return view('dashboard', [
             'totalJobs' => $totalJobs,
             'totalFailedJobs' => $totalFailedJobs,
-            // 'failedJobs' => $failedJobs,
+            'leadsAdded' => $leadsAdded,
+            'emailsSent' => $emailsSent,
+            'clicked' => $clicked,
+            'replied' => $replied
         ]);
     }
 
@@ -39,6 +50,8 @@ class DashboardController extends Controller
         DB::table('failed_jobs')->delete();
         return redirect()->back()->with('success', 'Failed jobs deleted successfully');
     }
+
+    
 }
 
 
