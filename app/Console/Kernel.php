@@ -27,7 +27,7 @@ class Kernel extends ConsoleKernel
         // Run app:send-email every minute between 9 AM and 5 PM, excluding Sunday (0) and Saturday (6)
         $schedule->command('app:send-email')
         ->everyMinute()
-        ->between('09:00', '17:00') // 9 AM to 5 PM
+        ->between('05:00', '14:00') // 5AM to 2 PM
         ->skip(function () {
             return in_array(now()->dayOfWeek, [0, 6]); // Skip on Sunday (0) and Saturday (6)
         });

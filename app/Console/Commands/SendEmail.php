@@ -34,13 +34,21 @@ class SendEmail extends Command
      */
     public function handle()
     {
+        $currentTime = Carbon::now();
+        $sendEmailsSetting = Setting::where('key', 'send_emails')->first();
+        $dailySendingLimit = Setting::where('key', 'daily_sending_limit')->first();
+        $emailSentTodaySetting = Setting::firstOrCreate(
+            ['key' => 'email_sent_today'],
+            ['value' => 0, 'updated_at' => $currentTime]
+        );
+
         $sendPerMinuteSetting = Setting::where('key', 'send_per_minute')->first();
         $sendPerMinute = $sendPerMinuteSetting ? (int) $sendPerMinuteSetting->value : 1;
 
         $sendEmailSetting = Setting::where('key', 'send_emails')->first();
         $sendEmail = $sendEmailSetting ? $sendEmailSetting->value : 'off';
 
-        if($sendEmail == "on"){
+        if($sendEmail == "on" && $emailSentTodaySetting->value < $dailySendingLimit->value){
             for ($i = 0; $i < $sendPerMinute; $i++) {
                 SendEmailJob::dispatch()->onQueue('high');
             }
