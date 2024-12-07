@@ -37,12 +37,12 @@ table a:hover{
           <h5 class="card-title"><a href="{{ route('mailbox.show', $mailbox->id) }}">{{ $mailbox->mail_username }}</a></h5>
 
           @php
-            $sentCount = App\Models\Email::where('mailbox_id', $mailbox->id)
-                ->where('created_at', '>=', now()->subDays(30))
-                ->count();
+          $sentCount = App\Models\Email::where('mailbox_id', $mailbox->id)
+              ->whereBetween('created_at', [now()->startOfDay(), now()])
+              ->count();
           @endphp
 
-          <p class="card-text"><strong>Sent in last 30 days:</strong> {{ $sentCount }}</p>
+          <p class="card-text"><strong>Sent today:</strong> {{ $sentCount }}</p>
           <p class="card-text"><strong>Status:</strong> 
             @if ($mailbox->status == 'on')
               <span style="background: green; color: #fff; padding: 2px 5px;">On</span>
