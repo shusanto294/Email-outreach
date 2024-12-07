@@ -41,22 +41,34 @@ class SendEmail extends Command
             ['key' => 'email_sent_today'],
             ['value' => 0, 'updated_at' => $currentTime]
         );
-
+    
         $sendPerMinuteSetting = Setting::where('key', 'send_per_minute')->first();
         $sendPerMinute = $sendPerMinuteSetting ? (int) $sendPerMinuteSetting->value : 1;
-
+    
         $sendEmailSetting = Setting::where('key', 'send_emails')->first();
         $sendEmail = $sendEmailSetting ? $sendEmailSetting->value : 'off';
-
-        if($sendEmail == "on" && $emailSentTodaySetting->value < $dailySendingLimit->value){
+    
+        // Reset the counter at midnight
+        if ($emailSentTodaySetting->updated_at->isToday() == false) {
+            $emailSentTodaySetting->value = 0;
+            $emailSentTodaySetting->updated_at = $currentTime;
+            $emailSentTodaySetting->save();
+        }
+    
+        if ($sendEmail == "on" && $emailSentTodaySetting->value < $dailySendingLimit->value) {
+            $scheduledEmail = 0;
             for ($i = 0; $i < $sendPerMinute; $i++) {
                 SendEmailJob::dispatch()->onQueue('high');
+                $scheduledEmail += 1;
             }
+            $emailSentTodaySetting->value += $scheduledEmail;
+            $emailSentTodaySetting->save();
+    
             echo "Added {$sendPerMinute} emails to queue";
-        }else{
-            echo "Email sending is off";
+        } else {
+            echo "Email sending is off or reached today's limit";
         }
-
     }
+    
     
 }
