@@ -71,7 +71,7 @@ class CheckMailboxes implements ShouldQueue
                                 $body = $message->getTextBody();
                             }
 
-                            // Handle encoding and inline attachments
+                            // Process the email body
                             $body = $this->processEmailBody($body, $message);
 
                             // Decode subject if needed
@@ -122,33 +122,20 @@ class CheckMailboxes implements ShouldQueue
     }
 
     /**
-     * Process the email body to handle encoding and inline attachments.
+     * Process the email body to handle encoding.
      */
     protected function processEmailBody($body, $message)
     {
         $encoding = $message->getHTMLCharset() ?: 'UTF-8';
-    
+
         // Ensure encoding is valid and not empty
         if (empty($encoding) || !in_array(strtoupper($encoding), mb_list_encodings())) {
             $encoding = 'UTF-8'; // Fallback encoding
         }
-    
+
+        // Convert body to UTF-8
         $body = mb_convert_encoding($body, 'UTF-8', $encoding);
-    
-        // Handle inline attachments
-        $attachments = $message->getAttachments();
-        foreach ($attachments as $attachment) {
-            $disposition = $attachment->getDisposition();
-            if ($disposition && strtolower($disposition) === 'inline') {
-                $cidPrefix = 'cid:';
-                $cidSource = $cidPrefix . $attachment->getId();
-                $cidTarget = $cidPrefix . $attachment->getContentId();
-                $body = str_replace($cidSource, $cidTarget, $body);
-            }
-        }
-    
+
         return $body;
     }
-    
-    
 }
