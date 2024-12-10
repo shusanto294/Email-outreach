@@ -68,14 +68,14 @@ class CheckMailboxes implements ShouldQueue
     protected function processMessage($message, Mailbox $mailbox)
     {
         $sender = $message->getFrom()[0] ?? null;
-
+    
         if ($sender) {
             $lead = Lead::where('email', $sender->mail)->first();
-
+    
             if ($lead) {
                 $body = $this->getMessageBody($message);
                 $subject = $this->decodeMimeStr($message->getSubject());
-
+    
                 Reply::create([
                     'from_name'    => $sender->personal,
                     'from_address' => "{$sender->mailbox}@{$sender->host}",
@@ -84,11 +84,20 @@ class CheckMailboxes implements ShouldQueue
                     'body'         => $body,
                     'campaign_id'  => $lead->campaign_id ?? null,
                 ]);
+    
+                // Handle attachments
+                foreach ($message->getAttachments() as $attachment) {
+                    // You might want to check for specific characteristics of attachments
+                    // For example, if you need to identify inline attachments, look for specific headers
+                    // or other identifiers, as `isInline()` is not available
+                    $attachment->save(storage_path('app/emails/attachments'));
+                }
             }
         }
-
+    
         $message->setFlag('Seen');
     }
+    
 
     protected function getMessageBody($message)
     {
