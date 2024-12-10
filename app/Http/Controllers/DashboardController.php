@@ -51,6 +51,28 @@ class DashboardController extends Controller
         return redirect()->back()->with('success', 'Failed jobs deleted successfully');
     }
 
+    public function jobs()
+    {
+        // Query the jobs from the database
+        $jobs = DB::table('jobs')->get();
+
+        // Return the view with the jobs data
+        return view('jobs', [
+            'jobs' => $jobs
+        ]);
+    }
+
+    public function failed_jobs()
+    {
+        // Query the failed jobs from the database
+        $failedJobs = DB::table('failed_jobs')->get();
+
+        // Return the view with the failed jobs data
+        return view('failed-jobs', [
+            'jobs' => $failedJobs
+        ]);
+    }
+
     
 }
 

@@ -140,4 +140,8 @@ Route::get('/delete-failed-jobs', [DashboardController::class, 'deleteFailedJobs
 //Meeting link redirection
 Route::get('/calender/{campaignID}/{leadID}', [ClickController::class, 'calenderLink'])->name('calender.link');
 
+//Jobs
+Route::get('/jobs', [DashboardController::class, 'jobs'])->name('jobs');
+Route::get('/failed-jobs', [DashboardController::class, 'failed_jobs'])->name('failed.jobs');
+
 require __DIR__.'/auth.php';
