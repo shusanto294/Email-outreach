@@ -23,71 +23,40 @@ class CheckMailboxes implements ShouldQueue
     public function handle()
     {
         try {
-            $mailboxes = Mailbox::cursor();
+            foreach (Mailbox::cursor() as $mailbox) {
+                $client = Client::make([
+                    'host'          => $mailbox->mail_imap_host,
+                    'port'          => $mailbox->mail_imap_port,
+                    'encryption'    => $mailbox->mail_imap_encryption ?? 'ssl',
+                    'validate_cert' => true,
+                    'username'      => $mailbox->mail_username,
+                    'password'      => $mailbox->mail_password,
+                    'protocol'      => 'imap'
+                ])->connect();
 
-            foreach ($mailboxes as $mailbox) {
-                $client = $this->setupClient($mailbox);
-                $this->processMailbox($client, $mailbox);
+                foreach ($client->getFolder('INBOX')->messages()->unseen()->limit(50)->get() as $message) {
+                    $sender = $message->getFrom()[0] ?? null;
+                    if ($sender && $lead = Lead::where('email', $sender->mail)->first()) {
+                        $subject = $this->decodeMimeStr($message->getSubject());
+                        $body = mb_convert_encoding($message->getHTMLBody() ?: $message->getTextBody(), 'UTF-8', $message->getHTMLCharset() ?: 'UTF-8');
+
+                        Reply::create([
+                            'from_name'    => $sender->personal,
+                            'from_address' => "{$sender->mailbox}@{$sender->host}",
+                            'to'           => $mailbox->mail_username,
+                            'subject'      => $subject,
+                            'body'         => $body,
+                            'campaign_id'  => $lead->campaign_id ?? null,
+                        ]);
+                    }
+                    $message->setFlag('Seen');
+                }
                 $client->disconnect();
             }
         } catch (\Exception $e) {
             Log::error('Failed to check mailboxes: ' . $e->getMessage());
             throw $e;
         }
-    }
-
-    protected function setupClient(Mailbox $mailbox)
-    {
-        return Client::make([
-            'host'          => $mailbox->mail_imap_host,
-            'port'          => $mailbox->mail_imap_port,
-            'encryption'    => $mailbox->mail_imap_encryption ?? 'ssl',
-            'validate_cert' => true,
-            'username'      => $mailbox->mail_username,
-            'password'      => $mailbox->mail_password,
-            'protocol'      => 'imap'
-        ])->connect();
-    }
-
-    protected function processMailbox($client, Mailbox $mailbox)
-    {
-        $inboxFolder = $client->getFolder('INBOX');
-        $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
-
-        foreach ($messages as $message) {
-            $this->processMessage($message, $mailbox);
-        }
-    }
-
-    protected function processMessage($message, Mailbox $mailbox)
-    {
-        $sender = $message->getFrom()[0] ?? null;
-
-        if ($sender) {
-            $lead = Lead::where('email', $sender->mail)->first();
-
-            if ($lead) {
-                $body = $this->getMessageBody($message);
-                $subject = $this->decodeMimeStr($message->getSubject());
-
-                Reply::create([
-                    'from_name'    => $sender->personal,
-                    'from_address' => "{$sender->mailbox}@{$sender->host}",
-                    'to'           => $mailbox->mail_username,
-                    'subject'      => $subject,
-                    'body'         => $body,
-                    'campaign_id'  => $lead->campaign_id ?? null,
-                ]);
-            }
-        }
-
-        $message->setFlag('Seen');
-    }
-
-    protected function getMessageBody($message)
-    {
-        $body = $message->getHTMLBody() ?: $message->getTextBody();
-        return mb_convert_encoding($body, 'UTF-8', $message->getHTMLCharset() ?: 'UTF-8');
     }
 
     protected function decodeMimeStr($string)
