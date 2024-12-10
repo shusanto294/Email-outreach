@@ -41,7 +41,7 @@ class VerifyList implements ShouldQueue
     
         foreach ($leads as $lead) {
             try {
-                VerifyEmail::dispatch($lead)->onQueue('medium');;
+                VerifyEmail::dispatch($lead)->onQueue('medium');
 
                 // Update the lead to mark it as added to the queue
                 $lead->update(['added_for_verification' => true]);
