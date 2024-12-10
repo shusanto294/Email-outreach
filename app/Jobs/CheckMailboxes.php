@@ -17,108 +17,95 @@ class CheckMailboxes implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $tries = 3; // Set the number of maximum attempts
-    protected $backoff = 10; // Set the backoff time in seconds
+    protected $tries = 3;
+    protected $backoff = 10;
 
-    /**
-     * Create a new job instance.
-     */
-    public function __construct()
+    public function handle()
     {
-        //
-    }
+        try {
+            $mailboxes = Mailbox::cursor();
 
-    /**
-     * Execute the job.
-     */
+            foreach ($mailboxes as $mailbox) {
+                $client = $this->setupClient($mailbox);
 
+                $this->processMailbox($client, $mailbox);
 
-
-public function handle()
-{
-    try {
-        $mailboxes = Mailbox::cursor();
-
-        foreach ($mailboxes as $mailbox) {
-            $client = Client::make([
-                'host'          => $mailbox->mail_imap_host,
-                'port'          => $mailbox->mail_imap_port,
-                'encryption'    => $mailbox->mail_imap_encryption ?? 'ssl',
-                'validate_cert' => true,
-                'username'      => $mailbox->mail_username,
-                'password'      => $mailbox->mail_password,
-                'protocol'      => 'imap'
-            ]);
-
-            $client->connect();
-            $inboxFolder = $client->getFolder('INBOX');
-
-            // Fetch unseen messages in batches
-            $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
-
-            if ($messages->isEmpty()) {
-                continue;
+                $client->disconnect();
             }
-
-            foreach ($messages as $message) {
-                $sender = $message->getFrom()[0];
-
-                if ($sender) {
-                    $fromEmail = $sender->mail;
-                    $lead = Lead::where('email', $fromEmail)->first();
-
-                    if ($lead) {
-                        // Retrieve the HTML body, fallback to text body if HTML is missing
-                        $body = $message->getHTMLBody() ?: $message->getTextBody();
-
-                        // Ensure the body is encoded in UTF-8
-                        $body = mb_convert_encoding($body, 'UTF-8', $message->getHTMLCharset() ?: 'UTF-8');
-
-                        // Decode the subject to handle special characters
-                        $subject = $this->decodeMimeStr($message->getSubject());
-
-                        Reply::create([
-                            'from_name'    => $sender->personal,
-                            'from_address' => $sender->mailbox . '@' . $sender->host,
-                            'to'           => $mailbox->mail_username,
-                            'subject'      => $subject,
-                            'body'         => $body,
-                            'campaign_id'  => $lead->campaign_id ?? null,
-                        ]);
-                    }
-                }
-
-                // Mark as seen
-                $message->setFlag('Seen');
-            }
-
-            $client->disconnect();
+        } catch (\Exception $e) {
+            Log::error('Failed to check mailboxes: ' . $e->getMessage());
+            throw $e;
         }
-    } catch (\Exception $e) {
-        Log::error('Failed to check mailboxes: ' . $e->getMessage());
-        throw $e; // Rethrow the exception to let Laravel handle retries
     }
-}
 
-/**
- * Decode MIME encoded string to properly display subject lines with special characters.
- */
-protected function decodeMimeStr($string)
-{
-    $decoded = '';
-    $elements = imap_mime_header_decode($string);
+    protected function setupClient(Mailbox $mailbox)
+    {
+        return Client::make([
+            'host'          => $mailbox->mail_imap_host,
+            'port'          => $mailbox->mail_imap_port,
+            'encryption'    => $mailbox->mail_imap_encryption ?? 'ssl',
+            'validate_cert' => true,
+            'username'      => $mailbox->mail_username,
+            'password'      => $mailbox->mail_password,
+            'protocol'      => 'imap'
+        ])->connect();
+    }
 
-    foreach ($elements as $element) {
-        $charset = !empty($element->charset) ? $element->charset : 'UTF-8';
+    protected function processMailbox($client, Mailbox $mailbox)
+    {
+        $inboxFolder = $client->getFolder('INBOX');
+        $messages = $inboxFolder->messages()->unseen()->limit(50)->get();
 
-        if (!in_array(strtoupper($charset), mb_list_encodings())) {
-            $charset = 'ISO-8859-1'; // Fallback if charset is invalid
+        if ($messages->isEmpty()) {
+            return;
         }
 
-        $decoded .= mb_convert_encoding($element->text, 'UTF-8', $charset);
+        foreach ($messages as $message) {
+            $this->processMessage($message, $mailbox);
+        }
     }
 
-    return $decoded;
-}
+    protected function processMessage($message, Mailbox $mailbox)
+    {
+        $sender = $message->getFrom()[0] ?? null;
 
+        if ($sender) {
+            $lead = Lead::where('email', $sender->mail)->first();
+
+            if ($lead) {
+                $body = $this->getMessageBody($message);
+                $subject = $this->decodeMimeStr($message->getSubject());
+
+                Reply::create([
+                    'from_name'    => $sender->personal,
+                    'from_address' => "{$sender->mailbox}@{$sender->host}",
+                    'to'           => $mailbox->mail_username,
+                    'subject'      => $subject,
+                    'body'         => $body,
+                    'campaign_id'  => $lead->campaign_id ?? null,
+                ]);
+            }
+        }
+
+        $message->setFlag('Seen');
+    }
+
+    protected function getMessageBody($message)
+    {
+        $body = $message->getHTMLBody() ?: $message->getTextBody();
+        return mb_convert_encoding($body, 'UTF-8', $message->getHTMLCharset() ?: 'UTF-8');
+    }
+
+    protected function decodeMimeStr($string)
+    {
+        $decoded = '';
+        $elements = imap_mime_header_decode($string);
+
+        foreach ($elements as $element) {
+            $charset = !empty($element->charset) && in_array(strtoupper($element->charset), mb_list_encodings()) ? $element->charset : 'ISO-8859-1';
+            $decoded .= mb_convert_encoding($element->text, 'UTF-8', $charset);
+        }
+
+        return $decoded;
+    }
 }
