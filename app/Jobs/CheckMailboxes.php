@@ -6,7 +6,7 @@ use App\Models\Lead;
 use App\Models\Reply;
 use App\Models\Mailbox;
 use Illuminate\Bus\Queueable;
-use Webklex\IMAP\Facades\Client;
+use Ddeboer\Imap\Server;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -24,34 +24,34 @@ class CheckMailboxes implements ShouldQueue
     {
         try {
             foreach (Mailbox::cursor() as $mailbox) {
-                $client = Client::make([
-                    'host'          => $mailbox->mail_imap_host,
-                    'port'          => $mailbox->mail_imap_port,
-                    'encryption'    => $mailbox->mail_imap_encryption ?? 'ssl',
-                    'validate_cert' => true,
-                    'username'      => $mailbox->mail_username,
-                    'password'      => $mailbox->mail_password,
-                    'protocol'      => 'imap'
-                ])->connect();
+                $server = new Server(
+                    $mailbox->mail_imap_host,
+                    $mailbox->mail_imap_port,
+                    $mailbox->mail_imap_encryption ?? 'ssl'
+                );
 
-                foreach ($client->getFolder('INBOX')->messages()->unseen()->limit(50)->get() as $message) {
-                    $sender = $message->getFrom()[0] ?? null;
-                    if ($sender && $lead = Lead::where('email', $sender->mail)->first()) {
+                $connection = $server->authenticate($mailbox->mail_username, $mailbox->mail_password);
+
+                $mailbox = $connection->getMailbox('INBOX');
+                $messages = $mailbox->getMessages(new \Ddeboer\Imap\Search\Flag\Unseen());
+
+                foreach ($messages as $message) {
+                    $sender = $message->getFrom();
+                    if ($sender && $lead = Lead::where('email', $sender->getAddress())->first()) {
                         $subject = $this->decodeMimeStr($message->getSubject());
-                        $body = mb_convert_encoding($message->getHTMLBody() ?: $message->getTextBody(), 'UTF-8', $message->getHTMLCharset() ?: 'UTF-8');
+                        $body = $message->getBodyHtml() ?: $message->getBodyText();
 
                         Reply::create([
-                            'from_name'    => $sender->personal,
-                            'from_address' => "{$sender->mailbox}@{$sender->host}",
+                            'from_name'    => $sender->getName(),
+                            'from_address' => $sender->getAddress(),
                             'to'           => $mailbox->mail_username,
                             'subject'      => $subject,
                             'body'         => $body,
                             'campaign_id'  => $lead->campaign_id ?? null,
                         ]);
                     }
-                    $message->setFlag('Seen');
+                    $message->markAsSeen();
                 }
-                $client->disconnect();
             }
         } catch (\Exception $e) {
             Log::error('Failed to check mailboxes: ' . $e->getMessage());
