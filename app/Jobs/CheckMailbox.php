@@ -56,8 +56,8 @@ class CheckMailbox implements ShouldQueue
                     $body = $message->getBodyHtml() ?: $message->getBodyText() ?: 'n/a';
 
                     Reply::create([
-                        'from_name'    => $sender->getName() ?: 'n/a',
-                        'from_address' => $sender->getAddress() ?: 'n/a',
+                        'from_name'    => 'na',
+                        'from_address' => $sender->getAddress(),
                         'to'           => $this->mailbox->mail_username ?: 'n/a',
                         'subject'      => $subject,
                         'body'         => $body,
