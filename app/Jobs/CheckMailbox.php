@@ -49,17 +49,19 @@ class CheckMailbox implements ShouldQueue
 
             foreach ($messages as $message) {
                 $sender = $message->getFrom();
-                if ($sender && $lead = Lead::where('email', $sender->getAddress())->first()) {
-                    $subject = $this->decodeMimeStr($message->getSubject());
-                    $body = $message->getBodyHtml() ?: $message->getBodyText();
+                if ($sender) {
+                    $lead = Lead::where('email', $sender->getAddress())->first();
+
+                    $subject = $this->decodeMimeStr($message->getSubject()) ?? 'n/a';
+                    $body = $message->getBodyHtml() ?: $message->getBodyText() ?: 'n/a';
 
                     Reply::create([
-                        'from_name'    => $sender->getName() ? $sender->getName() : 'N/a',
-                        'from_address' => $sender->getAddress(),
-                        'to'           => $this->mailbox->mail_username,
+                        'from_name'    => $sender->getName() ?: 'n/a',
+                        'from_address' => $sender->getAddress() ?: 'n/a',
+                        'to'           => $this->mailbox->mail_username ?: 'n/a',
                         'subject'      => $subject,
                         'body'         => $body,
-                        'campaign_id'  => $lead->campaign_id ?? null,
+                        'campaign_id'  => $lead->campaign_id ?? 'n/a',
                     ]);
                 }
                 $message->markAsSeen();
@@ -70,6 +72,12 @@ class CheckMailbox implements ShouldQueue
         }
     }
 
+    /**
+     * Decode MIME string.
+     *
+     * @param string $string
+     * @return string
+     */
     protected function decodeMimeStr($string)
     {
         $decoded = '';
