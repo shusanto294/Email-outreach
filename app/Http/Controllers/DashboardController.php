@@ -46,9 +46,14 @@ class DashboardController extends Controller
         return response($log)->header('Content-Type', 'text/plain');
     }
 
+    public function deleteQueueJobs(){
+        DB::table('jobs')->delete();
+        return redirect()->back()->with('success', 'All Queue jobs deleted successfully');
+    }
+
     public function deleteFailedJobs(){
         DB::table('failed_jobs')->delete();
-        return redirect()->back()->with('success', 'Failed jobs deleted successfully');
+        return redirect()->back()->with('success', 'All Failed jobs deleted successfully');
     }
 
     public function jobs()

@@ -134,6 +134,9 @@ Route::get('/open-ai/delete-api-key/{id}', [ApikeyController::class, 'delete'])-
 //Create route to show links for downloading the log files
 Route::get('/logs', [DashboardController::class, 'downloadLogFiles'])->middleware(['auth', 'verified'])->name('download.log.files');
 
+//Delete queue jobs
+Route::get('/delete-queue-jobs', [DashboardController::class, 'deleteQueueJobs'])->middleware(['auth', 'verified'])->name('delete.queue.jobs');
+
 //Delete failed jobs
 Route::get('/delete-failed-jobs', [DashboardController::class, 'deleteFailedJobs'])->middleware(['auth', 'verified'])->name('delete.failed.jobs');
 
@@ -141,7 +144,7 @@ Route::get('/delete-failed-jobs', [DashboardController::class, 'deleteFailedJobs
 Route::get('/calender/{campaignID}/{leadID}', [ClickController::class, 'calenderLink'])->name('calender.link');
 
 //Jobs
-Route::get('/jobs', [DashboardController::class, 'jobs'])->name('jobs');
+Route::get('/queue-jobs', [DashboardController::class, 'jobs'])->name('queue.jobs');
 Route::get('/failed-jobs', [DashboardController::class, 'failed_jobs'])->name('failed.jobs');
 
 require __DIR__.'/auth.php';

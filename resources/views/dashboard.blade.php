@@ -7,6 +7,7 @@
                 grid-template-columns: 1fr 1fr 1fr 1fr ;
             }
         }
+
     </style>
 @endsection
 
@@ -115,32 +116,13 @@
 
     <div class="mt-5">
         @if ($totalJobs)
-            <p>{{ $totalJobs }} Jobs are in waiting to perform background operations</p>
+            <a target="_blank" href="/queue-jobs"><p>{{ $totalJobs }} Jobs are in waiting to perform background operations</p></a>
         @endif
     
         @if ($totalFailedJobs)
-            <p class="text-danger">{{ $totalFailedJobs }} Jobs failed their operation</p>
+            <a target="_blank" class="text-danger" href="/failed-jobs"><p>{{ $totalFailedJobs }} Jobs failed their operation</p></a>
         @endif
     </div>
-
-
-    @if ($totalFailedJobs)
-        <div class="row mb-3">
-            <div style="widows: 100%; text-align: right;"> 
-                <a class="btn btn-danger" href="/delete-failed-jobs">Delete Failed jobs</a>
-            </div>
-        </div>
-    @endif
-
-
-
-    {{-- @foreach ($failedJobs as $failedJob)
-        <div class="card mb-3">
-            <div class="card-body">
-                <p class="card-text">{{ $failedJob->exception }}</p>
-            </div>
-        </div>
-    @endforeach --}}
 
 
 @endsection
