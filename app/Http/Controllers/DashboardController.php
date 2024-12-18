@@ -56,29 +56,29 @@ class DashboardController extends Controller
         return redirect()->back()->with('success', 'All Failed jobs deleted successfully');
     }
 
-    public function jobs()
+    public function get_queue_jobs()
     {
-        // Query the jobs from the database
-        $jobs = DB::table('jobs')->get();
-
-        // Return the view with the jobs data
+        // Query the jobs from the database and paginate with 10 per page
+        $jobs = DB::table('jobs')->paginate(10);
+    
+        // Return the view with the paginated jobs data
         return view('jobs', [
             'jobs' => $jobs
         ]);
     }
 
-    public function failed_jobs()
+    public function get_failed_jobs()
     {
-        // Query the failed jobs from the database
-        $failedJobs = DB::table('failed_jobs')->get();
-
-        // Return the view with the failed jobs data
+        // Query the failed jobs from the database and paginate with 10 per page
+        $failedJobs = DB::table('failed_jobs')->paginate(10);
+    
+        // Return the view with the paginated failed jobs data
         return view('failed-jobs', [
             'jobs' => $failedJobs
         ]);
     }
-
     
+
 }
 
 

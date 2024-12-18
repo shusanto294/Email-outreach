@@ -44,19 +44,22 @@
 
 <ul class="jobs">
     @forelse ($jobs as $job)
+        @php
+            // Decode the job payload and extract the command if present
+            $payload = json_decode($job->payload, true);
+            $command = isset($payload['data']['command']) ? unserialize($payload['data']['command']) : null;
+            
+        @endphp
         <li>
-            <strong>Job ID:</strong> {{ $job->id }}<br>
-            <strong>Queue:</strong> {{ $job->queue }}<br>
-            <strong>Payload:</strong>
-            <pre>{{ json_encode(json_decode($job->payload), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) }}</pre>
-            <strong>Attempts:</strong> {{ $job->attempts }}<br>
-            <strong>Reserved At:</strong> {{ $job->reserved_at }}<br>
-            <strong>Available At:</strong> {{ $job->available_at }}<br>
-            <strong>Created At:</strong> {{ $job->created_at }}
+            <strong>Command:</strong>
+            <pre>{{ json_encode($payload['data']['command'], JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) }}</pre>
+
         </li>
     @empty
-        <p>No queue job found.</p>
+        <p>No failed jobs found.</p>
     @endforelse
 </ul>
+
+{{ $jobs->links() }}
 
 @endsection

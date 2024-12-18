@@ -144,7 +144,7 @@ Route::get('/delete-failed-jobs', [DashboardController::class, 'deleteFailedJobs
 Route::get('/calender/{campaignID}/{leadID}', [ClickController::class, 'calenderLink'])->name('calender.link');
 
 //Jobs
-Route::get('/queue-jobs', [DashboardController::class, 'jobs'])->name('queue.jobs');
-Route::get('/failed-jobs', [DashboardController::class, 'failed_jobs'])->name('failed.jobs');
+Route::get('/queue-jobs', [DashboardController::class, 'get_queue_jobs'])->name('queue.jobs');
+Route::get('/failed-jobs', [DashboardController::class, 'get_failed_jobs'])->name('failed.jobs');
 
 require __DIR__.'/auth.php';
